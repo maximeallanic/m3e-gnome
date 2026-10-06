@@ -43,6 +43,11 @@ gdm_ancestors_ok() { # path want-uid [stop-dir]
 # The helper files go into a root-owned directory, copied from this checkout by `install` (root only reads them).
 gdm_install_helper() {
     local f dest="$GDM_DEST_ROOT$GDM_LIBEXEC" mode p created=() list
+    # Never clobber something that is not our link (a foreign script of the same name, a different link).
+    local link="$GDM_DEST_ROOT$GDM_LINK"
+    if [[ -e "$link" || -L "$link" ]] && [[ "$(readlink -- "$link" 2>/dev/null || true)" != "../libexec/m3e-gnome/gdm/m3e-gdm" ]]; then
+        die "$GDM_LINK exists and is not the m3e-gdm link: move it away first (nothing was changed)"
+    fi
     # Remember which parent directories this step creates, so that uninstall removes exactly those.
     for p in /usr/local /usr/local/libexec /usr/local/libexec/m3e-gnome /usr/local/sbin; do
         [[ -d "$GDM_DEST_ROOT$p" ]] || created+=("$p")

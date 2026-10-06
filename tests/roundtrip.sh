@@ -80,10 +80,10 @@ if have_all() { for t in "$@"; do command -v "$t" >/dev/null 2>&1 || return 1; d
     # shellcheck disable=SC2031
     export M3E_GDM_ROOT="$GR"
     gdm_make_root "$GR" debian
-    snapshot "$GR" | grep -v diversions-old >"$T_ROOT/gdm-before.snap"
+    snapshot "$GR" | grep -vE 'diversions-old|run/m3e-gdm.lock' >"$T_ROOT/gdm-before.snap"
     GDM_ENV=(env)
     "${GDM_ENV[@]}" bash "$REPO/install.sh" --gdm-only --dry-run --yes --no-session-check >"$T_ROOT/gdm-dry.out" 2>&1 || { fail "gdm dry run failed"; cat "$T_ROOT/gdm-dry.out"; }
-    snapshot "$GR" | grep -v diversions-old >"$T_ROOT/gdm-dry.snap"
+    snapshot "$GR" | grep -vE 'diversions-old|run/m3e-gdm.lock' >"$T_ROOT/gdm-dry.snap"
     check "gdm dry run changes nothing in the system root" cmp -s "$T_ROOT/gdm-before.snap" "$T_ROOT/gdm-dry.snap"
     check "gdm dry run shows the plan" grep -q 'dry-run' "$T_ROOT/gdm-dry.out"
     if "${GDM_ENV[@]}" bash "$REPO/install.sh" --gdm-only --yes --no-session-check >"$T_ROOT/gdm-install.out" 2>&1; then pass "install.sh --gdm-only exits 0"
@@ -97,7 +97,7 @@ if have_all() { for t in "$@"; do command -v "$t" >/dev/null 2>&1 || return 1; d
     check "the user-side step did not touch HOME beyond temp files" bash -c "[ -z \"\$(find '$TMPDIR' -maxdepth 1 -name 'm3e-gnome.*')\" ]"
     check "uninstall.sh --gdm --dry-run changes nothing" bash -c "$(printf '%q ' "${GDM_ENV[@]}") bash '$REPO/uninstall.sh' --gdm --dry-run --yes >/dev/null && test -f '$GR/var/lib/m3e-gnome/gdm/manifest'"
     if "${GDM_ENV[@]}" bash "$REPO/uninstall.sh" --gdm --yes >"$T_ROOT/gdm-uninstall.out" 2>&1; then pass "uninstall.sh --gdm exits 0"; else fail "uninstall.sh --gdm failed"; cat "$T_ROOT/gdm-uninstall.out"; fi
-    snapshot "$GR" | grep -v diversions-old >"$T_ROOT/gdm-after.snap"
+    snapshot "$GR" | grep -vE 'diversions-old|run/m3e-gdm.lock' >"$T_ROOT/gdm-after.snap"
     if cmp -s "$T_ROOT/gdm-before.snap" "$T_ROOT/gdm-after.snap"; then pass "the system root is byte-identical after uninstall --gdm"
     else fail "system root differs after uninstall --gdm"; diff "$T_ROOT/gdm-before.snap" "$T_ROOT/gdm-after.snap" | head -20; fi
     # The full uninstall below must revert the GDM theming too.
@@ -111,7 +111,7 @@ echo "== uninstall"
 check "uninstall --dry-run changes nothing" bash -c "bash '$REPO/uninstall.sh' --dry-run --yes >/dev/null && test -f '$HOME/.local/share/m3e-gnome/manifest'"
 if bash "$REPO/uninstall.sh" --yes >"$T_ROOT/uninstall.out" 2>&1; then pass "uninstall exits 0"; else fail "uninstall failed"; cat "$T_ROOT/uninstall.out"; fi
 if [[ -n "${GDM_REINSTALLED:-}" ]]; then
-    snapshot "$GR" | grep -v diversions-old >"$T_ROOT/gdm-after-full.snap"
+    snapshot "$GR" | grep -vE 'diversions-old|run/m3e-gdm.lock' >"$T_ROOT/gdm-after-full.snap"
     check "the full uninstall also reverted the GDM theming (system root byte-identical)" cmp -s "$T_ROOT/gdm-before.snap" "$T_ROOT/gdm-after-full.snap"
 fi
 snapshot "$HOME" >"$T_ROOT/after.snap"

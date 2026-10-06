@@ -42,7 +42,7 @@ gdm_make_stock() { # out-file tag
 gdm_make_root() {
     local r="$1" family="$2" um
     um="$(umask)"; umask 022   # a real root has no group-writable directories
-    mkdir -p "$r"/usr/share/gnome-shell "$r"/etc "$r"/usr/lib/systemd/system "$r"/usr/share/dconf/profile "$r"/usr/local \
+    mkdir -p "$r"/run "$r"/usr/share/gnome-shell "$r"/etc "$r"/usr/lib/systemd/system "$r"/usr/share/dconf/profile "$r"/usr/local \
         "$r"/var/lib/dpkg/updates "$r"/var/lib/dpkg/alternatives "$r"/etc/alternatives "$r"/etc/dconf/db
     : >"$r/usr/lib/systemd/system/gdm.service"
     : >"$r/var/lib/dpkg/status"; : >"$r/var/lib/dpkg/diversions"; chmod 644 "$r/var/lib/dpkg/status" "$r/var/lib/dpkg/diversions"

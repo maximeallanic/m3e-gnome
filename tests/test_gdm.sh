@@ -22,7 +22,7 @@ same_except_stock() {
     if diff <(grep -v 'gnome-shell-theme.gresource ' "$2") <(snap | grep -v 'gnome-shell-theme.gresource ') >/dev/null; then pass "$1"
     else fail "$1"; diff <(grep -v 'gnome-shell-theme.gresource ' "$2") <(snap | grep -v 'gnome-shell-theme.gresource ') | head -20; fi
 }
-SNAPSHOT_FILTER='diversions-old'   # dpkg-divert keeps the previous database next to the new one; dpkg's own behaviour
+SNAPSHOT_FILTER='diversions-old\|run/m3e-gdm.lock'   # dpkg keeps the previous database; the lock is a runtime file on tmpfs
 
 snap() { gdm_snapshot "$GR" | grep -v "$SNAPSHOT_FILTER"; }
 gres() { gresource extract "$1" "/org/gnome/shell/theme/$2"; }
@@ -30,6 +30,8 @@ LIVE() { printf '%s' "$GR/usr/share/gnome-shell/gnome-shell-theme.gresource"; }
 
 new_system() { # family
     GR="$T_ROOT/root-$1"
+    # A fresh root every time: a leftover of an earlier section would make before/after comparisons vacuous.
+    [[ "$GR" == "$T_ROOT"/root-* ]] && rm -rf -- "${GR:?}"
     gdm_make_root "$GR" "$1"
     snap >"$T_ROOT/before-$1.snap"
     gdm_install_helper_into "$GR"
@@ -138,6 +140,23 @@ gdm_ok restore --remove-helper
 snap >"$T_ROOT/after2-debian.snap"
 if cmp -s "$T_ROOT/after-debian.snap" "$T_ROOT/after2-debian.snap"; then pass "apply then restore again: byte-identical"; else fail "second round trip differs"; fi
 
+echo "== Debian: the manual TTY recovery recipe of docs/gdm.md works with the real dpkg-divert (helper gone)"
+new_system debian
+stock_bytes="$(sha256sum "$(LIVE)" | cut -d' ' -f1)"
+gdm_ok apply --from "$T_ROOT/data"
+rm -rf "$GR/usr/local/libexec" "$GR/usr/local/sbin/m3e-gdm"      # the helper is gone: only the manual recipe is left
+DD=(dpkg-divert --admindir "$GR/var/lib/dpkg" --instdir "$GR")
+check "recipe step 1: dpkg-divert --remove --no-rename" "${DD[@]}" --quiet --remove --no-rename --package m3e-gnome /usr/share/gnome-shell/gnome-shell-theme.gresource
+check "recipe step 2: mv .distrib back" mv -f "$GR/usr/share/gnome-shell/gnome-shell-theme.gresource.distrib" "$GR/usr/share/gnome-shell/gnome-shell-theme.gresource"
+check "the stock resource is back, byte for byte" test "$(sha256sum "$(LIVE)" | cut -d' ' -f1)" = "$stock_bytes"
+check "no diversion left" bash -c "[ -z \"\$(dpkg-divert --admindir '$GR/var/lib/dpkg' --instdir '$GR' --list '*gnome-shell-theme*')\" ]"
+# And the reinstall advice is NOT a recovery in divert mode: dpkg writes the package file to .distrib, the themed file stays.
+new_system debian
+gdm_ok apply --from "$T_ROOT/data"
+gdm_make_stock "$GR/usr/share/gnome-shell/gnome-shell-theme.gresource.distrib" reinstalled   # what `apt reinstall` does
+check "after a simulated apt reinstall the themed resource is STILL live (reinstall does not recover divert mode)" bash -c "gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -qF 'm3e-gnome gdm'"
+gdm_ok restore --remove-helper
+
 echo "== Debian: refusals"
 new_system debian
 dpkg-divert --admindir "$GR/var/lib/dpkg" --instdir "$GR" --quiet --no-rename --add --package theme-gdm --divert /usr/share/gnome-shell/gnome-shell-theme.gresource.distrib /usr/share/gnome-shell/gnome-shell-theme.gresource
@@ -165,6 +184,7 @@ if diff <(grep '^f .*gnome-shell-theme.gresource' "$T_ROOT/before-ubuntu.snap") 
 common_checks ubuntu
 check "[ubuntu] verify passes" gdm_verify
 gdm_make_stock "$GR/usr/share/gnome-shell/theme/Yaru/gnome-shell-theme.gresource" yaru2
+check_not "[ubuntu] verify fails when the package updated the stock resource and no refresh ran" gdm_verify
 gdm_ok refresh
 check "[ubuntu] refresh after an update uses the new Yaru resource" bash -c "gresource extract '$GR/usr/local/share/m3e-gnome/gdm/gdm-theme.gresource' /org/gnome/shell/theme/gnome-shell-dark.css | grep -q 'stock dark yaru2'"
 gdm_ok restore --remove-helper
@@ -172,6 +192,13 @@ after_alt="$("${UA[@]}" --query gdm-theme.gresource | sed "s|$GR||g")"
 check "[ubuntu] restore: the alternative is back to its previous state" test "$before_alt" = "$after_alt"
 snap >"$T_ROOT/after-ubuntu.snap"
 same_except_stock "[ubuntu] restore: byte-identical apart from the package-updated resource" "$T_ROOT/before-ubuntu.snap"
+
+echo "== Ubuntu: the manual recovery recipe (helper gone)"
+new_system ubuntu
+gdm_ok apply --from "$T_ROOT/data"
+rm -rf "$GR/usr/local/libexec" "$GR/usr/local/sbin/m3e-gdm"
+check "recipe: update-alternatives --remove of our candidate" update-alternatives --altdir "$GR/etc/alternatives" --admindir "$GR/var/lib/dpkg/alternatives" --quiet --remove gdm-theme.gresource "$GR/usr/local/share/m3e-gnome/gdm/gdm-theme.gresource"
+check "the package's own best candidate is selected again" bash -c "update-alternatives --altdir '$GR/etc/alternatives' --admindir '$GR/var/lib/dpkg/alternatives' --query gdm-theme.gresource | grep -q '^Value: .*/Yaru/gnome-shell-theme.gresource'"
 
 echo "== Arch / Fedora: in place, stock copy, hooks"
 for fam in arch fedora; do
@@ -202,6 +229,44 @@ gdm_ok apply --from "$T_ROOT/data"
 check "[fedora] DNF 4 action file" grep -qx 'gnome-shell:in:/usr/local/libexec/m3e-gnome/gdm/m3e-gdm refresh --quiet' "$GR/etc/dnf/plugins/post-transaction-actions.d/m3e-gdm.action"
 check "[fedora] DNF 5 actions file" grep -qx 'post_transaction:gnome-shell:in::/usr/local/libexec/m3e-gnome/gdm/m3e-gdm refresh --quiet' "$GR/etc/dnf/libdnf5-plugins/actions.d/m3e-gdm.actions"
 gdm_ok restore --remove-helper
+
+echo "== concurrency: one helper run at a time"
+new_system debian
+mkdir -p "$GR/run"
+gdm_ok apply --from "$T_ROOT/data"
+flock "$GR/run/m3e-gdm.lock" sleep 4 &
+sleep 0.5
+out="$(M3E_GDM_LOCK_WAIT=1 gdm_run refresh 2>&1)"; rc=$?
+check "a second run while another holds the lock fails" test "$rc" -ne 0
+check "…and says another run is in progress" grep -q 'another m3e-gdm' <<<"$out"
+wait
+gdm_ok refresh
+gdm_ok restore --remove-helper
+
+echo "== in place: a crash between the swap and the identity record must stay restorable"
+new_system arch
+stock_before="$(sha256sum "$(LIVE)" | cut -d' ' -f1)"
+gdm_ok apply --from "$T_ROOT/data"
+st="$GR/var/lib/m3e-gnome/gdm"
+# What a crash right after the swap would leave: the themed file live, the identity of the NEW build not committed yet.
+live_sha="$(sha256sum "$(LIVE)" | cut -d' ' -f1)"
+rm -f "$st/built.sha256"; printf '%s\n' "$live_sha" >"$st/pending.sha256"
+gdm_ok restore --remove-helper
+check "restore recognises our file by the pending identity and puts the stock bytes back" test "$(sha256sum "$(LIVE)" | cut -d' ' -f1)" = "$stock_before"
+
+echo "== a refused or failed apply leaves nothing behind but the helper, which restore removes with its directories"
+new_system debian
+M3E_FAKE_GNOME_VERSION=48.1 gdm_run apply --from "$T_ROOT/data" >/dev/null 2>&1
+check "apply on another major failed" test "$?" -ne 0
+gdm_ok restore --remove-helper
+snap >"$T_ROOT/after-failed.snap"
+if cmp -s "$T_ROOT/before-debian.snap" "$T_ROOT/after-failed.snap"; then pass "the system root is byte-identical (helper and its parent directories gone)"
+else fail "leftovers after a failed apply"; diff "$T_ROOT/before-debian.snap" "$T_ROOT/after-failed.snap" | head; fi
+
+echo "== the sbin link never clobbers a foreign file"
+GR="$T_ROOT/root-foreign"; gdm_make_root "$GR" debian; mkdir -p "$GR/usr/local/sbin"; printf 'mine\n' >"$GR/usr/local/sbin/m3e-gdm"
+if gdm_install_helper_into "$GR" >/dev/null 2>&1; then fail "the installer replaced a foreign /usr/local/sbin/m3e-gdm"; else pass "the installer refuses to replace a foreign /usr/local/sbin/m3e-gdm"; fi
+check "…and the foreign file is intact" grep -qx mine "$GR/usr/local/sbin/m3e-gdm"
 
 echo "== a pre-existing /etc/dconf/profile/gdm is kept and restored"
 GR="$T_ROOT/root-profile"; gdm_make_root "$GR" debian

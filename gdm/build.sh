@@ -70,10 +70,15 @@ verify_resource() {
     done
 }
 
-# Current stock and built identities, recorded in the state directory.
-record_identity() { # stock-sha built-sha (taken BEFORE the live file is replaced)
+# Identities, recorded in two phases so that a crash never leaves the live file unrecognisable:
+#   before the swap  pending.sha256 = hash of the file about to go live (restore and refresh accept it as ours)
+#   after the swap   built.sha256   = the same, stock.sha256 = the stock it was built from; pending.sha256 removed
+record_pending() { # built-sha
+    printf '%s\n' "$1" | state_write pending.sha256
+}
+commit_identity() { # stock-sha built-sha
     ((DRY_RUN)) && return 0
-    printf '%s\n' "$1" >"$STATE/stock.sha256"
-    printf '%s\n' "$2" >"$STATE/built.sha256"
-    chmod 644 -- "$STATE/stock.sha256" "$STATE/built.sha256"
+    printf '%s\n' "$1" | state_write stock.sha256
+    printf '%s\n' "$2" | state_write built.sha256
+    rm -f -- "$STATE/pending.sha256"
 }

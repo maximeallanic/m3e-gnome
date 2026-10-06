@@ -84,7 +84,14 @@ alt_stock() {
 }
 
 inplace_live_is_ours() {
-    [[ -f "$STATE/built.sha256" && -f "$(rp "$GRES_LOGICAL")" && "$(sha_of "$(rp "$GRES_LOGICAL")")" == "$(<"$STATE/built.sha256")" ]]
+    local live f
+    live=$(rp "$GRES_LOGICAL")
+    [[ -f "$live" ]] || return 1
+    live=$(sha_of "$live")
+    for f in built.sha256 pending.sha256; do
+        [[ -f "$STATE/$f" && "$live" == "$(<"$STATE/$f")" ]] && return 0
+    done
+    return 1
 }
 
 mech_stock() {

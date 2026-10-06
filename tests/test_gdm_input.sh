@@ -27,7 +27,7 @@ rejects() { # description  (data dir is $T_ROOT/data)
     if ((rc == 1)) && grep -q 'refused' <<<"$out"; then pass "ingest refuses: $d"; else fail "ingest did not refuse: $d (rc=$rc: $out)"; fi
     out="$(gdm_run apply --from "$T_ROOT/data" 2>&1)"; rc=$?
     if ((rc != 0)); then pass "helper apply refuses: $d"; else fail "helper apply accepted: $d"; fi
-    gdm_snapshot "$GR" | grep -v 'diversions-old' >"$T_ROOT/now.snap"
+    gdm_snapshot "$GR" | grep -v 'diversions-old\|run/m3e-gdm.lock' >"$T_ROOT/now.snap"
     if ((rc == 0)); then gdm_run restore >/dev/null 2>&1; fi   # keep one accepted case from poisoning the next ones
     if cmp -s "$T_ROOT/clean.snap" "$T_ROOT/now.snap"; then pass "…and the system is untouched"
     else fail "refused input still changed the system: $d"; diff "$T_ROOT/clean.snap" "$T_ROOT/now.snap" | head -5; fi

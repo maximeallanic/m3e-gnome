@@ -56,6 +56,28 @@ harden_env() {
     STATE=$ROOT$STATE_LOGICAL
 }
 
+# One helper run at a time (apply, refresh and restore rewrite the same state). The lock lives in /run, which only root
+# can write: a lock file in a sticky world-writable directory could be a link planted by a user.
+LOCKFD=''
+take_lock() {
+    ((DRY_RUN)) && return 0
+    local wait=60 file
+    [[ -z "$ROOT" ]] || wait=${M3E_GDM_LOCK_WAIT:-60}   # test hook, only reachable in test mode
+    file=$ROOT/run/m3e-gdm.lock
+    [[ -d "$ROOT/run" ]] || die "/run does not exist"
+    exec {LOCKFD}>"$file"
+    flock -w "$wait" "$LOCKFD" || die "another m3e-gdm run is in progress (lock $file)"
+}
+
+# state_write NAME : atomically replace $STATE/NAME with stdin (0644).
+state_write() {
+    ((DRY_RUN)) && return 0
+    local tmp="$STATE/.$1.m3e-new.$$"
+    cat >"$tmp"
+    chmod 644 -- "$tmp"
+    mv -f -- "$tmp" "$STATE/$1"
+}
+
 # Path under the (test) root.
 rp() { printf '%s%s' "$ROOT" "$1"; }
 
@@ -91,6 +113,7 @@ need_tools() {
 sha_of() { sha256sum -- "$1" | cut -d' ' -f1; }
 
 # --- temp directories, removed on exit (only ones created here) ------------------------------------------------------
+ORPHANS=()   # temporary names next to a destination, removed on exit if the rename never happened
 TMP_MADE=()
 make_work() {
     local base=${TMPDIR:-/tmp}
@@ -101,9 +124,13 @@ make_work() {
 cleanup_work() {
     local d
     for d in "${TMP_MADE[@]}"; do
-        [[ -n "$d" && "$d" == */m3e-gdm.?????? ]] && rm -rf -- "${d:?}"
+        if [[ -n "$d" && "$d" == */m3e-gdm.?????? ]]; then rm -rf -- "${d:?}"; fi
     done
     TMP_MADE=()
+    for d in "${ORPHANS[@]}"; do
+        if [[ "$d" == *.m3e-new.* && -f "$d" ]]; then rm -f -- "${d:?}"; fi
+    done
+    return 0
 }
 
 # --- manifest: tab-separated, appended BEFORE the change it describes -------------------------------------------------
@@ -143,6 +170,7 @@ put_atomic() { # src logical-dest mode
     if ((DRY_RUN)); then printf '   [dry-run] install %s (mode %s)\n' "$dest" "$mode"; return 0; fi
     m_has F "$dest" || m_add F "$dest"
     tmp="$(rp "$dest").m3e-new.$$"
+    ORPHANS+=("$tmp")
     install -m "$mode" -- "$src" "$tmp"
     mv -f -- "$tmp" "$(rp "$dest")"
 }

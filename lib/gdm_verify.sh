@@ -53,6 +53,9 @@ check_gdm() {
             for n in gdm-theme.gresource gdm3-theme.gresource; do
                 if sel="$(update-alternatives ${GDM_DEST_ROOT:+--altdir "$r/etc/alternatives" --admindir "$r/var/lib/dpkg/alternatives"} --query "$n" 2>/dev/null | sed -n 's/^Value: //p')" && [[ -n "$sel" ]]; then break; fi
             done
+            # The stock resource behind our alternative: the best other candidate (what the helper builds from).
+            stock="$(update-alternatives ${GDM_DEST_ROOT:+--altdir "$r/etc/alternatives" --admindir "$r/var/lib/dpkg/alternatives"} --query "$n" 2>/dev/null |
+                awk -v ours="$live" '/^Alternative: /{c=substr($0,14)} /^Priority: /{if(c!=ours&&c!=""&&($2+0>b||b==""))b=$2+0;p=(c!=ours&&c!=""&&$2+0==b)?c:p; c=""} END{print p}')"
             if [[ "${sel#"$r"}" == /usr/local/share/m3e-gnome/gdm/gdm-theme.gresource ]]; then v_ok "GDM: our resource is the selected alternative"
             else v_fail "GDM: the gdm theme alternative does not select our resource (selected: ${sel:-none})"; fi ;;
         inplace)

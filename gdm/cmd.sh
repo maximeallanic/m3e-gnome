@@ -69,14 +69,14 @@ stage_ingest() {
     [[ ! -d "$STATE/data" ]] || mv -- "$STATE/data" "$STATE/data.old"
     mv -- "$STATE/data.new" "$STATE/data"
     rm -rf -- "${STATE:?}/data.old"
-    python3 -I "$HERE/ingest.py" hash "$STATE/data" >"$STATE/data.sha256"
-    chmod 644 -- "$STATE/data.sha256"
+    python3 -I "$HERE/ingest.py" hash "$STATE/data" | state_write data.sha256
 }
 
 cmd_apply() {
     local from=$1 forced=$2 data stock out stock_sha
     [[ -n "$from" && -d "$from" ]] || die "apply needs --from DIR (a directory prepared by the installer)"
     require_root
+    take_lock
     preflight
     mech_detect "$forced"
     mech_preflight
@@ -84,6 +84,7 @@ cmd_apply() {
     # Refuse bad input before anything exists on disk (the ingest below validates again what it actually copies).
     python3 -I "$HERE/ingest.py" check "$from" || die "the input data was refused"
     state_init
+    register_helper
     stage_ingest "$from"
     if ((DRY_RUN)); then data=$from; else data=$STATE/data; fi
     stock=$(mech_stock)
@@ -91,14 +92,14 @@ cmd_apply() {
     make_work; out=$REPLY/built.gresource
     build_resource "$stock" "$data" "$out"
     say "resource built and verified from $stock"
-    register_helper
     assets_apply "$data"
     dconf_apply "$data"
     hooks_apply
-    if ! ((DRY_RUN)); then printf '%s\n' "$MECH" >"$STATE/mech"; fi
+    printf '%s\n' "$MECH" | state_write mech
+    record_pending "$(sha_of "$out")"
     mech_install "$out"
     if ((DRY_RUN)); then say "dry run: nothing was changed"; return 0; fi
-    record_identity "$stock_sha" "$(sha_of "$out")"
+    commit_identity "$stock_sha" "$(sha_of "$out")"
     rm -f -- "$STATE/disabled"
     say "installed. Reboot (or log out and restart GDM) to see the login screen; recovery: sudo m3e-gdm restore"
 }
@@ -106,12 +107,13 @@ cmd_apply() {
 cmd_refresh() {
     [[ -f "$STATE/manifest" && -f "$STATE/mech" ]] || { say "not installed: nothing to refresh"; return 0; }
     require_root
+    take_lock
     mech_detect "$(<"$STATE/mech")"
     local major stock out stock_sha data_ok=1
     major=$(shell_major)
     if [[ "$major" != "$M3E_GDM_TESTED_MAJOR" ]] && ((! FORCE)); then
         mech_activate_stock
-        : >"$STATE/disabled"
+        printf 'major %s\n' "$major" | state_write disabled
         warn "GNOME Shell $major is not the verified version ($M3E_GDM_TESTED_MAJOR): the stock login screen is back in service. 'sudo m3e-gdm refresh --force' rebuilds anyway."
         return 0
     fi
@@ -127,8 +129,9 @@ cmd_refresh() {
     stock_sha=$(sha_of "$stock")
     make_work; out=$REPLY/built.gresource
     build_resource "$stock" "$STATE/data" "$out"
+    record_pending "$(sha_of "$out")"
     mech_install "$out"
-    record_identity "$stock_sha" "$(sha_of "$out")"
+    commit_identity "$stock_sha" "$(sha_of "$out")"
     rm -f -- "$STATE/disabled"
     say "rebuilt from the current stock resource"
 }
@@ -145,9 +148,16 @@ cmd_status() {
 }
 
 remove_helper() {
+    local d dirs=()
     if [[ "$HERE" == "$(rp "$HELPER_DIR_LOGICAL")" ]]; then
+        # The parent directories the installer created are listed next to the code: they go with it, even when no apply
+        # ever got as far as writing a manifest.
+        if [[ -f "$HERE/created-dirs" ]]; then
+            while IFS= read -r d; do [[ -n "$d" ]] && { safe_logical "$d"; dirs+=("$d"); }; done < <(tac -- "$HERE/created-dirs")
+        fi
         rm_logical file "$HELPER_LINK_LOGICAL"
         rm_logical tree "$HELPER_DIR_LOGICAL"
+        for d in "${dirs[@]}"; do ((DRY_RUN)) || rmdir -- "$(rp "$d")" 2>/dev/null || true; done
     else
         warn "this copy of the helper is not the installed one ($HERE): not removing it"
     fi
@@ -155,6 +165,7 @@ remove_helper() {
 
 cmd_restore() {
     require_root
+    take_lock
     if [[ ! -f "$STATE/manifest" ]]; then
         say "nothing to restore (no manifest)"
         ((REMOVE_HELPER)) && remove_helper
