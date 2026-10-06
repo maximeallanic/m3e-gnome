@@ -47,7 +47,7 @@ check "…naming the required version" grep -q 'Python 99.0 or newer is required
 ASSUME_YES=0
 declare -A SELECTED=([gtk-theme]=1 [icons]=1 [cursor]=1 [sounds]=1 [font]=1 [palette]=1 [extensions]=1)
 step_enabled() { [[ -n "${SELECTED[$1]:-}" ]]; }
-# shellcheck disable=SC2329  # called by check_deps
+# shellcheck disable=SC2317,SC2329  # called by check_deps
 have() { return 1; }
 for pair in debian:ubuntu:'apt-get install' fedora:fedora:'dnf install' arch:arch:'pacman -S' suse:opensuse-tumbleweed:'zypper install'; do
     IFS=: read -r fam id want <<<"$pair"
