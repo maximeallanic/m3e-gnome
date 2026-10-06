@@ -16,6 +16,13 @@ pour le README.
 
 <!-- screenshots:start -->
 <p align="center">
+  <a href="screenshots/animations.mp4">
+    <img src="screenshots/animations.webp" width="720" alt="Enregistrement de 15 secondes des animations Material 3 Expressive du thème : vue d'ensemble et grille d'applications, ouverture et fermeture d'une fenêtre, morphing d'une tuile des réglages rapides, interrupteur d'un menu, bannière et liste de notifications, Alt+Tab et palette claire">
+  </a>
+  <br><sub>Les animations (15 s, mouvement à ressorts). <a href="screenshots/animations.mp4">MP4 pleine qualité</a>.</sub>
+</p>
+
+<p align="center">
   <picture>
     <source media="(prefers-color-scheme: light)" srcset="screenshots/desktop-light.png">
     <img src="screenshots/desktop-dark.png" width="880" alt="Bureau GNOME habillé en M3E : Paramètres, Fichiers et un terminal sur un fond d'écran généré">

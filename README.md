@@ -13,6 +13,13 @@ do.
 
 <!-- screenshots:start -->
 <p align="center">
+  <a href="screenshots/animations.mp4">
+    <img src="screenshots/animations.webp" width="720" alt="15-second recording of the theme's Material 3 Expressive animations: overview and app grid, an application window opening from its icon and closing, Quick Settings tile morph, a popup menu switch, notification banner and list, Alt+Tab, and the light palette">
+  </a>
+  <br><sub>The animations (15 s, spring motion). <a href="screenshots/animations.mp4">Full-quality MP4</a>.</sub>
+</p>
+
+<p align="center">
   <picture>
     <source media="(prefers-color-scheme: light)" srcset="screenshots/desktop-light.png">
     <img src="screenshots/desktop-dark.png" width="880" alt="M3E-themed GNOME desktop: Settings, Files and a terminal over a generated wallpaper">
