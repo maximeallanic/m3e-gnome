@@ -25,7 +25,7 @@ for n in "${names[@]}"; do
     url_var="${n}_URL"; rev_var="${n}_REV"
     url="${!url_var}"; rev="${!rev_var}"
     if [[ ! "$rev" =~ ^[0-9a-f]{40}$ ]]; then echo "FAIL  $n: '$rev' is not a full 40-hex commit"; status=1; continue; fi
-    if git -C "$tmp/repo" fetch -q --depth 1 -- "$url" "$rev" 2>/dev/null; then echo "ok    $n @ ${rev:0:12} ($url)"
-    else echo "FAIL  $n: cannot fetch $rev from $url"; status=1; fi
+    if err=$(git -C "$tmp/repo" fetch -q --depth 1 -- "$url" "$rev" 2>&1); then echo "ok    $n @ ${rev:0:12} ($url)"
+    else echo "FAIL  $n: cannot fetch $rev from $url"; printf '      %s\n' "$err"; status=1; fi
 done
 exit "$status"
