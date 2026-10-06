@@ -21,7 +21,7 @@ scale 1.
 | `terminal-{dark,light}.png` | Ptyxis with the "Material" palette |
 | `dialogs-{dark,light}.png` | Modal Shell dialog (crop) |
 | `alt-tab-dark.png` | Alt+Tab window switcher |
-| `animations.mp4`, `animations.webp`, `animations-poster.png` | 15 s real-time recording of the Shell animations (overview and app grid, window open/close, Quick Settings tile morph, switch, notifications, Alt+Tab, light palette); WebP is the inline fallback, the poster its first still |
+| `animations.mp4`, `animations.webp`, `animations-poster.png` | 15 s, 60 fps recording of the Shell animations (captured in slow motion and retimed, so each animation has its real duration) (overview and app grid, window open/close, Quick Settings tile morph, switch, notifications, Alt+Tab, light palette); WebP is the inline fallback, the poster its first still |
 | `palette-from-wallpaper.png` | Four generated wallpapers, the resulting desktop and the palette roles |
 
 ## Regenerate
@@ -36,8 +36,8 @@ The nested Shell, its Wayland socket, session bus, `XDG_*` directories, system b
 real session, home and dconf are not touched. Raw captures stay in `dev/out/screenshots/<date>/` (git-ignored, do not
 publish them).
 
-The video is regenerated with `dev/screenshots/make-video.sh` (about 5 minutes, see
-[`../dev/screenshots/README.md`](../dev/screenshots/README.md)); it is recorded in real time from the nested Shell, with the
+The video is regenerated with `dev/screenshots/make-video.sh` (10-15 minutes, see
+[`../dev/screenshots/README.md`](../dev/screenshots/README.md)); it is recorded from the nested Shell in slow motion and retimed, with the
 same demo data, procedural wallpapers and private buses as the images.
 
 ## README snippet

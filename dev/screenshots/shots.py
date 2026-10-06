@@ -224,7 +224,7 @@ def scenario_notify():
 
 
 def scenario_video(mode):
-    """Animation video: real-time recording of the Shell animations (see video.py and make-video.sh)."""
+    """Animation video: slow-motion recording of the Shell animations (see video.py and make-video.sh)."""
     import video
     video.run(mode, Apps, place)
 

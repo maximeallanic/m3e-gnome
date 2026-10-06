@@ -129,12 +129,13 @@ export default class M3eShots extends Extension {
     }
 
     Windows() {
-        return JSON.stringify(global.get_window_actors().map(a => a.meta_window)
-            .filter(w => w.get_window_type() === Meta.WindowType.NORMAL)
-            .map(w => {
+        return JSON.stringify(global.get_window_actors()
+            .filter(a => a.meta_window.get_window_type() === Meta.WindowType.NORMAL)
+            .map(a => {
+                const w = a.meta_window;
                 const r = w.get_frame_rect();
                 return {id: w.get_id(), title: w.get_title() ?? '', wm_class: w.get_wm_class() ?? '',
-                    x: r.x, y: r.y, w: r.width, h: r.height};
+                    x: r.x, y: r.y, w: r.width, h: r.height, opacity: a.visible ? a.get_paint_opacity() : 0};
             }));
     }
 
