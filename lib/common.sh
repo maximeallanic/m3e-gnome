@@ -6,6 +6,33 @@
 # not depend on the user's language. User-facing messages of this project are English only.
 export LC_ALL=C
 export LANGUAGE=C
+# The scripts run from the repository directory, which is read-only when installed by the .deb: never write bytecode
+# caches (tools/*.py import their siblings) next to the sources.
+export PYTHONDONTWRITEBYTECODE=1
+
+# The companion GNOME Shell extensions (m3e-gnome-extensions).
+EXTENSION_UUIDS=(m3e-motion@maximeallanic.github.io m3e-extensions@maximeallanic.github.io status-bar@maximeallanic.github.io)
+
+# Print the first directory of M3E_SYSTEM_EXT_DIRS (default: the system-wide extension directories) that holds all
+# three companion extensions, e.g. /usr/share/gnome-shell/extensions after `apt install gnome-shell-extension-m3e`.
+# The variable is a test seam (tests point it at a fake root, never at the real /usr).
+system_extensions_dir() {
+    local d u ok
+    for d in ${M3E_SYSTEM_EXT_DIRS-/usr/local/share/gnome-shell/extensions /usr/share/gnome-shell/extensions}; do
+        ok=1
+        for u in "${EXTENSION_UUIDS[@]}"; do
+            [[ -f "$d/$u/metadata.json" && -f "$d/$u/extension.js" ]] || ok=0
+        done
+        if ((ok)); then printf '%s\n'  "$d"; return 0; fi
+    done
+    return 1
+}
+# True when the extensions step should only enable the system-wide copies (an explicit --extensions-dir wins).
+use_system_extensions() { [[ -z "${EXTENSIONS_DIR:-}" ]] && system_extensions_dir >/dev/null; }
+
+# True when the repository ships the prebuilt palette bundle (the .deb does): no npm needed at install time.
+PREBUILT_PALETTE_REL=tools/material-palette/dist/palette.mjs
+has_prebuilt_palette() { [[ -n "${REPO_ROOT:-}" && -f "$REPO_ROOT/$PREBUILT_PALETTE_REL" ]]; }
 
 M3E_VERSION=0.1.0
 DRY_RUN=0

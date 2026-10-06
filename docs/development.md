@@ -108,11 +108,30 @@ helpers of `lib/manifest.sh`; set settings only through `gs_set`; guard destruct
 
 1. Finish the work; `tests/run.sh`, the tool tests and CI must pass.
 2. **Pin the extensions.** Set `EXT_REV` in `lib/pins.sh` to the full 40-hex commit of `m3e-gnome-extensions`
-   that this version was tested with.
+   that this version was tested with (normally the commit its own release was tagged on).
 3. **Re-check every pin** (`lib/pins.sh`): the commits are fetchable, the sha256 values match, and the new content
-   was looked at. Update the date comments. Record pin changes in `CHANGELOG.md` and `NOTICE.md`.
-4. Bump `M3E_VERSION` in `lib/common.sh`, move the `[Unreleased]` notes of `CHANGELOG.md` under the new version.
-5. Tag and publish. Screenshots go in `screenshots/` with the names the README references.
+   was looked at. `scripts/check-pins.sh` checks the 40-hex format and fetches every git pin (network). Update the
+   date comments. Record pin changes in `CHANGELOG.md` and `NOTICE.md`.
+4. Bump `M3E_VERSION` in `lib/common.sh`, turn `[Unreleased]` of `CHANGELOG.md` into `[X.Y.Z] - date` (the section
+   becomes the release notes), merge.
+5. On an up-to-date `main`: `scripts/release.sh X.Y.Z` checks the version, the CHANGELOG section, the `EXT_REV` format, a
+   clean tree and a free tag, then prints the tag commands (it runs none). Push the tag `vX.Y.Z`.
+6. The *Release* workflow (`.github/workflows/release.yml`) runs the full CI, checks the pins upstream (`EXT_REV`
+   included), builds `m3e-gnome_<version>_all.deb` and the source tarball, writes `SHA256SUMS`, attests their
+   provenance and creates the GitHub release (a pre-release when the version is below 1.0.0 or has a suffix) with the
+   CHANGELOG section plus `.github/release-footer.md` ("Tested on", install, verification) as notes. Running it by hand
+   (*Run workflow*, with a version) builds everything and publishes nothing.
+7. Screenshots go in `screenshots/` with the names the README references.
+
+### The Debian package
+
+`scripts/build-deb.sh VERSION` (plain `dpkg-deb`: nothing to compile, so debhelper would add only ceremony) packs the
+runtime tree under `/usr/share/m3e-gnome` (read-only for users), with the palette bundle prebuilt by
+`tools/material-palette/build.sh` so that no npm runs at install time, wrappers in `/usr/bin` (they refuse to run as
+root), man pages generated from `--help` (`packaging/mkman.py`) and a bash completion (`packaging/m3e-gnome.bash`, kept
+in sync with `--help` by `tests/test_deb.sh`). Maintainer scripts only print. `tests/test_deb.sh` builds it, unpacks it
+with `dpkg -x`, makes the tree read-only and runs the round trip from it. The scripts must never write inside their own
+directory: build tools work in temporary copies and Python runs with bytecode writing off.
 
 ## Pin updates
 

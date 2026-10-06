@@ -127,6 +127,33 @@ check "it explains how to install User Themes" grep -q "User Themes' extension i
 check_not "verify reports it as a failure" "${VERIFY[@]}"
 bash "$REPO/uninstall.sh" --yes >/dev/null 2>&1
 
+echo "== system-wide extensions (gnome-shell-extension-m3e package)"
+echo org.gnome.shell.extensions.user-theme >>"$M3E_FAKE_DIR/schemas.txt"   # undo the previous section
+sysext="$T_ROOT/sysext"
+for u in m3e-motion m3e-extensions status-bar; do
+    mkdir -p "$sysext/$u@maximeallanic.github.io"
+    printf '{"uuid": "%s@maximeallanic.github.io"}\n' "$u" >"$sysext/$u@maximeallanic.github.io/metadata.json"
+    printf '// %s\n' "$u" >"$sysext/$u@maximeallanic.github.io/extension.js"
+done
+# The pinned extensions repository is made unreachable: a clone attempt would fail the install.
+{ cat "$M3E_PINS_FILE"; echo 'EXT_URL=file:///nonexistent/m3e-gnome-extensions'; } >"$T_ROOT/pins-noext.sh"
+snapshot "$HOME" >"$T_ROOT/sys-before.snap"
+out="$(M3E_SYSTEM_EXT_DIRS="$sysext" M3E_PINS_FILE="$T_ROOT/pins-noext.sh" "${INSTALL[@]}" 2>&1)"; rc=$?
+check "install succeeds without fetching the extensions repository" test "$rc" -eq 0
+check "it says it uses the system-wide extensions" grep -q 'using the system-wide extensions' <<<"$out"
+check_not "no extension was copied into the user directory" test -e "$HOME/.local/share/gnome-shell/extensions/status-bar@maximeallanic.github.io"
+for u in m3e-motion m3e-extensions status-bar; do
+    check "$u is enabled" grep -q "$u@maximeallanic.github.io" "$M3E_FAKE_DIR/dconf.json"
+done
+check "verify accepts the system-wide extensions" env M3E_SYSTEM_EXT_DIRS="$sysext" "${VERIFY[@]}"
+check_not "verify still fails when they are neither installed for the user nor system-wide" "${VERIFY[@]}"
+out="$(M3E_SYSTEM_EXT_DIRS="$sysext" "${INSTALL[@]}" --extensions-dir "$T_ROOT/fix/extensions" 2>&1)"; rc=$?
+check "--extensions-dir wins over the system-wide copies" test "$rc" -eq 0
+check "…and installs them for the user" test -f "$HOME/.local/share/gnome-shell/extensions/status-bar@maximeallanic.github.io/extension.js"
+bash "$REPO/uninstall.sh" --yes >/dev/null 2>&1
+snapshot "$HOME" >"$T_ROOT/sys-after.snap"
+check "uninstall leaves HOME as it was" cmp -s "$T_ROOT/sys-before.snap" "$T_ROOT/sys-after.snap"
+
 echo
 if ((FAILS)); then echo "guards: $FAILS failure(s)"; exit 1; fi
 echo "guards: all checks passed"

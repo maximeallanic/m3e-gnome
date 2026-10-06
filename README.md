@@ -148,6 +148,24 @@ cd m3e-gnome
 Then **log out and back in**: the Shell, the extensions and GTK applications load the theme at login. Finally run
 `./verify.sh`.
 
+### From a release
+
+The [releases page](https://github.com/maximeallanic/m3e-gnome/releases) has a Debian package and a source tarball
+(check them with `sha256sum -c SHA256SUMS`). Both still run the same installer, as your user, and still download the
+pinned sources when you run it (network needed); the package itself changes nothing in your home directory.
+
+```sh
+# Debian/Ubuntu: installs /usr/share/m3e-gnome and the commands m3e-gnome-install, -uninstall and -verify
+sudo apt install ./m3e-gnome_<version>_all.deb
+m3e-gnome-install --dry-run && m3e-gnome-install
+# any distribution: the tarball is the same tree as the git checkout
+tar xzf m3e-gnome-<version>.tar.gz && cd m3e-gnome-<version> && ./install.sh --dry-run && ./install.sh
+```
+
+If the package `gnome-shell-extension-m3e` (from the m3e-gnome-extensions releases) is installed, the installer enables
+those system-wide extensions instead of downloading them. Removing the `.deb` does not undo the theme: run
+`m3e-gnome-uninstall` first. The `.deb` has only been checked by unpacking it, not installed with `dpkg` on a live system.
+
 If the Shell theme does not load, install the User Themes extension and run `./install.sh` again. Missing system
 packages: `./install.sh --install-deps` runs your package manager with `sudo` after showing the command and asking.
 

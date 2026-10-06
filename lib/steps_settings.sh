@@ -69,6 +69,13 @@ step_ptyxis() {
 step_extensions() {
     msg_step "Shell extensions (m3e-motion, m3e-extensions, status-bar)"
     local repo stage uuid d uuids=()
+    if use_system_extensions; then
+        # Installed by the gnome-shell-extension-m3e package (or by hand): nothing to fetch or copy, only to enable.
+        msg_info "using the system-wide extensions in $(system_extensions_dir) (no download)"
+        enable_extensions "${EXTENSION_UUIDS[@]}"
+        warn_blur_my_shell
+        return 0
+    fi
     if [[ -n "$EXTENSIONS_DIR" ]]; then
         repo="$(readlink -f -- "$EXTENSIONS_DIR")"
         ((DRY_RUN)) || [[ -x "$repo/scripts/install.sh" ]] || die "$EXTENSIONS_DIR is not an m3e-gnome-extensions checkout (scripts/install.sh missing)"
@@ -86,6 +93,10 @@ step_extensions() {
     done
     ((${#uuids[@]})) || die "the extensions repository installed nothing"
     enable_extensions "${uuids[@]}"
+    warn_blur_my_shell
+}
+
+warn_blur_my_shell() {
     if [[ "$(python3 "$EXT_HELPER_PY" list)" == *blur-my-shell@aunetx* ]]; then
         msg_warn "Blur my Shell is enabled: the M3E theme uses tinted surfaces instead of blur and the two can conflict"
     fi

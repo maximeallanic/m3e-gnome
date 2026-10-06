@@ -58,8 +58,13 @@ deps_required() {
     step_enabled cursor && cmds+=(rsvg-convert)
     step_enabled sounds && cmds+=(meson ninja)
     step_enabled font && cmds+=(fc-cache)
-    step_enabled palette && cmds+=(node npm ffmpeg)
-    step_enabled extensions && cmds+=(rsync)
+    if step_enabled palette; then
+        cmds+=(node ffmpeg)
+        # npm only builds the palette bundle; a prebuilt one (the .deb) needs none.
+        if ! has_prebuilt_palette; then cmds+=(npm); fi
+    fi
+    # The system-wide extension package is only enabled, never copied.
+    if step_enabled extensions && ! use_system_extensions; then cmds+=(rsync); fi
     printf '%s\n' "${cmds[@]}" | sort -u
 }
 
