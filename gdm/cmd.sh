@@ -101,7 +101,7 @@ cmd_apply() {
     if ((DRY_RUN)); then say "dry run: nothing was changed"; return 0; fi
     commit_identity "$stock_sha" "$(sha_of "$out")"
     rm -f -- "$STATE/disabled"
-    say "installed. Reboot (or log out and restart GDM) to see the login screen; recovery: sudo m3e-gdm restore"
+    say "installed. Reboot (or log out and restart GDM) to see the login screen; recovery: sudo /usr/local/sbin/m3e-gdm restore"
 }
 
 cmd_refresh() {
@@ -114,7 +114,7 @@ cmd_refresh() {
     if [[ "$major" != "$M3E_GDM_TESTED_MAJOR" ]] && ((! FORCE)); then
         mech_activate_stock
         printf 'major %s\n' "$major" | state_write disabled
-        warn "GNOME Shell $major is not the verified version ($M3E_GDM_TESTED_MAJOR): the stock login screen is back in service. 'sudo m3e-gdm refresh --force' rebuilds anyway."
+        warn "GNOME Shell $major is not the verified version ($M3E_GDM_TESTED_MAJOR): the stock login screen is back in service. 'sudo /usr/local/sbin/m3e-gdm refresh --force' rebuilds anyway."
         return 0
     fi
     stage_hash_ok || data_ok=0

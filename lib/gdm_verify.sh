@@ -63,14 +63,14 @@ check_gdm() {
             if [[ -f "$stock" ]]; then v_ok "GDM: stock resource copy kept"; else v_fail "GDM: stock copy missing"; fi ;;
     esac
     if [[ -f "$live" ]] && gdm_has_marker "$live"; then v_ok "GDM: the live resource carries the M3E sheet"
-    else v_fail "GDM: the live resource does not carry the M3E sheet (a package update replaced it? run: sudo m3e-gdm refresh)"; fi
+    else v_fail "GDM: the live resource does not carry the M3E sheet (a package update replaced it? run: sudo /usr/local/sbin/m3e-gdm refresh)"; fi
     want="$(cat -- "$st/built.sha256" 2>/dev/null || true)"
     if [[ -f "$live" && -n "$want" && "$(gdm_sha "$live")" == "$want" ]]; then v_ok "GDM: live resource is the one we built"
-    else v_fail "GDM: live resource differs from the recorded build (run: sudo m3e-gdm refresh)"; fi
-    if [[ -f "$st/disabled" ]]; then v_warn "GDM: disabled because GNOME Shell is not the verified major (stock sheet in service); sudo m3e-gdm refresh --force to override"; fi
+    else v_fail "GDM: live resource differs from the recorded build (run: sudo /usr/local/sbin/m3e-gdm refresh)"; fi
+    if [[ -f "$st/disabled" ]]; then v_warn "GDM: disabled because GNOME Shell is not the verified major (stock sheet in service); sudo /usr/local/sbin/m3e-gdm refresh --force to override"; fi
     if [[ -n "$stock" && -f "$stock" && -f "$st/stock.sha256" ]]; then
         if [[ "$(gdm_sha "$stock")" == "$(cat -- "$st/stock.sha256")" ]]; then v_ok "GDM: built from the current stock resource"
-        else v_fail "GDM: the stock resource changed since the build (run: sudo m3e-gdm refresh)"; fi
+        else v_fail "GDM: the stock resource changed since the build (run: sudo /usr/local/sbin/m3e-gdm refresh)"; fi
     fi
 
     # dconf, assets, hook.
@@ -85,7 +85,7 @@ check_gdm() {
         debian) v_if "GDM: apt refresh hook present" "GDM: apt hook missing" test -f "$r/etc/apt/apt.conf.d/99m3e-gdm" ;;
         arch) v_if "GDM: pacman refresh hook present" "GDM: pacman hook missing" test -f "$r/etc/pacman.d/hooks/m3e-gdm.hook" ;;
         fedora) if [[ -f "$r/etc/dnf/plugins/post-transaction-actions.d/m3e-gdm.action" || -f "$r/etc/dnf/libdnf5-plugins/actions.d/m3e-gdm.actions" ]]; then
-            v_ok "GDM: dnf refresh hook present"; else v_warn "GDM: no dnf refresh hook (plugin not installed?): run sudo m3e-gdm refresh after gnome-shell updates"; fi ;;
-        *) v_warn "GDM: no refresh hook on this distribution: run sudo m3e-gdm refresh after gnome-shell updates" ;;
+            v_ok "GDM: dnf refresh hook present"; else v_warn "GDM: no dnf refresh hook (plugin not installed?): run sudo /usr/local/sbin/m3e-gdm refresh after gnome-shell updates"; fi ;;
+        *) v_warn "GDM: no refresh hook on this distribution: run sudo /usr/local/sbin/m3e-gdm refresh after gnome-shell updates" ;;
     esac
 }
