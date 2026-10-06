@@ -22,7 +22,7 @@ bench draws a magenta probe rectangle on it.*
 ## What it changes on the system
 
 Everything below is recorded, with its previous state, in `/var/lib/m3e-gnome/gdm/manifest`. `./uninstall.sh --gdm`
-(or `sudo m3e-gdm restore`) removes exactly these paths and restores what was replaced.
+(or `sudo /usr/local/sbin/m3e-gdm restore`) removes exactly these paths and restores what was replaced.
 
 | Path | What |
 |---|---|
@@ -130,7 +130,7 @@ running as the user through polkit, which is not the boundary we want.
 | Ubuntu | `update-alternatives` `gdm-theme.gresource` (our file added as a priority-900 candidate and selected; package files untouched; falls back to `gdm3-theme.gresource`) | apt hook | Alternative handling verified with the real `update-alternatives` in a fake root; **untested on a real Ubuntu** (the alternative layout is from [reports](https://github.com/vinceliuice/MacTahoe-gtk-theme/issues/148), not from a running system) |
 | Arch | In place: stock bytes kept in `/var/lib/m3e-gnome/gdm/stock/`; a package update overwrites the file and the hook rebuilds from the new stock | `/etc/pacman.d/hooks/m3e-gdm.hook` (`PostTransaction`, `Target = gnome-shell`; syntax from [alpm-hooks(5)](https://man.archlinux.org/man/alpm-hooks.5)) | In-place logic **verified** in a fake root; the hook file is only checked as text. **Untested on real Arch** |
 | Fedora | In place (as Arch) | DNF 4 `post-transaction-actions.d/m3e-gdm.action` and DNF 5 `libdnf5-plugins/actions.d/m3e-gdm.actions` (syntax from the [DNF 4](https://dnf-plugins-core.readthedocs.io/en/latest/post-transaction-actions.html) and [DNF 5](https://dnf5.readthedocs.io/en/latest/libdnf5_plugins/actions.8.html) docs); written only when the plugin's directory exists, otherwise a warning | In-place logic **verified** in a fake root; hooks only checked as text. **Untested on real Fedora**; `rpm-ostree` systems are not supported |
-| openSUSE | In place | none yet | **Not supported for updates: needs a contributor.** What is missing: a zypp commit plugin or a `zypper ps`-time hook that runs `m3e-gdm refresh` after `gnome-shell` changes. Until then run `sudo m3e-gdm refresh` after each gnome-shell update |
+| openSUSE | In place | none yet | **Not supported for updates: needs a contributor.** What is missing: a zypp commit plugin or a `zypper ps`-time hook that runs `m3e-gdm refresh` after `gnome-shell` changes. Until then run `sudo /usr/local/sbin/m3e-gdm refresh` after each gnome-shell update |
 | Others | In place, no hook | none | Same as openSUSE |
 
 On Debian and in-place systems the stock resource is **shared** by the greeter and by your own session (GNOME Shell loads
@@ -167,7 +167,9 @@ sudo /usr/local/libexec/m3e-gnome/gdm/m3e-gdm restore --remove-helper   # exact 
 sudo reboot                                                               # or: sudo systemctl restart gdm (ends graphical sessions)
 ```
 
-`sudo m3e-gdm restore` is the same through the `/usr/local/sbin` link. **A package reinstall is not a recovery on
+`sudo /usr/local/sbin/m3e-gdm restore` is the same through the `/usr/local/sbin` link. Give the full path: sudo's
+`secure_path` does not always contain `/usr/local/sbin` (it does not on some Debian installs), and a bare `sudo m3e-gdm`
+then answers "command not found". **A package reinstall is not a recovery on
 Debian or Ubuntu**: in divert mode dpkg writes the package's file to `gnome-shell-theme.gresource.distrib` and leaves the
 themed file in place; in alternatives mode the package's own files were never touched and our alternative stays selected.
 Reinstalling is only the right tool in in-place mode, where the package file *is* the themed one (Fedora:
@@ -191,13 +193,13 @@ still there. Re-running `./install.sh --gdm-only` afterwards is safe.
 
 **The login screen did not change.** It is read when GDM starts: reboot, or `sudo systemctl restart gdm`. **The second
 ends your graphical session and every unsaved document in it: save first.** Then `./verify.sh`; if the mechanism line or the
-"live resource" line fails, run `sudo m3e-gdm refresh`. Check also that `gnome-shell --version` is 50.
+"live resource" line fails, run `sudo /usr/local/sbin/m3e-gdm refresh`. Check also that `gnome-shell --version` is 50.
 
 **Verify says the stock resource changed.** A package update replaced the stock resource and the hook did not run; the login
-screen still shows the previous build. `sudo m3e-gdm refresh`.
+screen still shows the previous build. `sudo /usr/local/sbin/m3e-gdm refresh`.
 
 **The login screen is unthemed after an update.** The package replaced the resource and the hook did not run (or your
-distribution has none): `sudo m3e-gdm refresh`.
+distribution has none): `sudo /usr/local/sbin/m3e-gdm refresh`.
 
 **Is my wallpaper used?** Only a plain image (`png jpg webp bmp`) set as `picture-uri-dark`; XML, SVG and video wallpapers
 fall back to the seed colour and a flat background. Blurred with ffmpeg (1920 px wide, Gaussian sigma 30).

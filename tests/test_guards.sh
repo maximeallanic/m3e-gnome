@@ -154,6 +154,26 @@ bash "$REPO/uninstall.sh" --yes >/dev/null 2>&1
 snapshot "$HOME" >"$T_ROOT/sys-after.snap"
 check "uninstall leaves HOME as it was" cmp -s "$T_ROOT/sys-before.snap" "$T_ROOT/sys-after.snap"
 
+echo "== GDM: wallpaper recognised by content, fallback colour from the repository"
+# Last section: it sources libraries and replaces gs_get in this shell.
+# shellcheck source=lib/gdm_prepare.sh
+source "$REPO/lib/gdm_prepare.sh"
+# shellcheck source=lib/steps_config.sh
+source "$REPO/lib/steps_config.sh"
+WALL=''
+# shellcheck disable=SC2317,SC2329  # called by gdm_wallpaper_file
+gs_get() { printf 'file://%s' "$WALL"; }
+printf '\xff\xd8\xff\xe0JFIF-fake' >"$T_ROOT/background"   # a JPEG with no extension, like ~/.config/background
+printf 'not an image' >"$T_ROOT/notes.png"                      # an image name on something that is not one
+WALL="$T_ROOT/background"
+check "an extension-less JPEG is recognised as the wallpaper" test "$(gdm_wallpaper_file)" = "$T_ROOT/background"
+WALL="$T_ROOT/notes.png"
+check "a text file named .png is not taken for an image" test -z "$(gdm_wallpaper_file)"
+WALL="$T_ROOT/does-not-exist.png"
+check "a missing file gives no wallpaper" test -z "$(gdm_wallpaper_file)"
+MATUGEN_DIR="$T_ROOT/not-installed" REPO_ROOT="$REPO"
+check "without an installed palette.json the repository's fallback colour is used" test -n "$(fallback_color)"
+
 echo
 if ((FAILS)); then echo "guards: $FAILS failure(s)"; exit 1; fi
 echo "guards: all checks passed"

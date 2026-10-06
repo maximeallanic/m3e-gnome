@@ -18,9 +18,15 @@ gdm_wallpaper_file() {
     [[ -n "$uri" ]] || uri="$(gs_get org.gnome.desktop.background picture-uri 2>/dev/null || true)"
     [[ "$uri" == file://* ]] || return 0
     path="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1][7:]))' "$uri")"
-    case "${path,,}" in
-        *.png|*.jpg|*.jpeg|*.webp|*.bmp) [[ -f "$path" ]] && printf '%s' "$path" ;;
-    esac
+    [[ -f "$path" ]] || return 0
+    # By content, not by extension: GNOME and material-sync keep the wallpaper in files such as ~/.config/background.
+    python3 - "$path" <<'PY' && printf '%s' "$path"
+import sys
+head = open(sys.argv[1], 'rb').read(16)
+ok = (head.startswith(b'\x89PNG\r\n\x1a\n') or head.startswith(b'\xff\xd8\xff') or head.startswith(b'BM')
+      or (head[:4] == b'RIFF' and head[8:12] == b'WEBP'))
+sys.exit(0 if ok else 1)
+PY
     return 0
 }
 

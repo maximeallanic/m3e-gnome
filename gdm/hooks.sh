@@ -9,7 +9,7 @@ HOOK_CMD=/usr/local/libexec/m3e-gnome/gdm/m3e-gdm
 hook_apt() {
     put_text /etc/apt/apt.conf.d/99m3e-gdm 644 <<EOT
 // m3e-gnome: rebuild the GDM login-screen resource after a package update (see docs/gdm.md).
-DPkg::Post-Invoke { "if [ -x $HOOK_CMD ]; then $HOOK_CMD refresh --quiet || echo 'm3e-gdm: refresh failed, run: sudo m3e-gdm refresh' >&2; fi"; };
+DPkg::Post-Invoke { "if [ -x $HOOK_CMD ]; then $HOOK_CMD refresh --quiet || echo 'm3e-gdm: refresh failed, run: sudo /usr/local/sbin/m3e-gdm refresh' >&2; fi"; };
 EOT
 }
 
@@ -44,7 +44,7 @@ post_transaction:gnome-shell:in::$HOOK_CMD refresh --quiet
 EOT
         done=1
     fi
-    ((done)) || warn "no dnf actions plugin directory found: install python3-dnf-plugin-post-transaction-actions (DNF 4) or libdnf5-plugin-actions (DNF 5), re-run, or run 'sudo m3e-gdm refresh' after each gnome-shell update"
+    ((done)) || warn "no dnf actions plugin directory found: install python3-dnf-plugin-post-transaction-actions (DNF 4) or libdnf5-plugin-actions (DNF 5), re-run, or run 'sudo /usr/local/sbin/m3e-gdm refresh' after each gnome-shell update"
 }
 
 put_text() { # logical-dest mode (content on stdin)
@@ -60,8 +60,8 @@ hooks_apply() {
         debian) [[ -d "$(rp /etc/apt/apt.conf.d)" ]] && hook_apt ;;
         arch) hook_pacman ;;
         fedora) hook_dnf ;;
-        suse) warn "openSUSE has no refresh hook yet (needs a contributor): run 'sudo m3e-gdm refresh' after each gnome-shell update" ;;
-        *) warn "unknown distribution: no refresh hook installed; run 'sudo m3e-gdm refresh' after each gnome-shell update" ;;
+        suse) warn "openSUSE has no refresh hook yet (needs a contributor): run 'sudo /usr/local/sbin/m3e-gdm refresh' after each gnome-shell update" ;;
+        *) warn "unknown distribution: no refresh hook installed; run 'sudo /usr/local/sbin/m3e-gdm refresh' after each gnome-shell update" ;;
     esac
     return 0
 }

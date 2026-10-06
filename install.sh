@@ -109,11 +109,16 @@ finish() {
 summary() {
     msg_step "Done"
     if ((DRY_RUN)); then msg_info "dry run: nothing was changed"; return 0; fi
+    if ((GDM_ONLY)); then
+        msg_info "Check:     ./verify.sh --gdm   (the user-level checks fail until a full ./install.sh has run)"
+        msg_info "Undo:      ./uninstall.sh --gdm"
+        return 0
+    fi
     msg_info "Log out and back in: the Shell, the extensions and every GTK application load the theme at login."
     step_enabled palette && msg_info "Chrome: Settings > Appearance > Theme: \"GTK\" (otherwise it ignores the title bars)."
     ((USER_THEME_MISSING)) && msg_info "Then install the User Themes extension ($(user_theme_hint)) and re-run ./install.sh."
     msg_info "Check:     ./verify.sh"
-    msg_info "Undo:      ./uninstall.sh   (backups of what was replaced: $BACKUP_DIR)"
+    msg_info "Undo:      ./uninstall.sh   (backups of what was replaced: ${BACKUP_DIR:-none})"
     ((WARNINGS == 0)) || msg_info "$WARNINGS warning(s) above."
 }
 

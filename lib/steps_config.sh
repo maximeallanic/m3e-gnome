@@ -60,8 +60,10 @@ EOT
 EOT
 }
 
-fallback_color() { # seed colour used when there is no wallpaper to read
-    python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["fallback_color"])' "$MATUGEN_DIR/palette.json"
+fallback_color() { # seed colour used when there is no wallpaper to read (installed settings, else the repository's)
+    local file="$MATUGEN_DIR/palette.json"
+    [[ -f "$file" ]] || file="$REPO_ROOT/theme/matugen/palette.json"
+    python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["fallback_color"])' "$file"
 }
 
 step_palette_render() {

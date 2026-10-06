@@ -73,7 +73,7 @@ gdm_describe() {
     msg_info "  - replaces the GNOME Shell theme resource used by the login screen (mechanism chosen by the helper, see the plan)"
     msg_info "  - copies the Material-Symbols icons, the cursor and the font to /usr/local/share, the blurred wallpaper to /usr/local/share/m3e-gnome/gdm"
     msg_info "  - adds a dconf database for the gdm profile under /etc/dconf, and a package-manager hook that rebuilds the resource after updates"
-    msg_info "  - records every path in $GDM_STATE/manifest; ./uninstall.sh --gdm (or sudo m3e-gdm restore) undoes it exactly"
+    msg_info "  - records every path in $GDM_STATE/manifest; ./uninstall.sh --gdm (or sudo /usr/local/sbin/m3e-gdm restore) undoes it exactly"
 }
 
 step_gdm() {
@@ -100,9 +100,9 @@ step_gdm() {
     gdm_install_helper
     local apply=("${GDM_SUDO[@]}" "${GDM_RUN[@]}" "$(gdm_helper_cmd)" apply --from "$data")
     ((GDM_FORCE)) && apply+=(--force)
-    "${apply[@]}" || die "the GDM step failed; nothing is half-applied that 'sudo m3e-gdm restore' cannot undo"
+    "${apply[@]}" || die "the GDM step failed; nothing is half-applied that 'sudo /usr/local/sbin/m3e-gdm restore' cannot undo"
     msg_info "Login screen themed. It changes at the next boot or after 'sudo systemctl restart gdm' (that ends your session: save your work)."
-    msg_info "Recovery from a TTY: sudo m3e-gdm restore   (manual recipe per distribution: docs/gdm.md)"
+    msg_info "Recovery from a TTY: sudo /usr/local/sbin/m3e-gdm restore   (manual recipe per distribution: docs/gdm.md)"
 }
 
 gdm_installed() { [[ -f "$GDM_DEST_ROOT$GDM_STATE/manifest" ]]; }
