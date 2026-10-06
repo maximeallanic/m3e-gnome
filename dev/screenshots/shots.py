@@ -2,7 +2,7 @@
 """Scenarios of the screenshot session, started by the m3e-shots extension INSIDE the private session bus of the
 nested Shell.
 
-Usage: shots.py <out_dir> <scenario>        scenario: all | apps | shell | palette
+Usage: shots.py <out_dir> <scenario>        scenario: all | apps | shell | palette | video-dark | video-light
   apps   one real GTK 4 / libadwaita application at a time, centred on the wallpaper (settings, files, terminal)
   shell  the three applications open, then the Shell surfaces: desktop, overview, app grid, Alt+Tab, quick settings
          (and the Wi-Fi submenu), notifications and calendar, modal dialog, volume OSD
@@ -223,7 +223,13 @@ def scenario_notify():
     shot("notify-list", 1.2)
 
 
-SCENARIOS = {"notify": scenario_notify, "apps": scenario_apps, "shell": scenario_shell, "palette": scenario_palette}
+def scenario_video(mode):
+    """Animation video: real-time recording of the Shell animations (see video.py and make-video.sh)."""
+    import video
+    video.run(mode, Apps, place)
+
+
+SCENARIOS = {"video-dark": lambda: scenario_video("dark"), "video-light": lambda: scenario_video("light"), "notify": scenario_notify, "apps": scenario_apps, "shell": scenario_shell, "palette": scenario_palette}
 
 
 def main():

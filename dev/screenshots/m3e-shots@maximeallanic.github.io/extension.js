@@ -8,6 +8,8 @@
 //   Place(id, x, y, w, h)   -> unmaximizes, moves and resizes a window, then activates it
 //   Activate(id)            -> gives a window the focus
 //   Action(name, arg)       -> opens a Shell surface (actions.js)
+//   Rect(selector)          -> JSON {x, y, w, h} of a Shell actor (rects.js)
+//   Glide(x, y, seconds)    -> smooth pointer travel (returns at once)
 //   Pointer / Click / Wheel / Key -> virtual pointer and keyboard of the nested Shell
 //   Capture(path)           -> PNG of the whole virtual screen (no pointer)
 // The devices are virtual Clutter devices of the nested Shell: nothing leaves it (no uinput, no real session).
@@ -22,6 +24,7 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {startLogindGuard, stopLogindGuard} from './logind-guard.js';
 import {stageOverlay, loadShellTheme} from './stage.js';
 import {runAction} from './actions.js';
+import {rectOf} from './rects.js';
 
 const SCENARIO = /^[a-z0-9-]+$/;
 const now = () => GLib.get_monotonic_time();
@@ -36,7 +39,9 @@ const xml = name => `
     <method name="Place"><arg type="u" direction="in" name="id"/><arg type="i" direction="in" name="x"/><arg type="i" direction="in" name="y"/><arg type="i" direction="in" name="w"/><arg type="i" direction="in" name="h"/></method>
     <method name="Activate"><arg type="u" direction="in" name="id"/></method>
     <method name="Action"><arg type="s" direction="in" name="name"/><arg type="s" direction="in" name="arg"/></method>
+    <method name="Rect"><arg type="s" direction="in" name="selector"/><arg type="s" direction="out" name="json"/></method>
     <method name="Pointer"><arg type="d" direction="in" name="x"/><arg type="d" direction="in" name="y"/></method>
+    <method name="Glide"><arg type="d" direction="in" name="x"/><arg type="d" direction="in" name="y"/><arg type="d" direction="in" name="seconds"/></method>
     <method name="Click"><arg type="u" direction="in" name="button"/><arg type="b" direction="in" name="pressed"/></method>
     <method name="Wheel"><arg type="d" direction="in" name="dx"/><arg type="d" direction="in" name="dy"/></method>
     <method name="Key"><arg type="u" direction="in" name="keyval"/><arg type="b" direction="in" name="pressed"/></method>
@@ -79,6 +84,8 @@ export default class M3eShots extends Extension {
         this._exported?.unexport();
         for (const run of this._runs?.values() ?? [])
             run.process.force_exit();
+        if (this._glide)
+            GLib.source_remove(this._glide);
         this._pointer = this._keyboard = null;
     }
 
@@ -147,8 +154,30 @@ export default class M3eShots extends Extension {
         runAction(name, arg);
     }
 
+    Rect(selector) {
+        return rectOf(selector);
+    }
+
     Pointer(x, y) {
         this._pointer.notify_absolute_motion(now(), x, y);
+    }
+
+    // Smooth pointer travel driven by the Shell's own clock (one motion event per frame, ease in-out): returns at once,
+    // the caller waits for `seconds`. Done in the Shell because one D-Bus round trip per step is slower than a frame.
+    Glide(x, y, seconds) {
+        const [x0, y0] = global.get_pointer();
+        const t0 = GLib.get_monotonic_time();
+        if (this._glide)
+            GLib.source_remove(this._glide);
+        this._glide = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 8, () => {
+            const t = Math.min(1, (GLib.get_monotonic_time() - t0) / (seconds * 1e6));
+            const e = t * t * (3 - 2 * t);
+            this._pointer?.notify_absolute_motion(now(), x0 + (x - x0) * e, y0 + (y - y0) * e);
+            if (t < 1)
+                return GLib.SOURCE_CONTINUE;
+            this._glide = 0;
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     Click(button, pressed) {

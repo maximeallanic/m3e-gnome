@@ -29,7 +29,7 @@ while [[ $# -gt 0 ]]; do
         *) echo "unknown option: $1" >&2; exit 2 ;;
     esac
 done
-[[ "$MODES" =~ ^(dark|light)(,(dark|light))*$ && "$SCENARIOS" =~ ^[a-z0-9,]+$ && "$WALLPAPER" =~ ^[a-z]+$ ]] ||
+[[ "$MODES" =~ ^(dark|light)(,(dark|light))*$ && "$SCENARIOS" =~ ^[a-z0-9,-]+$ && "$WALLPAPER" =~ ^[a-z]+$ ]] ||
     { echo "invalid arguments" >&2; exit 2; }
 [[ -x "$PY" ]] || { echo "no interpreter at $PY: run $HERE/setup.sh first" >&2; exit 2; }
 : "${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR is not set}"
@@ -41,6 +41,7 @@ dconf_state() { stat -c '%y %s' "$REAL_DCONF" 2>/dev/null || echo absent; }
 DCONF_BEFORE="$(dconf_state)"
 
 SYSBUS_PID=''; AUDIO_PID=''
+# shellcheck disable=SC2317,SC2329  # invoked by the EXIT trap
 cleanup() {
     local pid
     for pid in "$SYSBUS_PID" "$AUDIO_PID"; do

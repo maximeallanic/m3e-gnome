@@ -24,6 +24,7 @@ base theme `~/.themes/Material-Gnome`, the Papirus icons, Google Sans Flex and A
 | `audio.py` | Private PipeWire + pipewire-pulse with one fake output; `PULSE_SERVER` points the Shell at it. |
 | `m3e-shots@maximeallanic.github.io/` | The driver extension (loads the Shell theme like user-theme, stages the config overlay, exposes the D-Bus API). |
 | `shots.py` | Scenarios (`apps`, `shell`, `palette`, `notify`) played inside the nested session through that API. |
+| `make-video.sh`, `video.py`, `mkvideo.py` | The animation video (below): recording orchestrator, the scenes played in the nested Shell, the cutting and encoding. |
 | `compose.py` | Crops, the status-bar zoom, the palette montage, PNG optimisation. |
 
 ## What keeps real data out of the images
@@ -47,3 +48,27 @@ base theme `~/.themes/Material-Gnome`, the Papirus icons, Google Sans Flex and A
 - The light session sets `color-scheme` to `prefer-light`: with `default` (what `install.sh --light` sets) GNOME Shell 50
   loads its dark stock sheet under the light palette (calendar month label white on a light card).
 - `stage.py --stock-gtk` renders without the GTK user stylesheet, to tell a theme defect from stock behaviour.
+
+## Animation video (`screenshots/animations.mp4`)
+
+```sh
+dev/screenshots/make-video.sh [--work DIR] [--out DIR]    # about 5 minutes; --from-raw DIR re-cuts an earlier run
+```
+
+How it records: the scenes of `video.py` (scenarios `video-dark`, `video-light`) are played in the nested Shell through the
+same D-Bus API as the screenshots (virtual pointer and keyboard of the nested Shell, `Rect` to aim at real actors, `Glide`
+for a smooth pointer travel clocked by the Shell). The screen is recorded in real time by `org.gnome.Shell.Screencast` of
+the NESTED Shell (PipeWire stream of its virtual monitor, x264 near-lossless through a pipeline with unbounded queues,
+cursor drawn, the orange recording indicator hidden). Nothing is speeded up: `marks-<mode>.json` lists the interval of every
+scene on the recording clock and `mkvideo.py` keeps only those intervals (the wait for an application to start is the
+only thing cut), joins them with plain cuts, adds the captions (DejaVu Sans Bold) and encodes H.264 yuv420p, faststart,
+1920x1080, 30 fps, 15.0 s; then the WebP (800 px, 30 fps, looping) and the poster frame. The recording is variable-frame-rate
+(one frame per screen change); `fps` makes it constant by timestamp, so every spring keeps its real duration.
+The last 1.2 s of trimming is taken from scene tails (`fit()`); if the scenes ever run longer, `mkvideo.py` says so.
+
+Frame rate: the Shell produces about 35-40 distinct frames per second while animating on the reference machine (1080p,
+integrated GPU, loaded host), hence the 30 fps output; on a quiet machine `--fps 60` is meaningful. Light palette: a second
+session (a live dark/light switch would need the Shell and GTK stylesheets to be swapped at run time, which the theme does
+not do), shown for the last scene. The Do Not Disturb tile is pressed in the Quick Settings scene and its setting reset
+afterwards (banners would otherwise be suppressed); the accessibility indicator is shown only for the switch scene.
+Same privacy rules as above: look at frames of every scene before publishing.

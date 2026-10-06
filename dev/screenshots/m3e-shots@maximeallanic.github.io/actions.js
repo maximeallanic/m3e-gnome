@@ -52,7 +52,20 @@ function clearNotifications() {
         source.destroy();
 }
 
+// The Shell draws an orange indicator while a screencast runs; the video should not show it. Kept hidden whatever the
+// Shell does with it (it toggles its own visibility when the recording starts and stops).
+function hideRecordingIndicator() {
+    const area = Main.panel.statusArea;
+    for (const indicator of [area.quickSettings?._remoteAccess, area.screenRecording, area.screenSharing]) {
+        if (!indicator)
+            continue;
+        indicator.hide();
+        indicator.connect('notify::visible', () => indicator.visible && indicator.hide());
+    }
+}
+
 export const ACTIONS = {
+    'hide-recording-indicator': hideRecordingIndicator,
     'overview': () => Main.overview.show(),
     'appgrid': () => {
         Main.overview.show();
