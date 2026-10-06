@@ -90,6 +90,7 @@ if have_all() { for t in "$@"; do command -v "$t" >/dev/null 2>&1 || return 1; d
     else fail "install.sh --gdm-only failed"; tail -20 "$T_ROOT/gdm-install.out"; fi
     check "the rendered stylesheet landed in the staged data" grep -q 'lockDialogGroup' "$GR/var/lib/m3e-gnome/gdm/data/theme.css"
     check "the blurred wallpaper was staged as a PNG" bash -c "head -c 8 '$GR/var/lib/m3e-gnome/gdm/data/background.png' | grep -q PNG"
+    check "the staged stylesheet was stripped of comments user-side" bash -c "! grep -q '/\\*' '$GR/var/lib/m3e-gnome/gdm/data/theme.css'"
     check "the staged stylesheet has no template placeholder" bash -c "! grep -q '{{' '$GR/var/lib/m3e-gnome/gdm/data/theme.css'"
     check "the live resource carries the M3E sheet" bash -c "gresource extract '$GR/usr/share/gnome-shell/gnome-shell-theme.gresource' /org/gnome/shell/theme/gnome-shell-dark.css | grep -qF 'm3e-gnome gdm'"
     check "verify.sh includes the GDM section and passes" "${GDM_ENV[@]}" bash "$REPO/verify.sh" "${SKIP[@]}"

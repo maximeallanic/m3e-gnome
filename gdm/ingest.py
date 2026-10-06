@@ -27,6 +27,11 @@ import struct
 import sys
 import zlib
 
+# The helper directory was verified by m3e-gdm before this program runs; -I removes it from sys.path, so add it back.
+sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+import cssgate  # noqa: E402
+
 MAX_CSS = 3 * 1024 * 1024
 MAX_PNG = 24 * 1024 * 1024
 MAX_PNG_SIDE = 8192
@@ -35,8 +40,6 @@ MAX_ASSET_FILE = 8 * 1024 * 1024
 MAX_ASSET_TOTAL = 64 * 1024 * 1024
 MAX_ASSET_FILES = 6000
 MAX_DEPTH = 8
-BACKGROUND_URL = "file:///usr/local/share/m3e-gnome/gdm/background.png"
-RESOURCE_URL_RE = re.compile(r"^resource:///org/gnome/shell/theme/[A-Za-z0-9_-]+(?:-[A-Za-z0-9_]+)*\.(?:svg|png)$")
 NAME_RE = re.compile(r"^[A-Za-z0-9_+,=@\[\]-][A-Za-z0-9 ._+,=@\[\]-]{0,127}$")
 THEME_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 EXT_ALLOWED = {".png", ".svg", ".ttf", ".otf", ".txt", ".theme"}
@@ -167,41 +170,15 @@ def load_tree(src):
     return tree
 
 
-def strip_css_comments(text):
-    return re.sub(r"/\*.*?\*/", "", text, flags=re.S)
-
-
 def validate_css(data):
-    if b"\x00" in data:
-        reject("theme.css: NUL byte")
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError:
         reject("theme.css: not valid UTF-8")
-    if re.search(r"[\x01-\x08\x0b\x0c\x0e-\x1f\x7f]", text):
-        reject("theme.css: control character")
-    if "/*" in text and text.count("/*") != text.count("*/"):
-        reject("theme.css: unbalanced comment")
-    code = strip_css_comments(text)
-    if "\\" in code:
-        reject("theme.css: backslash escapes are refused (they can hide url() or @import)")
-    if re.search(r"@import", code, re.I):
-        reject("theme.css: @import is refused")
-    if re.search(r"@(namespace|font-face|charset)", code, re.I):
-        reject("theme.css: at-rule outside the allow-list")
-    if not re.search(r"[^\s]", code):
-        reject("theme.css: empty")
-    if "{{" in code or "}}" in code:
-        reject("theme.css: unrendered template placeholder")
-    for m in re.finditer(r"url\s*\(", code, re.I):
-        end = code.find(")", m.end())
-        if end < 0:
-            reject("theme.css: unterminated url()")
-        target = code[m.end():end].strip().strip("'\"")
-        if target != BACKGROUND_URL and not RESOURCE_URL_RE.match(target):
-            reject(f"theme.css: url({target[:60]!r}) is outside the theme assets")
-    if re.search(r"(?<![A-Za-z-])(src|image-set|image)\s*\(", code, re.I):
-        reject("theme.css: image function outside the allow-list")
+    try:
+        cssgate.validate_css_text(text)
+    except cssgate.CssRejected as e:
+        reject(f"theme.css: {e}")
 
 
 def validate_png(data):
@@ -315,12 +292,18 @@ def main(argv):
             tree = load_tree(argv[2])
             validate(tree)
             write_tree(tree, argv[3])
+        elif len(argv) == 4 and argv[1] == "strip-css":
+            # User side: drop the comments of a rendered stylesheet so that the helper's checks see plain code.
+            with open(argv[2], encoding="utf-8") as f:
+                text = cssgate.strip_comments(f.read())
+            with open(argv[3], "w", encoding="utf-8") as f:
+                f.write(text)
         elif len(argv) == 3 and argv[1] == "hash":
             print("\n".join(digest_lines(load_tree(argv[2]))))
         else:
             print(__doc__, file=sys.stderr)
             return 2
-    except Rejected as e:
+    except (Rejected, cssgate.CssRejected) as e:
         print(f"ingest: refused: {e}", file=sys.stderr)
         return 1
     return 0

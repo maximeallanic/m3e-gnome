@@ -50,6 +50,9 @@ gdm_render_css() { # out-file seed-args...
         printf '\n' >>"$out"
     done
     ! grep -qF '{{' "$out" || die "unrendered placeholders in the greeter stylesheet"
+    # The helper checks the stylesheet token by token and has no use for comments: strip them here (tokenizer, not regex).
+    python3 -I "$REPO_ROOT/gdm/ingest.py" strip-css "$out" "$out.stripped" || die "the rendered stylesheet is not valid CSS"
+    mv -- "$out.stripped" "$out"
 }
 
 # Blurred background: the image is scaled to 1920 px wide and Gaussian-blurred by ffmpeg (adopted, not reimplemented).

@@ -28,6 +28,7 @@ rejects() { # description  (data dir is $T_ROOT/data)
     out="$(gdm_run apply --from "$T_ROOT/data" 2>&1)"; rc=$?
     if ((rc != 0)); then pass "helper apply refuses: $d"; else fail "helper apply accepted: $d"; fi
     gdm_snapshot "$GR" | grep -v 'diversions-old' >"$T_ROOT/now.snap"
+    if ((rc == 0)); then gdm_run restore >/dev/null 2>&1; fi   # keep one accepted case from poisoning the next ones
     if cmp -s "$T_ROOT/clean.snap" "$T_ROOT/now.snap"; then pass "…and the system is untouched"
     else fail "refused input still changed the system: $d"; diff "$T_ROOT/clean.snap" "$T_ROOT/now.snap" | head -5; fi
 }
@@ -65,7 +66,30 @@ fresh; printf '.a { color: red; }\0 .b{}' >"$T_ROOT/data/theme.css"; rejects "NU
 fresh; printf '.a { content: "\xff\xfe"; }' >"$T_ROOT/data/theme.css"; rejects "invalid UTF-8 in CSS"
 fresh; set_css '.a { color: {{colors.primary.default.hex}}; }'; rejects "unrendered template"
 fresh; set_css '/* a */ .a { color: red; } @IMPORT "x.css";'; rejects "@IMPORT in another case"
-fresh; set_css '.a { background-image: url("file:///usr/local/share/m3e-gnome/gdm/background.png"); }'
+# Comment markers hidden inside two string literals: a regex that strips comments first deletes the span between them and
+# the url()/@import in the middle bypasses the allow-list, while a real CSS parser sees them.
+fresh; set_css '.a { content: "/*"; background-image: url(file:///etc/passwd); content: "*/"; }'; rejects "url() hidden between comment markers in strings"
+fresh; set_css '.a { content: "/*"; } @import "file:///tmp/evil.css"; .b { content: "*/"; }'; rejects "@import hidden between comment markers in strings"
+fresh; set_css '.a { background-image: URL( "file:///etc/passwd" ); }'; rejects "uppercase url with whitespace"
+fresh; set_css '.a { background-image: url ( file:///etc/passwd ); }'; rejects "url with a space before the parenthesis"
+fresh; set_css '.a { background-image: url(resource:///org/gnome/shell/theme/a.svg) ; background: url(http://x.invalid/a.png); }'; rejects "second url() after an allowed one"
+fresh; set_css '.a { background-image: image-set("file:///etc/passwd" 1x); }'; rejects "image-set()"
+fresh; set_css '.a { background-image: -webkit-image-set(url(file:///etc/passwd) 1x); }'; rejects "prefixed image-set()"
+fresh; set_css '@ImPoRt "x.css";'; rejects "@import in mixed case"
+fresh; set_css '@import/**/"x.css";'; rejects "@import glued to a comment"
+fresh; set_css '@media screen { .a { color: red; } }'; rejects "any at-rule"
+fresh; set_css '.a { color: red; '; rejects "unbalanced brace (open)"
+fresh; set_css '.a { color: red; } }'; rejects "unbalanced brace (close)"
+fresh; set_css '.a { color: rgba(1,2,3; }'; rejects "unbalanced parenthesis"
+fresh; set_css '.a { content: "unterminated; }'; rejects "unterminated string"
+fresh; set_css '.a { color: red; } /* unterminated comment'; rejects "unterminated comment"
+fresh; set_css '.a { content: "a\
+b"; }'; rejects "backslash line continuation in a string"
+fresh; set_css '.a { color: red; } @\69mport "x.css";'; rejects "escaped at-rule name"
+fresh; set_css '.a { background-image: url(resource:///org/gnome/shell/theme/a.svg)x; }'; rejects "garbage glued to a url token"
+fresh; set_css '/* a "quote */ .a { color: red; } /* another " */'
+check "quotes inside comments are fine" "${INGEST[@]}" check "$T_ROOT/data"
+fresh; set_css '.a { background-image: url(file:///usr/local/share/m3e-gnome/gdm/background.png); }'
 check "the staged background url() is allowed" "${INGEST[@]}" check "$T_ROOT/data"
 
 echo "== assets and configuration"
