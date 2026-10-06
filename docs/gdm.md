@@ -2,8 +2,10 @@
 
 `./install.sh --gdm` gives the GDM login screen the M3E-Shell dark sheet, the Material-Symbols icons, the Googlebook
 cursor, Google Sans Flex and (when your wallpaper is a plain image) a blurred copy of it as background. It is the only
-part of this project that uses root, it is never part of the default path, and it is built so that **nothing the user can
-write is ever run, sourced or followed by root**.
+part of this project that uses root, it is never part of the default path, and it is built so that **once installed, the
+root helper never runs, sources, imports or follows anything a user can write**. The one moment the checkout is trusted is
+the install itself: `sudo install` copies the helper from your checkout into a root-owned directory, exactly like
+`sudo make install`; review what you install.
 
 ![Login screen, password prompt, dark](../screenshots/login-dark.png)
 
@@ -30,7 +32,7 @@ Everything below is recorded, with its previous state, in `/var/lib/m3e-gnome/gd
 | `/usr/local/share/icons/Material-Symbols`, `/usr/local/share/icons/Googlebook` (or `-White`), `/usr/local/share/fonts/GoogleSansFlex` | The greeter runs as the `gdm` user and cannot see your home |
 | `/usr/local/share/m3e-gnome/gdm/background.png` | The blurred wallpaper |
 | `/etc/dconf/profile/gdm`, `/etc/dconf/db/m3e-gdm.d/00-m3e-gdm`, `/etc/dconf/db/m3e-gdm` | Greeter settings (icon theme, cursor, font, dark scheme). Our database is added to the `gdm` profile after `user-db:`; the distribution's lines are kept. A pre-existing `/etc/dconf/profile/gdm` is backed up |
-| `/etc/apt/apt.conf.d/99m3e-gdm`, or `/etc/pacman.d/hooks/m3e-gdm.hook`, or the DNF action files | Rebuild hook after package updates |
+| `/etc/apt/apt.conf.d/99m3e-gdm`, or `/etc/pacman.d/hooks/m3e-gdm.hook`, or the DNF action files | Rebuild hook after package updates. Hooks run the helper by its `libexec` path, not the `/usr/local/sbin` link (on Debian `/usr/local/sbin` is `root:staff 2775`) |
 
 The Debian dpkg database is touched through `dpkg-divert` only (it keeps `diversions-old`, as dpkg always does).
 
@@ -47,16 +49,24 @@ In plain words:
 2. **The helper is root-owned code.** It is installed with `install` into a root-owned directory and checks, every time it
    starts, that the directory and every file in it are owned by root and not group- or world-writable and are not
    symbolic links. It refuses otherwise. Run from your checkout as root, it refuses (the checkout is yours).
-3. **User input is data, not code.** The user step (as your user) renders the stylesheet from the repository templates
+3. **User input is data, not code** (and since the review: checked on a token stream, not on regexes). The user step (as your user) renders the stylesheet from the repository templates
    with the seed you chose, blurs the wallpaper with ffmpeg, and copies the icon, cursor and font files into a private
    temporary directory. The helper reads that directory with `ingest.py` (Python standard library, `python3 -I`):
    - every entry is opened with `O_NOFOLLOW` relative to its parent directory; symbolic links, hard-linked files, FIFOs
      and devices, and world-writable entries are refused;
-   - size limits: stylesheet 3 MiB, PNG 24 MiB and 8192 px per side (magic, IHDR checksum and IEND checked), assets
-     8 MiB per file and 64 MiB in total, at most 6000 files; names from a restricted alphabet; extensions from an
-     allow-list; cursor files must start with `Xcur`, fonts with a font magic, SVG with no external `href`;
-   - the stylesheet must be UTF-8 without NUL, with no backslash escape (they can hide `url(` or `@import`), no `@import`,
-     and every `url()` must be `resource:///org/gnome/shell/theme/<name>.svg|png` or the staged background;
+   - size limits: stylesheet 3 MiB, assets 8 MiB per file and 64 MiB in total, at most 6000 files; PNGs are walked
+     chunk by chunk (`pnggate.py`: every CRC, IHDR sanity, IDAT present, IEND last, nothing after it), never inflated,
+     and capped at 4096x2304 for the background (a blur is 1920 wide) and 512x512 for icons; names from a restricted
+     alphabet and extensions from an allow-list; **theme directories only `Material-Symbols`, `Googlebook`,
+     `Googlebook-White` and `GoogleSansFlex`** (nothing that could shadow `default`, `hicolor` or `Adwaita`); cursor
+     files must start with `Xcur`, fonts with a font magic, SVG with no external `href`;
+   - the stylesheet is **tokenized** (`cssgate.py`: strings, comments, `url()`, functions, at-rules, brackets) and every
+     check runs on the tokens. An earlier version stripped comments with a regex first; comment markers hidden in two
+     different string literals made it delete real code, and a `url(file:///...)` or `@import` between them bypassed the
+     allow-list. Now: UTF-8 without NUL or control characters; no backslash outside comments; no unterminated string,
+     comment or `url()`; balanced brackets; **no at-rule at all** (`@import` in any spelling is one); no `image-set()`,
+     `src()` or other image functions; every `url()` is `resource:///org/gnome/shell/theme/<name>.svg|png` or the staged
+     background and is followed by `;`, `,`, `!` or a closing bracket. The user step strips comments with the same tokenizer;
    - `greeter.conf` accepts four keys and values without quotes, brackets, `$`, `;` or control characters.
    What passes is **copied** (not moved) into the root-owned `/var/lib/m3e-gnome/gdm/data`; only that copy is used from
    then on, so editing your directory later changes nothing (a test checks it), and the package hooks need no user
@@ -65,10 +75,34 @@ In plain words:
    `glib-compile-resources`, then verified before it is used: same resource list as the stock one, every non-stylesheet
    resource byte-identical, the stock sheets preserved at the start of both CSS files, the staged sheet found verbatim
    after the marker. It replaces the live file by rename (atomic): GDM never sees a missing or half-written resource.
-5. **Test hooks cannot be used to redirect a real root run.** The helper can be pointed at a fake root only with
-   `M3E_GDM_TEST=1` plus `M3E_GDM_ROOT`, and **only when the effective uid is not 0**; as root, the mere presence of
-   either variable is a fatal error. As root it also resets `PATH` and drops `BASH_ENV`, `LD_*`, `PYTHON*`, `TMPDIR`, ...
+5. **The environment is not trusted, and the test hooks cannot redirect a real root run.** The helper's shebang starts
+   bash with an empty environment (`env -S -i`), so `BASH_ENV`, `SHELLOPTS` and `PS4` never take effect; the first
+   statements reset `PATH` and refuse unsafe `SHELLOPTS`; "am I root" is bash's own `$EUID`, never the output of a program
+   found through `PATH`. As root every variable except `PATH` and the C locale is purged before any tool is spawned
+   (glib, gdk-pixbuf, fontconfig, python, dpkg and dconf search paths all come from the environment otherwise). The helper
+   can be pointed at a fake root only with `M3E_GDM_TEST=1` plus `M3E_GDM_ROOT`, and only when `$EUID` is not 0; as root the
+   mere presence of either variable is fatal. The directory of the helper **and every ancestor up to `/`** must be owned by
+   root and not group/world-writable; the installer checks the same before `sudo install`.
+5b. **Root parses no font or icon bytes.** Earlier the helper ran `fc-cache` and `gtk-update-icon-cache` over the staged
+   assets, which makes root parse attacker-influenced files with large parsers. Both are gone: fontconfig builds its
+   cache on demand for the greeter, and the greeter works without an icon cache (icon lookups are slightly slower at
+   greeter start). A cache built in the user step and validated as data would be the next step if that ever matters.
+5c. **One run at a time** (`flock` on `/run/m3e-gdm.lock`, root-only), state files replaced by rename, and an identity record
+   written *before* the swap so a crash leaves the live file recognisable by `restore`.
 6. Removal is by manifest, through an allow-list of path prefixes; no path is removed by pattern.
+
+Residual risks, stated plainly:
+
+- **We do not control what GNOME Shell's stylesheet parser (St, libcroco) does with a hostile sheet.** Our allow-list
+  is conservative and token-based, but "what St would resolve a given construct to" has not been verified against its source;
+  the defence is to accept so little (no at-rules, no escapes, only two `url()` forms) that there is little left to
+  misparse. The sheet is generated by us from our templates in the normal flow.
+- The Debian-family resource is shared between greeter and session (see below).
+- The checkout is trusted at the moment of `sudo install` (a swap between the plan and the copy is possible for an attacker
+  who already runs as you and can write the checkout).
+- After a package update that `refresh` did not see, the login screen shows a stale (older) stylesheet on top of the *old*
+  stock layout in divert and alternatives modes until `refresh` runs. `./verify.sh` reports it (stock-hash drift) and the apt
+  hook prints a visible message when its `refresh` fails; no silent failure.
 
 What it does not protect against: a root-level attacker (they own the machine anyway), a compromised package in the
 repository you installed from, and you running `sudo` on something else. The copy of the helper into
@@ -126,26 +160,41 @@ byte-identical when nothing changed). After a gnome-shell package update the hoo
 
 ## Recovery from a TTY
 
-If the login screen is broken or you want the stock one back, switch to a text console (Ctrl+Alt+F3) and log in:
+If the login screen is broken or you want the stock one back, switch to a text console (Ctrl+Alt+F3), log in, then:
 
 ```sh
-sudo m3e-gdm restore                 # exact undo from the manifest
-sudo apt reinstall gnome-shell-common   # Debian/Ubuntu: stock resource from the package, whatever our state
-# Fedora: sudo dnf reinstall gnome-shell     Arch: sudo pacman -S gnome-shell
-sudo systemctl restart gdm           # (from the TTY; this ends graphical sessions)
+sudo /usr/local/libexec/m3e-gnome/gdm/m3e-gdm restore --remove-helper   # exact undo from the manifest
+sudo reboot                                                               # or: sudo systemctl restart gdm (ends graphical sessions)
 ```
 
-`dpkg-divert` leftover (Debian) if the helper is gone: `sudo dpkg-divert --remove --no-rename --package m3e-gnome
-/usr/share/gnome-shell/gnome-shell-theme.gresource && sudo mv /usr/share/gnome-shell/gnome-shell-theme.gresource.distrib
-/usr/share/gnome-shell/gnome-shell-theme.gresource`. On Ubuntu: `sudo update-alternatives --remove gdm-theme.gresource
-/usr/local/share/m3e-gnome/gdm/gdm-theme.gresource`. The helper never replaces the file in place: if something fails before
-the final rename, the previous resource is still there.
+`sudo m3e-gdm restore` is the same through the `/usr/local/sbin` link. **A package reinstall is not a recovery on
+Debian or Ubuntu**: in divert mode dpkg writes the package's file to `gnome-shell-theme.gresource.distrib` and leaves the
+themed file in place; in alternatives mode the package's own files were never touched and our alternative stays selected.
+Reinstalling is only the right tool in in-place mode, where the package file *is* the themed one (Fedora:
+`sudo dnf reinstall gnome-shell`; Arch: `sudo pacman -S gnome-shell`), and only if the helper is gone.
+
+If the helper itself is gone, the manual recipes (both tested with the real tools in a fake root, see
+`tests/test_gdm.sh`):
+
+```sh
+# Debian (divert mode)
+sudo dpkg-divert --quiet --remove --no-rename --package m3e-gnome /usr/share/gnome-shell/gnome-shell-theme.gresource
+sudo mv -f /usr/share/gnome-shell/gnome-shell-theme.gresource.distrib /usr/share/gnome-shell/gnome-shell-theme.gresource
+# Ubuntu (alternatives mode; use gdm3-theme.gresource if that is the name your system has)
+sudo update-alternatives --remove gdm-theme.gresource /usr/local/share/m3e-gnome/gdm/gdm-theme.gresource
+```
+
+The helper never replaces the live file in place: if something fails before the final rename, the previous resource is
+still there. Re-running `./install.sh --gdm-only` afterwards is safe.
 
 ## FAQ
 
 **The login screen did not change.** It is read when GDM starts: reboot, or `sudo systemctl restart gdm`. **The second
 ends your graphical session and every unsaved document in it: save first.** Then `./verify.sh`; if the mechanism line or the
 "live resource" line fails, run `sudo m3e-gdm refresh`. Check also that `gnome-shell --version` is 50.
+
+**Verify says the stock resource changed.** A package update replaced the stock resource and the hook did not run; the login
+screen still shows the previous build. `sudo m3e-gdm refresh`.
 
 **The login screen is unthemed after an update.** The package replaced the resource and the hook did not run (or your
 distribution has none): `sudo m3e-gdm refresh`.

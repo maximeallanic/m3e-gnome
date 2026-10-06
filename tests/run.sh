@@ -20,7 +20,7 @@ echo "== syntax"
 while IFS= read -r f; do
     bash -n "$REPO/$f" || { echo "syntax error: $f"; status=1; }
 done < <(shell_files)
-python3 -m py_compile "$REPO/lib/enabled_extensions.py" "$REPO/gdm/ingest.py" "$HERE/snapshot.py" "$HERE"/shims/{_fake.py,gsettings,dconf,gnome-extensions,systemctl} ||
+python3 -m py_compile "$REPO/lib/enabled_extensions.py" "$REPO"/gdm/{ingest,cssgate,pnggate}.py "$HERE/snapshot.py" "$HERE"/shims/{_fake.py,gsettings,dconf,gnome-extensions,systemctl} ||
     status=1
 find "$REPO/lib" "$REPO/gdm" "$HERE" -name __pycache__ -type d -prune -exec rm -rf {} + 2>/dev/null
 

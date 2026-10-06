@@ -141,7 +141,7 @@ mech_install() { # built
             if [[ ! -f "$STATE/stock/gnome-shell-theme.gresource" ]] || ! inplace_live_is_ours; then
                 stock=$(rp "$GRES_LOGICAL")
                 if grep -qaF -- "m3e-gnome gdm" <(gresource extract "$stock" "$GRES_PREFIX/gnome-shell-dark.css" 2>/dev/null); then
-                    die "$GRES_LOGICAL already carries our marker but no stock copy exists: reinstall the gnome-shell package, then retry"
+                    die "$GRES_LOGICAL already carries our marker but no stock copy exists: restore the stock resource first (docs/gdm.md, "Recovery from a TTY"), then retry"
                 fi
                 ensure_dir "$(dirname -- "$STOCKCOPY_LOGICAL")" 700
                 m_has F "$STOCKCOPY_LOGICAL" || m_add F "$STOCKCOPY_LOGICAL"
@@ -184,7 +184,7 @@ mech_remove() {
                 if [[ -f "$(rp "$DISTRIB_LOGICAL")" ]]; then
                     put_atomic "$(rp "$DISTRIB_LOGICAL")" "$GRES_LOGICAL" 644
                 else
-                    warn "$DISTRIB_LOGICAL is missing: reinstall the package (apt reinstall gnome-shell-common) to get the stock file back"
+                    warn "$DISTRIB_LOGICAL is missing, so the stock resource cannot be put back from it: the diversion is removed; get the stock file with: sudo apt reinstall gnome-shell-common"
                 fi
                 run divert_cmd --quiet --no-rename --remove --package m3e-gnome "$GRES_LOGICAL"
                 rm_logical file "$DISTRIB_LOGICAL"

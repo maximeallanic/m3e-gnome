@@ -102,7 +102,7 @@ step_gdm() {
     ((GDM_FORCE)) && apply+=(--force)
     "${apply[@]}" || die "the GDM step failed; nothing is half-applied that 'sudo m3e-gdm restore' cannot undo"
     msg_info "Login screen themed. It changes at the next boot or after 'sudo systemctl restart gdm' (that ends your session: save your work)."
-    msg_info "Recovery from a TTY: sudo m3e-gdm restore   (or reinstall gnome-shell, see docs/gdm.md)"
+    msg_info "Recovery from a TTY: sudo m3e-gdm restore   (manual recipe per distribution: docs/gdm.md)"
 }
 
 gdm_installed() { [[ -f "$GDM_DEST_ROOT$GDM_STATE/manifest" ]]; }
@@ -114,7 +114,7 @@ gdm_uninstall() {
     msg_step "Reverting the GDM login screen (sudo)"
     local cmd
     cmd="$(gdm_helper_cmd)"
-    [[ -x "$cmd" ]] || die "$cmd is missing: reinstall the helper with ./install.sh --gdm-only, or reinstall gnome-shell to get the stock resource back (docs/gdm.md)"
+    [[ -x "$cmd" ]] || die "$cmd is missing: reinstall the helper with ./install.sh --gdm-only, or follow the manual recovery recipe in docs/gdm.md (a package reinstall alone does not undo the diversion)"
     "${GDM_RUN[@]}" "$cmd" restore --dry-run || die "the helper could not plan the restore"
     if ((DRY_RUN)); then return 0; fi
     confirm "Revert the GDM theming with sudo?" || die "aborted (use --yes to skip this question)"
