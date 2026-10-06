@@ -19,8 +19,8 @@ assets_apply() { # staged-data-dir
             cp -r --no-preserve=mode,ownership -- "$d" "$(rp "$dest")"
             find "$(rp "$dest")" -type d -exec chmod 755 {} +
             find "$(rp "$dest")" -type f -exec chmod 644 {} +
-            if [[ "$kind" == icons ]] && have gtk-update-icon-cache; then gtk-update-icon-cache -q -f "$(rp "$dest")"; fi
-            if [[ "$kind" == fonts ]] && have fc-cache; then fc-cache -f "$(rp "$dest")"; fi
+            # No fc-cache and no gtk-update-icon-cache here: they would parse staged font and icon bytes as root. The
+            # greeter builds its font cache on demand and works without an icon cache (docs/gdm.md explains the cost).
         done
     done
     if [[ -f "$data/background.png" ]]; then

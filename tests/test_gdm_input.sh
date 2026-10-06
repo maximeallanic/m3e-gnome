@@ -99,6 +99,13 @@ fresh; mkdir "$T_ROOT/data/assets/icons/.hidden"; printf '[Icon Theme]\n' >"$T_R
 fresh; printf '<svg xmlns:x="http://www.w3.org/1999/xlink"><image x:href="file:///etc/passwd"/></svg>' \
     >"$T_ROOT/data/assets/icons/Material-Symbols/symbolic/actions/go-next-symbolic.svg"; printf '<svg><image href="file:///etc/passwd"/></svg>' \
     >"$T_ROOT/data/assets/icons/Material-Symbols/symbolic/actions/go-next-symbolic.svg"; rejects "SVG with an external reference"
+# Theme directory names are an allow-list: the greeter must not be handed a replacement for the system's default themes.
+for n in default hicolor Adwaita Papirus Yaru; do
+    fresh; cp -r "$T_ROOT/data/assets/icons/Googlebook" "$T_ROOT/data/assets/icons/$n"; rejects "asset theme named $n"
+done
+fresh; cp -r "$T_ROOT/data/assets/fonts/GoogleSansFlex" "$T_ROOT/data/assets/fonts/DejaVu"; rejects "font directory with a name outside the set"
+fresh; rm -rf "$T_ROOT/data/assets/icons/Googlebook"; cp -r "$T_ROOT/data/assets/icons/Material-Symbols" "$T_ROOT/data/assets/icons/Googlebook-White"
+check "Googlebook-White is in the set" "${INGEST[@]}" check "$T_ROOT/data"
 fresh; printf "icon_theme=Material-Symbols\ncursor_theme=x'; rm -rf /\nfont_name=a\nseed=image\n" >"$T_ROOT/data/greeter.conf"; rejects "quote in greeter.conf"
 fresh; printf 'icon_theme=Material-Symbols\ncursor_theme=Googlebook\n' >"$T_ROOT/data/greeter.conf"; rejects "greeter.conf without font_name"
 

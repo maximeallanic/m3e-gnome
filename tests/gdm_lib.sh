@@ -11,8 +11,12 @@ gdm_setup() {
     export T_ROOT NO_COLOR=1 TMPDIR="$T_ROOT/tmp"
     mkdir -p "$TMPDIR" "$T_ROOT/bin"
     ln -s "$TESTS_DIR/shims/gnome-shell" "$T_ROOT/bin/gnome-shell"
-    ln -s "$TESTS_DIR/shims/fc-cache" "$T_ROOT/bin/fc-cache"
-    ln -s "$TESTS_DIR/shims/gtk-update-icon-cache" "$T_ROOT/bin/gtk-update-icon-cache"
+    # Tools that parse font and icon bytes must never be run by the root helper: these record any call.
+    local t
+    for t in fc-cache gtk-update-icon-cache fc-list gdk-pixbuf-query-loaders rsvg-convert; do
+        printf '#!/bin/sh\necho "%s $*" >>"%s/tools.log"\n' "$t" "$T_ROOT" >"$T_ROOT/bin/$t"
+        chmod +x "$T_ROOT/bin/$t"
+    done
     export PATH="$T_ROOT/bin:/usr/bin:/bin"
 }
 

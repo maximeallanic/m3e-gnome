@@ -77,6 +77,8 @@ check "[debian] apt hook calls the helper directly, not the (staff-writable) sbi
 check "[debian] mechanism recorded" grep -qx divert "$GR/var/lib/m3e-gnome/gdm/mech"
 snap >"$T_ROOT/applied-debian.snap"
 
+check "root never ran a font or icon cache tool over staged assets" test ! -s "$T_ROOT/tools.log"
+
 echo "== Debian: verify (read-only section of verify.sh)"
 if gdm_verify >"$T_ROOT/verify.out" 2>&1; then pass "verify passes after apply"; else fail "verify failed after apply"; cat "$T_ROOT/verify.out"; fi
 cp "$GR/var/lib/m3e-gnome/gdm/data/theme.css" "$T_ROOT/theme.keep"; chmod u+w "$GR/var/lib/m3e-gnome/gdm/data/theme.css"

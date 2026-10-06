@@ -186,7 +186,6 @@ cmd_restore() {
             *) die "corrupt manifest line: $line" ;;
         esac
     done
-    if have fc-cache; then run fc-cache -f; fi
     if ((DRY_RUN)); then say "dry run: nothing was changed"; return 0; fi
     [[ "$STATE" == "$ROOT$STATE_LOGICAL" ]] || die "internal error: state path"
     rm -rf -- "${STATE:?}"

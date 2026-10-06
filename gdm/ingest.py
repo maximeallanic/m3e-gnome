@@ -43,6 +43,8 @@ MAX_DEPTH = 8
 NAME_RE = re.compile(r"^[A-Za-z0-9_+,=@\[\]-][A-Za-z0-9 ._+,=@\[\]-]{0,127}$")
 THEME_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 EXT_ALLOWED = {".png", ".svg", ".ttf", ".otf", ".txt", ".theme"}
+# Theme directories we may install: nothing that could shadow a system default (default, hicolor, Adwaita, ...).
+ASSET_THEMES = {"icons": {"Material-Symbols", "Googlebook", "Googlebook-White"}, "fonts": {"GoogleSansFlex"}}
 KEYS = ("icon_theme", "cursor_theme", "font_name", "seed")
 VALUE_FORBIDDEN = re.compile(r"[\x00-\x1f\x7f'\"\\\[\]{}<>$`;|&]")
 
@@ -222,8 +224,8 @@ def validate_asset(path, data):
     parts = path.split("/")
     if len(parts) < 4 or parts[1] not in ("icons", "fonts"):
         reject(f"{path}: assets must be assets/icons/NAME/... or assets/fonts/NAME/...")
-    if not THEME_NAME_RE.match(parts[2]):
-        reject(f"{path}: theme directory name outside the allowed alphabet")
+    if parts[2] not in ASSET_THEMES[parts[1]]:
+        reject(f"{path}: theme directory {parts[2]!r} is not one of {sorted(ASSET_THEMES[parts[1]])}")
     ext = os.path.splitext(parts[-1])[1].lower()
     in_cursors = parts[1] == "icons" and len(parts) >= 5 and parts[3] == "cursors"
     if in_cursors:
