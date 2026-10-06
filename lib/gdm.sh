@@ -6,7 +6,7 @@
 GDM_LIBEXEC=/usr/local/libexec/m3e-gnome/gdm
 GDM_LINK=/usr/local/sbin/m3e-gdm
 GDM_STATE=/var/lib/m3e-gnome/gdm
-GDM_FILES=(m3e-gdm common.sh build.sh mech.sh hooks.sh dconf.sh assets.sh cmd.sh ingest.py cssgate.py)
+GDM_FILES=(m3e-gdm common.sh build.sh mech.sh hooks.sh dconf.sh assets.sh cmd.sh ingest.py cssgate.py pnggate.py)
 GDM_FORCE=0
 # Test seam (user-level only): a throw-away root and no sudo. Honoured only with M3E_GDM_TEST=1, never as root.
 GDM_SUDO=(sudo)

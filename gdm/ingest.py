@@ -23,18 +23,19 @@ import hashlib
 import os
 import re
 import stat
-import struct
 import sys
-import zlib
 
 # The helper directory was verified by m3e-gdm before this program runs; -I removes it from sys.path, so add it back.
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 import cssgate  # noqa: E402
+import pnggate  # noqa: E402
 
 MAX_CSS = 3 * 1024 * 1024
 MAX_PNG = 24 * 1024 * 1024
-MAX_PNG_SIDE = 8192
+MAX_PNG_W = 4096   # a legitimate blurred background is 1920 px wide
+MAX_PNG_H = 2304
+MAX_ICON_PNG_SIDE = 512
 MAX_CONF = 4096
 MAX_ASSET_FILE = 8 * 1024 * 1024
 MAX_ASSET_TOTAL = 64 * 1024 * 1024
@@ -183,18 +184,11 @@ def validate_css(data):
         reject(f"theme.css: {e}")
 
 
-def validate_png(data):
-    if data[:8] != b"\x89PNG\r\n\x1a\n":
-        reject("background.png: not a PNG (bad magic)")
-    if len(data) < 33 or data[12:16] != b"IHDR" or struct.unpack(">I", data[8:12])[0] != 13:
-        reject("background.png: missing IHDR")
-    if zlib.crc32(data[12:29]) & 0xFFFFFFFF != struct.unpack(">I", data[29:33])[0]:
-        reject("background.png: IHDR checksum mismatch")
-    width, height = struct.unpack(">II", data[16:24])
-    if not (1 <= width <= MAX_PNG_SIDE and 1 <= height <= MAX_PNG_SIDE):
-        reject(f"background.png: dimensions {width}x{height} outside 1..{MAX_PNG_SIDE}")
-    if data[-12:] != b"\x00\x00\x00\x00IEND\xaeB`\x82":
-        reject("background.png: truncated (no IEND chunk)")
+def validate_png(data, name="background.png", max_w=MAX_PNG_W, max_h=MAX_PNG_H):
+    try:
+        pnggate.check_png(data, max_w, max_h, name)
+    except pnggate.PngRejected as e:
+        reject(str(e))
 
 
 def validate_conf(data):
@@ -235,8 +229,7 @@ def validate_asset(path, data):
     if ext not in EXT_ALLOWED:
         reject(f"{path}: extension outside the allow-list")
     if ext == ".png":
-        if data[:8] != b"\x89PNG\r\n\x1a\n":
-            reject(f"{path}: not a PNG")
+        validate_png(data, path, MAX_ICON_PNG_SIDE, MAX_ICON_PNG_SIDE)
     elif ext in (".ttf", ".otf"):
         if data[:4] not in (b"\x00\x01\x00\x00", b"OTTO", b"true", b"ttcf"):
             reject(f"{path}: not a font file")

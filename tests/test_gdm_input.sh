@@ -56,6 +56,36 @@ fresh; printf 'GIF89a not a png at all, but long enough to have a header....' >"
 fresh; gdm_make_png "$T_ROOT/data/background.png" 100000 100000; rejects "PNG with absurd dimensions"
 fresh; head -c 40 "$T_ROOT/data/background.png" >"$T_ROOT/trunc"; cp "$T_ROOT/trunc" "$T_ROOT/data/background.png"; rejects "truncated PNG"
 
+# Structure of every chunk, not just the header: a PNG that passes a 33-byte check can still be a trap for the decoder.
+png_edit() { # python snippet operating on bytes variable d, written back to the background
+    python3 - "$T_ROOT/data/background.png" "$1" <<'PY'
+import struct, sys, zlib
+path, code = sys.argv[1], sys.argv[2]
+d = open(path, "rb").read()
+def chunk(t, data):
+    return struct.pack(">I", len(data)) + t + data + struct.pack(">I", zlib.crc32(t + data) & 0xFFFFFFFF)
+exec(code)
+open(path, "wb").write(d)
+PY
+}
+fresh; png_edit 'i = d.index(b"IDAT"); d = d[:i + 6] + bytes([d[i + 6] ^ 0xFF]) + d[i + 7:]'; rejects "PNG with a corrupted IDAT chunk (CRC)"
+fresh; png_edit 'd = d + b"trailing bytes"'; rejects "PNG with trailing data after IEND"
+fresh; png_edit 'a = d.index(b"IDAT") - 4; b = d.index(b"IEND") - 4; d = d[:a] + d[b:]'; rejects "PNG without IDAT"
+fresh; png_edit 'a = d.index(b"IEND") - 4; d = d[:a] + chunk(b"tEXt", b"k\0v") + d[a:]'
+check "an ancillary chunk before IEND is fine" "${INGEST[@]}" check "$T_ROOT/data"
+fresh; png_edit 'i = d.index(b"IDAT") - 4; d = d[:i] + struct.pack(">I", 0x7FFFFFF0) + d[i + 4:]'; rejects "chunk length beyond the file"
+fresh; gdm_make_png "$T_ROOT/data/background.png" 5000 3000; rejects "PNG larger than 4096x2304"
+fresh; gdm_make_png "$T_ROOT/data/background.png" 1920 540
+check "a 1920 px wide blur is fine" "${INGEST[@]}" check "$T_ROOT/data"
+fresh; python3 - "$T_ROOT/data/assets/icons/Googlebook/big.png" <<'PY'
+import struct, sys, zlib
+w = h = 3000
+def chunk(t, d):
+    return struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xFFFFFFFF)
+open(sys.argv[1], "wb").write(b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0)) + chunk(b"IDAT", zlib.compress(b"\0" * 64)) + chunk(b"IEND", b""))
+PY
+rejects "an icon PNG of 3000x3000 (decompression-bomb size)"
+
 echo "== CSS"
 fresh; set_css '@import url("file:///etc/passwd");'; rejects "@import"
 fresh; set_css '.a { background-image: url("https://example.invalid/x.png"); }'; rejects "url() to the network"
