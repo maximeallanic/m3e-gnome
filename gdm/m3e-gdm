@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# m3e-gdm: root helper that themes the GDM login screen with the M3E-Shell stylesheet.
+#
+#   m3e-gdm apply --from DIR [--dry-run] [--force] [--mechanism alternatives|divert|inplace]
+#   m3e-gdm refresh [--quiet] [--force]     rebuild from the NEW stock resource and the staged data (package hooks)
+#   m3e-gdm restore [--dry-run] [--remove-helper]   put everything back exactly as it was
+#   m3e-gdm status                          print the recorded state (read-only)
+#   m3e-gdm check DIR                       validate a data directory (read-only)
+#
+# SECURITY MODEL. This program runs as root. It is installed root-owned (/usr/local/libexec/m3e-gnome/gdm) and refuses to
+# run if that directory or anything in it is writable by others. It never sources, executes, imports or follows anything
+# from a user's home or from the DIR it is given: DIR is untrusted DATA, read by ingest.py (no symlinks, size limits,
+# format checks), copied into a root-owned staging directory, and only the staged copy is used.
+# Test hooks (M3E_GDM_ROOT, M3E_GDM_TEST) are refused when running as root. See docs/gdm.md.
+set -euo pipefail
+
+SELF=$(readlink -f -- "${BASH_SOURCE[0]}")
+HERE=$(dirname -- "$SELF")
+
+# The code directory must be trusted before anything in it is sourced.
+trust_check() {
+    local f own mode euid
+    euid=$(id -u)
+    for f in "$HERE" "$HERE"/*; do
+        [[ ! -L "$f" ]] || { echo "m3e-gdm: error: symbolic link in the helper directory: $f" >&2; exit 1; }
+        own=$(stat -c '%u' -- "$f"); mode=$(stat -c '%a' -- "$f")
+        if [[ "$euid" == 0 ]]; then
+            [[ "$own" == 0 && $((8#$mode & 8#022)) == 0 ]] ||
+                { echo "m3e-gdm: error: $f must be owned by root and not group/world-writable (is $own, mode $mode)" >&2; exit 1; }
+        else
+            [[ $((8#$mode & 8#002)) == 0 ]] || { echo "m3e-gdm: error: $f is world-writable" >&2; exit 1; }
+        fi
+    done
+}
+trust_check
+# shellcheck source=gdm/common.sh
+source "$HERE/common.sh"
+harden_env
+for f in build mech hooks dconf assets cmd; do
+    # shellcheck source=/dev/null
+    source "$HERE/$f.sh"
+done
+trap cleanup_work EXIT
+
+usage() { sed -n '2,/^# SECURITY/p' "$SELF" | sed '$d; s/^# \{0,1\}//'; }
+
+main() {
+    local cmd=${1:-} from='' mech=''
+    (($#)) && shift
+    while (($#)); do
+        case "$1" in
+            --from) (($# >= 2)) || die "--from needs a directory"; from=$2; shift ;;
+            --dry-run) DRY_RUN=1 ;;
+            --force) FORCE=1 ;;
+            --quiet) QUIET=1 ;;
+            --remove-helper) REMOVE_HELPER=1 ;;
+            --mechanism) (($# >= 2)) || die "--mechanism needs a value"; mech=$2; shift ;;
+            *) if [[ "$cmd" == check && -z "$from" ]]; then from=$1; else die "unknown argument: $1"; fi ;;
+        esac
+        shift
+    done
+    case "$cmd" in
+        apply) cmd_apply "$from" "$mech" ;;
+        refresh) cmd_refresh ;;
+        restore) cmd_restore ;;
+        status) cmd_status ;;
+        check) [[ -n "$from" ]] || die "check needs a directory"; python3 -I "$HERE/ingest.py" check "$from" && say "data accepted" ;;
+        -h|--help|help|'') usage ;;
+        *) die "unknown command: $cmd (see --help)" ;;
+    esac
+}
+REMOVE_HELPER=0
+main "$@"
