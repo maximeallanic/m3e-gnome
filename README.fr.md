@@ -72,6 +72,11 @@ pour le README.
 </table>
 
 <p align="center">
+  <img src="screenshots/login-dark.png" width="440" alt="Écran de connexion GDM (saisie du mot de passe), sombre, rendu par un Shell imbriqué en mode gdm">
+  <br><sub>Écran de connexion GDM (optionnel), voir <a href="docs/gdm.md">docs/gdm.md</a> (en anglais ; fond uni : pas de fond d'écran dans la capture).</sub>
+</p>
+
+<p align="center">
   <img src="screenshots/alt-tab-dark.png" width="440" alt="Sélecteur de fenêtres Alt+Tab">
 </p>
 
@@ -164,6 +169,10 @@ la commande et demandé confirmation.
 | `--extensions-only` | N'installe que les extensions complémentaires |
 | `--extensions-dir DIR` | Utilise une copie locale de `m3e-gnome-extensions` au lieu de la télécharger |
 | `--skip STEP` | Saute une étape, répétable : `gtk-theme icons cursor sounds font palette extensions` |
+| `--gdm` | **Optionnel** : habille aussi l'écran de connexion GDM. Utilise `sudo` pour cette étape seulement, après avoir affiché le plan exact. Voir [docs/gdm.md](docs/gdm.md) (en anglais) |
+| `--gdm-only` | Seulement l'étape GDM (après une installation complète) |
+| `--gdm-image FILE` | Couleur source et fond flouté de l'écran de connexion (par défaut : votre fond d'écran sombre) |
+| `--gdm-force` | Laisse l'assistant GDM tourner sur une version majeure de GNOME Shell non vérifiée |
 | `--no-session-check` | N'exige pas de session GNOME active (paquetage, tests) |
 | `--uninstall` | Équivaut à `./uninstall.sh` |
 | `--version`, `-h`, `--help` | |
@@ -225,8 +234,11 @@ invite à vous déconnecter et reconnecter. Détails : [docs/troubleshooting.md]
   onglet actif sombres en mode clair (voir la [compatibilité](docs/compatibility.md)).
 - **Les applications Qt et les fenêtres libdecor** ne sont pas habillées par le CSS GTK : les décorations Qt ne le
   suivent pas, et libdecor et les cadres X11 de mutter dessinent leurs propres ombres (bas aux angles droits).
-- **L'écran de connexion GDM n'est pas habillé.** C'est voulu : la version privée dont ce projet est issu lançait en
-  root un script qui exécutait des fichiers du dossier personnel de l'utilisateur, ce qui n'est pas acceptable ici.
+- **Écran de connexion GDM : optionnel, vérifié seulement sur la famille Debian.** `./install.sh --gdm` l'habille par
+  un assistant root qui traite tout ce que prépare l'installateur comme des données non fiables (modèle de sécurité :
+  [docs/gdm.md](docs/gdm.md), en anglais). Vérifié dans une fausse racine système et par un Shell imbriqué sur Debian ;
+  pas encore essayé sur un vrai démarrage d'autres distributions. Les couleurs de l'écran de connexion sont figées à
+  l'installation.
 - **Applications Flatpak :** rien dans l'installateur ne donne aux applications isolées accès au thème ni aux feuilles
   de style de l'utilisateur. Non testé.
 - Validé sur GNOME 50.5 uniquement ; les extensions modifient des classes privées du Shell.

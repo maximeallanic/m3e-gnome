@@ -28,6 +28,10 @@ t_setup() {
     export XDG_CURRENT_DESKTOP=GNOME
     export GSETTINGS_BACKEND=memory DBUS_SESSION_BUS_ADDRESS="unix:path=$T_ROOT/no-bus" DCONF_PROFILE="$T_ROOT/no-profile"
     export NO_COLOR=1
+    # The GDM step uses sudo on a real system. Every sandboxed run is pointed at an empty fake system root through the
+    # (user-level) test seam, so that no test can ever reach the real /usr, /etc or /var, or call sudo.
+    mkdir -p "$T_ROOT/gdm-void-root"
+    export M3E_GDM_TEST=1 M3E_GDM_ROOT="$T_ROOT/gdm-void-root"
     local t p
     for t in "${SANDBOX_TOOLS[@]}"; do
         p="$(command -v "$t" 2>/dev/null || true)"

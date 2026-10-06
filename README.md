@@ -69,6 +69,11 @@ do.
 </table>
 
 <p align="center">
+  <img src="screenshots/login-dark.png" width="440" alt="GDM login screen (password prompt), dark, rendered by a nested Shell in gdm mode">
+  <br><sub>Opt-in GDM login screen, see <a href="docs/gdm.md">docs/gdm.md</a> (flat background: no wallpaper in the capture).</sub>
+</p>
+
+<p align="center">
   <img src="screenshots/alt-tab-dark.png" width="440" alt="Alt+Tab window switcher">
 </p>
 
@@ -157,6 +162,10 @@ packages: `./install.sh --install-deps` runs your package manager with `sudo` af
 | `--extensions-only` | Install only the companion extensions |
 | `--extensions-dir DIR` | Use a local `m3e-gnome-extensions` checkout instead of fetching it |
 | `--skip STEP` | Skip a step, repeatable: `gtk-theme icons cursor sounds font palette extensions` |
+| `--gdm` | **Opt-in**: also theme the GDM login screen. Uses `sudo` for that step only, after printing the exact plan. See [docs/gdm.md](docs/gdm.md) |
+| `--gdm-only` | Only the GDM step (after a full install) |
+| `--gdm-image FILE` | Seed colour and blurred background of the login screen (default: your dark wallpaper) |
+| `--gdm-force` | Let the GDM helper run on a GNOME Shell major it was not verified with |
 | `--no-session-check` | Do not require a running GNOME session (packaging, tests) |
 | `--uninstall` | Same as `./uninstall.sh` |
 | `--version`, `-h`, `--help` | |
@@ -217,8 +226,10 @@ out and in. Details: [docs/troubleshooting.md](docs/troubleshooting.md).
   in light mode (see [compatibility](docs/compatibility.md)).
 - **Qt applications and libdecor windows** are not themed by the GTK CSS: Qt decorations do not follow it, and
   libdecor and mutter X11 frames draw their own shadows (square bottom corners).
-- **The GDM login screen is not themed.** This is intentional: the private setup this project came from ran a script
-  as root that executed files from the user's home, which is not acceptable here.
+- **GDM login screen: opt-in, Debian-family verified only.** `./install.sh --gdm` themes it through a root helper that
+  treats everything the installer prepares as untrusted data (see [docs/gdm.md](docs/gdm.md) for the security model).
+  Verified in a fake system root and by a nested Shell on Debian; not yet tried on a real boot of other distributions.
+  The login screen follows the stylesheet only, not your wallpaper colours live: it is frozen at install time.
 - **Flatpak applications:** nothing in the installer gives sandboxed applications access to the theme or the user
   stylesheets. Untested.
 - Validated on GNOME 50.5 only; the extensions patch private Shell classes.

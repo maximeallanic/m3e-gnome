@@ -72,9 +72,48 @@ check "manifest has no duplicate entries" bash -c "[ \"\$(sort '$HOME/.local/sha
 check "second install did not back up its own files again" bash -c "[ \"\$(ls '$HOME/.local/share/m3e-gnome/backup' | wc -l)\" = 1 ]"
 check "verify passes after reinstall" bash "$REPO/verify.sh" "${SKIP[@]}"
 
+echo "== GDM (opt-in): user-side data preparation, then the whole flow against a fake system root"
+# shellcheck source=tests/gdm_lib.sh
+source "$TESTS_DIR/gdm_lib.sh"
+if have_all() { for t in "$@"; do command -v "$t" >/dev/null 2>&1 || return 1; done; }; have_all dpkg-divert glib-compile-resources gresource /usr/bin/dconf; then
+    GR="$T_ROOT/gdm-root"
+    # shellcheck disable=SC2031
+    export M3E_GDM_ROOT="$GR"
+    gdm_make_root "$GR" debian
+    snapshot "$GR" | grep -vE 'diversions-old|run/m3e-gdm.lock' >"$T_ROOT/gdm-before.snap"
+    GDM_ENV=(env)
+    "${GDM_ENV[@]}" bash "$REPO/install.sh" --gdm-only --dry-run --yes --no-session-check >"$T_ROOT/gdm-dry.out" 2>&1 || { fail "gdm dry run failed"; cat "$T_ROOT/gdm-dry.out"; }
+    snapshot "$GR" | grep -vE 'diversions-old|run/m3e-gdm.lock' >"$T_ROOT/gdm-dry.snap"
+    check "gdm dry run changes nothing in the system root" cmp -s "$T_ROOT/gdm-before.snap" "$T_ROOT/gdm-dry.snap"
+    check "gdm dry run shows the plan" grep -q 'dry-run' "$T_ROOT/gdm-dry.out"
+    if "${GDM_ENV[@]}" bash "$REPO/install.sh" --gdm-only --yes --no-session-check >"$T_ROOT/gdm-install.out" 2>&1; then pass "install.sh --gdm-only exits 0"
+    else fail "install.sh --gdm-only failed"; tail -20 "$T_ROOT/gdm-install.out"; fi
+    check "the rendered stylesheet landed in the staged data" grep -q 'lockDialogGroup' "$GR/var/lib/m3e-gnome/gdm/data/theme.css"
+    check "the blurred wallpaper was staged as a PNG" bash -c "head -c 8 '$GR/var/lib/m3e-gnome/gdm/data/background.png' | grep -q PNG"
+    check "the staged stylesheet was stripped of comments user-side" bash -c "! grep -q '/\\*' '$GR/var/lib/m3e-gnome/gdm/data/theme.css'"
+    check "the staged stylesheet has no template placeholder" bash -c "! grep -q '{{' '$GR/var/lib/m3e-gnome/gdm/data/theme.css'"
+    check "the live resource carries the M3E sheet" bash -c "gresource extract '$GR/usr/share/gnome-shell/gnome-shell-theme.gresource' /org/gnome/shell/theme/gnome-shell-dark.css | grep -qF 'm3e-gnome gdm'"
+    check "verify.sh includes the GDM section and passes" "${GDM_ENV[@]}" bash "$REPO/verify.sh" "${SKIP[@]}"
+    check "the user-side step did not touch HOME beyond temp files" bash -c "[ -z \"\$(find '$TMPDIR' -maxdepth 1 -name 'm3e-gnome.*')\" ]"
+    check "uninstall.sh --gdm --dry-run changes nothing" bash -c "$(printf '%q ' "${GDM_ENV[@]}") bash '$REPO/uninstall.sh' --gdm --dry-run --yes >/dev/null && test -f '$GR/var/lib/m3e-gnome/gdm/manifest'"
+    if "${GDM_ENV[@]}" bash "$REPO/uninstall.sh" --gdm --yes >"$T_ROOT/gdm-uninstall.out" 2>&1; then pass "uninstall.sh --gdm exits 0"; else fail "uninstall.sh --gdm failed"; cat "$T_ROOT/gdm-uninstall.out"; fi
+    snapshot "$GR" | grep -vE 'diversions-old|run/m3e-gdm.lock' >"$T_ROOT/gdm-after.snap"
+    if cmp -s "$T_ROOT/gdm-before.snap" "$T_ROOT/gdm-after.snap"; then pass "the system root is byte-identical after uninstall --gdm"
+    else fail "system root differs after uninstall --gdm"; diff "$T_ROOT/gdm-before.snap" "$T_ROOT/gdm-after.snap" | head -20; fi
+    # The full uninstall below must revert the GDM theming too.
+    bash "$REPO/install.sh" --gdm-only --yes --no-session-check >/dev/null 2>&1 || fail "second gdm install failed"
+    GDM_REINSTALLED=1
+else
+    echo "  skipped: needs dpkg-divert, glib-compile-resources, gresource and the real dconf"
+fi
+
 echo "== uninstall"
 check "uninstall --dry-run changes nothing" bash -c "bash '$REPO/uninstall.sh' --dry-run --yes >/dev/null && test -f '$HOME/.local/share/m3e-gnome/manifest'"
 if bash "$REPO/uninstall.sh" --yes >"$T_ROOT/uninstall.out" 2>&1; then pass "uninstall exits 0"; else fail "uninstall failed"; cat "$T_ROOT/uninstall.out"; fi
+if [[ -n "${GDM_REINSTALLED:-}" ]]; then
+    snapshot "$GR" | grep -vE 'diversions-old|run/m3e-gdm.lock' >"$T_ROOT/gdm-after-full.snap"
+    check "the full uninstall also reverted the GDM theming (system root byte-identical)" cmp -s "$T_ROOT/gdm-before.snap" "$T_ROOT/gdm-after-full.snap"
+fi
 snapshot "$HOME" >"$T_ROOT/after.snap"
 if cmp -s "$T_ROOT/before.snap" "$T_ROOT/after.snap"; then pass "HOME is identical to its pre-install state"
 else fail "HOME differs after uninstall"; diff "$T_ROOT/before.snap" "$T_ROOT/after.snap" | head -40; fi

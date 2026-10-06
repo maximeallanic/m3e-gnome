@@ -12,14 +12,15 @@ they are verified.
 The installer runs as your user and changes only your home directory. These are the things it does that matter for
 security, and what we promise about them:
 
-- **No root.** `sudo` is used only if you pass `--install-deps`, only to run your package manager, and only after
-  showing the exact command and asking.
+- **No root by default.** `sudo` is used only if you pass `--install-deps` (to run your package manager) or `--gdm`
+  (the opt-in login-screen theming), and only after showing the exact command or plan and asking.
 - **Pinned and verified downloads.** Git sources are fetched at a full commit and checked; the font and the matugen
   binary are checked against a sha256 before use. A mismatch stops the install.
 - **Removal is exact.** `uninstall.sh` removes only the paths recorded in `~/.local/share/m3e-gnome/manifest`,
   refuses any path outside `$HOME`, and never expands a pattern.
-- **No login-screen changes.** GDM theming is intentionally not part of this project (the original design ran
-  user-writable code as root).
+- **The GDM helper never runs user-writable code as root.** It is installed root-owned, treats everything the user step
+  prepares as untrusted data (no links, size limits, format and CSS allow-list checks), and refuses test hooks as root.
+  The model is in [docs/gdm.md](docs/gdm.md); a way around it is exactly the kind of report we want.
 
 Reports about a way to make the installer write outside `$HOME`, run unverified downloaded code, or remove files it
 did not create are especially welcome.

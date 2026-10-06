@@ -39,7 +39,7 @@ benches in `dev/`). Anything else is "untested". The theme is validated on **GNO
 |---|---|
 | Top bar, menus, quick settings, calendar, notifications, overview, app grid, dialogs, OSD, screenshot UI, on-screen keyboard | Verified in the nested Shell bench (dark and light) |
 | Lock screen | Styled and checked in a nested Shell; always dark |
-| GDM login screen | Not themed, on purpose |
+| GDM login screen | Opt-in (`--gdm`). Debian family verified in a fake root and a nested Shell; Fedora, Arch, Ubuntu untested on real systems; openSUSE needs a contributor. See [gdm.md](gdm.md) |
 | Dash to Dock | Optional; restyled and its slide animation moved by `m3e-extensions`. The installer sets `apply-custom-theme` to false so the dock takes its surface from the theme |
 | GSConnect | Its stylesheet hooks are in the extension stylesheet; behaviour not separately verified |
 | Blur my Shell | Conflicts in principle (this theme uses tinted surfaces, no blur); the installer warns when it is enabled |

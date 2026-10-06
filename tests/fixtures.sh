@@ -89,9 +89,9 @@ EOT
     make_git_fixture "$d"
     EXT_FIX_REV="$(git -C "$d" rev-parse HEAD)"
 
-    # Font: random bytes are fine, the installer only checks the checksum.
+    # Font: random bytes after a TrueType magic number (the installer checks the checksum, the GDM helper the magic).
     mkdir -p "$fix/font"
-    head -c 2048 /dev/urandom >"$fix/font/font.ttf"
+    { printf '\0\1\0\0'; head -c 2048 /dev/urandom; } >"$fix/font/font.ttf"
     printf 'SIL OFL fixture\n' >"$fix/font/OFL.txt"
 
     cat >"$T_ROOT/pins.sh" <<EOT

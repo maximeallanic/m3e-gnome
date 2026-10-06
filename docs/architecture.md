@@ -115,5 +115,5 @@ Google Sans Flex, matugen, and the AOSP and Material Symbols inputs of the build
 
 ## What is not here
 
-No GDM theming (see the README), no recompiled mutter or GNOME Shell, nothing outside `$HOME` except package installation
-you explicitly request with `--install-deps`.
+No recompiled mutter or GNOME Shell. Nothing outside `$HOME` except what you explicitly request: package installation
+(`--install-deps`) and the opt-in GDM theming (`--gdm`, root helper in `gdm/`, see [gdm.md](gdm.md)).
