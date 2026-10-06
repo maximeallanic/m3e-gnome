@@ -109,6 +109,7 @@ gdm_install_helper_into() { # root
         source "$REPO/lib/common.sh"
         # shellcheck source=lib/gdm.sh
         source "$REPO/lib/gdm.sh"
+        # shellcheck disable=SC2030  # subshell on purpose; common.sh reads REPO_ROOT
         REPO_ROOT="$REPO"
         gdm_install_helper
     )
@@ -141,6 +142,7 @@ gdm_verify() {
             # shellcheck source=/dev/null
             source "$REPO/lib/$f.sh"
         done
+        # shellcheck disable=SC2030  # subshell on purpose; common.sh reads REPO_ROOT
         REPO_ROOT="$REPO"
         check_gdm
         ((V_FAIL == 0))

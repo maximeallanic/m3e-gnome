@@ -118,7 +118,10 @@ put_tree() { # src dest [rsync args...]
     if ((DRY_RUN)); then msg_info "[dry-run] rsync $src/ -> $dest/"; return 0; fi
     [[ -d "$src" ]] || die "source directory missing: $src"
     m_record T "$dest"
-    rsync -a --delete "$@" -- "$src/" "$dest/"
+    # --chmod: the destination must stay writable for its owner whatever the source modes are (a read-only source
+    # tree, as installed by the .deb or a store, would otherwise produce a tree that rsync --delete and rm -r cannot
+    # modify). --no-owner/--no-group: ownership of the source (root, for a packaged tree) is never copied.
+    rsync -a --no-owner --no-group --chmod=Du+rwx,Fu+rw --delete "$@" -- "$src/" "$dest/"
 }
 
 # For trees produced by a build tool: claim (and record) the destination before running the tool.

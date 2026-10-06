@@ -95,7 +95,7 @@ main() {
         refresh) cmd_refresh ;;
         restore) cmd_restore ;;
         status) cmd_status ;;
-        check) [[ -n "$from" ]] || die "check needs a directory"; python3 -I "$HERE/ingest.py" check "$from" && say "data accepted" ;;
+        check) [[ -n "$from" ]] || die "check needs a directory"; python3 -I -B "$HERE/ingest.py" check "$from" && say "data accepted" ;;
         -h|--help|help|'') usage ;;
         *) die "unknown command: $cmd (see --help)" ;;
     esac

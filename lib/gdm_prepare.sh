@@ -51,7 +51,7 @@ gdm_render_css() { # out-file seed-args...
     done
     ! grep -qF '{{' "$out" || die "unrendered placeholders in the greeter stylesheet"
     # The helper checks the stylesheet token by token and has no use for comments: strip them here (tokenizer, not regex).
-    python3 -I "$REPO_ROOT/gdm/ingest.py" strip-css "$out" "$out.stripped" || die "the rendered stylesheet is not valid CSS"
+    python3 -I -B "$REPO_ROOT/gdm/ingest.py" strip-css "$out" "$out.stripped" || die "the rendered stylesheet is not valid CSS"
     mv -- "$out.stripped" "$out"
 }
 
@@ -116,5 +116,5 @@ gdm_prepare() {
     if [[ -n "$image" ]]; then gdm_blur "$image" "$data/background.png" || rm -f -- "$data/background.png"; fi
     gdm_stage_assets "$data"
     printf 'icon_theme=%s\ncursor_theme=%s\nfont_name=%s\nseed=%s\n' "$GDM_ICON_THEME" "$GDM_CURSOR" "$GDM_FONT_NAME" "${seed_label//[^A-Za-z0-9#]/_}" >"$data/greeter.conf"
-    python3 -I "$REPO_ROOT/gdm/ingest.py" check "$data" || die "the prepared greeter data does not pass the safety checks"
+    python3 -I -B "$REPO_ROOT/gdm/ingest.py" check "$data" || die "the prepared greeter data does not pass the safety checks"
 }

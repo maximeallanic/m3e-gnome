@@ -154,6 +154,25 @@ cd m3e-gnome
 Puis **fermez la session et rouvrez-la** : le Shell, les extensions et les applications GTK chargent le thème à la
 connexion. Enfin, lancez `./verify.sh`.
 
+### Depuis une release
+
+La [page des releases](https://github.com/maximeallanic/m3e-gnome/releases) propose un paquet Debian et une archive des
+sources (vérifiez-les avec `sha256sum -c SHA256SUMS`). Les deux lancent le même installateur, avec votre utilisateur, et
+téléchargent toujours les sources épinglées à l'exécution (réseau nécessaire) ; le paquet lui-même ne modifie rien dans
+votre dossier personnel.
+
+```sh
+# Debian/Ubuntu : installe /usr/share/m3e-gnome et les commandes m3e-gnome-install, -uninstall et -verify
+sudo apt install ./m3e-gnome_<version>_all.deb
+m3e-gnome-install --dry-run && m3e-gnome-install
+# toute distribution : l'archive contient le même arbre que le dépôt git
+tar xzf m3e-gnome-<version>.tar.gz && cd m3e-gnome-<version> && ./install.sh --dry-run && ./install.sh
+```
+
+Si le paquet `gnome-shell-extension-m3e` (issu des releases de m3e-gnome-extensions) est installé, l'installateur active
+ces extensions système au lieu de les télécharger. Retirer le `.deb` n'annule pas le thème : lancez d'abord
+`m3e-gnome-uninstall`. Le `.deb` a seulement été vérifié en le dépaquetant, pas installé avec `dpkg` sur un système réel.
+
 Si le thème Shell ne se charge pas, installez l'extension User Themes et relancez `./install.sh`. Pour les paquets
 système manquants : `./install.sh --install-deps` lance votre gestionnaire de paquets avec `sudo`, après avoir affiché
 la commande et demandé confirmation.

@@ -5,7 +5,22 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-06
+
+First public release (pre-release: the installer was run for real on the author's Debian machine with GNOME Shell
+50.5, and in fake roots and nested headless shells; nothing else has been tried).
+
 ### Added
+
+- **Release packaging**: the `m3e-gnome` Debian package (`scripts/build-deb.sh`): the read-only runtime tree under
+  `/usr/share/m3e-gnome` with a prebuilt palette bundle (no npm at install time), the commands `m3e-gnome-install`,
+  `m3e-gnome-uninstall` and `m3e-gnome-verify` (they refuse to run as root), man pages, bash completion. Installing the
+  package changes no home directory and still needs network access when you run `m3e-gnome-install`. A
+  tag-triggered release workflow (tests, `.deb`, source tarball, `SHA256SUMS`, provenance attestation, notes from this
+  file, pin check), `scripts/release.sh`, `scripts/check-pins.sh`.
+- The extensions step enables the system-wide extensions (`/usr/share/gnome-shell/extensions`, from the
+  `gnome-shell-extension-m3e` package) instead of cloning the extensions repository; `--extensions-dir` still wins.
+  `verify.sh` accepts them.
 
 - **Opt-in GDM login-screen theming** (`./install.sh --gdm`, `--gdm-only`, `--gdm-image`, `--gdm-force`;
   `./uninstall.sh --gdm`; a GDM section in `./verify.sh`). A rebuild of the private script with a privilege boundary:
@@ -40,6 +55,10 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- The installer no longer writes inside its own directory: `tools/material-palette/build.sh` builds in a temporary copy
+  (it left `node_modules` next to the sources), Python bytecode caches are disabled, and `rsync` no longer copies the
+  permissions of a read-only source tree into the user's home (which made the installed copy impossible to update or
+  remove).
 - GNOME Settings > Appearance: the accent colour swatches were invisible (the generic button rules at user priority
   overrode the application's `.accent-button`); `m3e-gtk4-buttons.css` now keeps their colour, size and selection ring.
 - Light mode: the top bar over the overview (clock, status icons) used `on_surface` on the primary-coloured overview
@@ -52,4 +71,6 @@ and the project uses [Semantic Versioning](https://semver.org/).
   paths literally.
 - matugen release binaries exist for x86_64 only; other architectures must `cargo install matugen --version 4.2.0
   --locked` first.
-- The companion extensions repository is fetched from its default branch until its first release is pinned.
+
+[Unreleased]: https://github.com/maximeallanic/m3e-gnome/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/maximeallanic/m3e-gnome/releases/tag/v0.1.0

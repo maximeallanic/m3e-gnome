@@ -4,6 +4,7 @@
 #
 #   tests/run.sh
 # Environment: M3E_TEST_OFFLINE=1 (stub npm ci), M3E_TEST_NETWORK=1 (also build the cursor from AOSP),
+#   (test_deb builds the .deb and runs the round trip from the unpacked, read-only package.)
 #   M3E_TEST_NO_MATUGEN=1 (download the pinned matugen instead of using the one on PATH),
 #   M3E_TEST_EXTENSIONS_REPO=DIR (also install from a real m3e-gnome-extensions checkout), M3E_TEST_KEEP=1.
 set -uo pipefail
@@ -12,8 +13,9 @@ REPO="$(dirname "$HERE")"
 status=0
 
 shell_files() { # every shell script of the installer
-    ( cd "$REPO" && printf '%s\n' install.sh uninstall.sh verify.sh lib/*.sh gdm/*.sh gdm/m3e-gdm tests/*.sh tests/shims/fc-cache \
-        tests/shims/fc-list tests/shims/gnome-shell tests/shims/gtk-update-icon-cache )
+    ( cd "$REPO" && printf '%s\n' install.sh uninstall.sh verify.sh lib/*.sh gdm/*.sh gdm/m3e-gdm scripts/*.sh packaging/wrapper.sh \
+        packaging/m3e-gnome.bash tests/*.sh tests/shims/fc-cache tests/shims/fc-list tests/shims/gnome-shell \
+        tests/shims/gtk-update-icon-cache )
 }
 
 echo "== syntax"
@@ -28,7 +30,7 @@ echo "== file size (500 lines max)"
 while IFS= read -r f; do
     n="$(wc -l <"$REPO/$f")"
     if ((n > 500)); then echo "too long: $f ($n lines)"; status=1; fi
-done < <(cd "$REPO" && printf '%s\n' install.sh uninstall.sh verify.sh lib/* gdm/* tests/*.sh tests/*.py tests/shims/*)
+done < <(cd "$REPO" && printf '%s\n' install.sh uninstall.sh verify.sh lib/* gdm/* scripts/* packaging/* tests/*.sh tests/*.py tests/shims/*)
 
 echo "== shellcheck"
 if command -v shellcheck >/dev/null 2>&1; then
@@ -37,7 +39,7 @@ else
     echo "shellcheck not installed: skipped (apt install shellcheck / pip install shellcheck-py)"
 fi
 
-for t in roundtrip test_guards test_gdm_input test_gdm; do
+for t in roundtrip test_guards test_gdm_input test_gdm test_deb; do
     echo
     echo "== $t"
     bash "$HERE/$t.sh" || status=1

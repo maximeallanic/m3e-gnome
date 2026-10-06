@@ -24,8 +24,12 @@ step_palette_files() {
     mkdir_owned "$LIB_DIR/material-palette"
     claim "$LIB_DIR/material-palette/palette.mjs"
     m_record F "$LIB_DIR/material-palette/palette.mjs"
-    # npm's cache goes into our cache directory: nothing may be created in ~/.npm.
-    run env npm_config_cache="$M3E_CACHE/npm" bash "$REPO_ROOT/tools/material-palette/build.sh" "$LIB_DIR/material-palette/palette.mjs" >/dev/null
+    if has_prebuilt_palette; then
+        run install -m 644 -- "$REPO_ROOT/$PREBUILT_PALETTE_REL" "$LIB_DIR/material-palette/palette.mjs"
+    else
+        # npm's cache goes into our cache directory: nothing may be created in ~/.npm.
+        run env npm_config_cache="$M3E_CACHE/npm" bash "$REPO_ROOT/tools/material-palette/build.sh" "$LIB_DIR/material-palette/palette.mjs" >/dev/null
+    fi
 
     local f
     for f in material-sync material-sync-watch material-palette; do

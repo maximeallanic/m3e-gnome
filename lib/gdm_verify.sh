@@ -32,7 +32,7 @@ check_gdm() {
     fi
 
     # Staged data (what the helper rebuilds from).
-    if [[ -f "$st/data.sha256" && -d "$st/data" ]] && [[ "$(python3 -I "$REPO_ROOT/gdm/ingest.py" hash "$st/data" 2>/dev/null)" == "$(cat -- "$st/data.sha256")" ]]; then
+    if [[ -f "$st/data.sha256" && -d "$st/data" ]] && [[ "$(python3 -I -B "$REPO_ROOT/gdm/ingest.py" hash "$st/data" 2>/dev/null)" == "$(cat -- "$st/data.sha256")" ]]; then
         v_ok "GDM staged data matches its recorded hash"
     else
         v_fail "GDM staged data is missing or does not match $GDM_STATE/data.sha256"

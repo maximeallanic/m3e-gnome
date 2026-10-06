@@ -53,23 +53,23 @@ register_helper() {
 
 stage_hash_ok() {
     [[ -f "$STATE/data.sha256" && -d "$STATE/data" ]] || return 1
-    [[ "$(python3 -I "$HERE/ingest.py" hash "$STATE/data")" == "$(<"$STATE/data.sha256")" ]]
+    [[ "$(python3 -I -B "$HERE/ingest.py" hash "$STATE/data")" == "$(<"$STATE/data.sha256")" ]]
 }
 
 # Replace the staged data with a validated copy of $1 (swap by rename; the old copy stays until the new one is in place).
 stage_ingest() {
     local src=$1
     if ((DRY_RUN)); then
-        python3 -I "$HERE/ingest.py" check "$src" || die "the input data was refused"
+        python3 -I -B "$HERE/ingest.py" check "$src" || die "the input data was refused"
         say "input data accepted (dry run: nothing staged)"
         return 0
     fi
     rm -rf -- "${STATE:?}/data.new" "${STATE:?}/data.old"
-    python3 -I "$HERE/ingest.py" ingest "$src" "$STATE/data.new" || die "the input data was refused"
+    python3 -I -B "$HERE/ingest.py" ingest "$src" "$STATE/data.new" || die "the input data was refused"
     [[ ! -d "$STATE/data" ]] || mv -- "$STATE/data" "$STATE/data.old"
     mv -- "$STATE/data.new" "$STATE/data"
     rm -rf -- "${STATE:?}/data.old"
-    python3 -I "$HERE/ingest.py" hash "$STATE/data" | state_write data.sha256
+    python3 -I -B "$HERE/ingest.py" hash "$STATE/data" | state_write data.sha256
 }
 
 cmd_apply() {
@@ -82,7 +82,7 @@ cmd_apply() {
     mech_preflight
     say "mechanism: $MECH"
     # Refuse bad input before anything exists on disk (the ingest below validates again what it actually copies).
-    python3 -I "$HERE/ingest.py" check "$from" || die "the input data was refused"
+    python3 -I -B "$HERE/ingest.py" check "$from" || die "the input data was refused"
     state_init
     register_helper
     stage_ingest "$from"
@@ -119,7 +119,7 @@ cmd_refresh() {
     fi
     stage_hash_ok || data_ok=0
     ((data_ok)) || die "the staged data does not match its recorded hash: refusing (re-run the installer with --gdm)"
-    python3 -I "$HERE/ingest.py" check "$STATE/data" || die "the staged data no longer validates"
+    python3 -I -B "$HERE/ingest.py" check "$STATE/data" || die "the staged data no longer validates"
     stock=$(mech_stock)
     if [[ ! -f "$STATE/disabled" && -f "$STATE/stock.sha256" && "$(sha_of "$stock")" == "$(<"$STATE/stock.sha256")" &&
         -f "$STATE/built.sha256" && "$(mech_live_sha)" == "$(<"$STATE/built.sha256")" ]]; then

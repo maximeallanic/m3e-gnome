@@ -4,7 +4,6 @@
 # the running Shell has not discovered yet) and only fails with --strict.
 
 V_OK=0; V_FAIL=0; V_WARN=0
-EXTENSION_UUIDS=(m3e-motion@maximeallanic.github.io m3e-extensions@maximeallanic.github.io status-bar@maximeallanic.github.io)
 
 v_ok() { printf 'OK     %s\n' "$*"; V_OK=$((V_OK + 1)); }
 v_fail() { printf 'FAIL   %s\n' "$*"; V_FAIL=$((V_FAIL + 1)); }
@@ -172,6 +171,7 @@ check_extensions() {
     enabled="$(python3 "$LIB/enabled_extensions.py" list)"
     for u in "${EXTENSION_UUIDS[@]}"; do
         if [[ -f "$d/$u/metadata.json" ]] && grep -q "\"$u\"" "$d/$u/metadata.json"; then v_ok "extension installed: $u"
+        elif use_system_extensions; then v_ok "extension installed system-wide: $u"
         else v_fail "extension missing or without matching metadata.json: $u"; continue; fi
         if grep -qxF "$u" <<<"$enabled"; then v_ok "extension enabled: $u"; else v_fail "extension not enabled: $u"; continue; fi
         state="$(gnome-extensions info "$u" 2>/dev/null | sed -n 's/^ *State: *//p')"

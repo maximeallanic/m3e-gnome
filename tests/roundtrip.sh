@@ -14,9 +14,9 @@ make_fixtures
 if [[ -n "${M3E_TEST_OFFLINE:-}" ]]; then
     real_npm="$(PATH="$ORIG_PATH" command -v npm)"
     rm -f "$T_ROOT/realbin/npm"
-    # shellcheck disable=SC2016  # literal $ for the generated stub
-    printf '#!/bin/sh\n[ "$1" = ci ] && [ -x "%s/tools/material-palette/node_modules/.bin/esbuild" ] && exit 0\nexec %s "$@"\n' \
-        "$REPO" "$real_npm" >"$T_ROOT/realbin/npm"
+    # shellcheck disable=SC2016  # literal $ for the generated stub; build.sh runs npm in a temporary copy of the sources
+    printf '#!/bin/sh\n[ "$1" = ci ] && [ -x "%s/tools/material-palette/node_modules/.bin/esbuild" ] && exec ln -s "%s/tools/material-palette/node_modules" node_modules\nexec %s "$@"\n' \
+        "$SRC_REPO" "$SRC_REPO" "$real_npm" >"$T_ROOT/realbin/npm"
     chmod +x "$T_ROOT/realbin/npm"
 fi
 

@@ -4,7 +4,9 @@
 # gnome-extensions/systemctl are shims, GSETTINGS_BACKEND=memory and a bogus bus are a second safety net.
 
 TESTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO="$(dirname "$TESTS_DIR")"
+SRC_REPO="$(dirname "$TESTS_DIR")"
+# M3E_TEST_REPO: run the installer from another tree (tests/test_deb.sh uses the unpacked, read-only .deb).
+REPO="${M3E_TEST_REPO:-$SRC_REPO}"
 FAILS=0
 
 pass() { printf '  ok    %s\n' "$*"; }
@@ -30,6 +32,9 @@ t_setup() {
     export NO_COLOR=1
     # The GDM step uses sudo on a real system. Every sandboxed run is pointed at an empty fake system root through the
     # (user-level) test seam, so that no test can ever reach the real /usr, /etc or /var, or call sudo.
+    # Same for the system-wide extension directories: never look at the real /usr/share (see system_extensions_dir).
+    mkdir -p "$T_ROOT/no-system-extensions"
+    export M3E_SYSTEM_EXT_DIRS="$T_ROOT/no-system-extensions"
     mkdir -p "$T_ROOT/gdm-void-root"
     export M3E_GDM_TEST=1 M3E_GDM_ROOT="$T_ROOT/gdm-void-root"
     local t p

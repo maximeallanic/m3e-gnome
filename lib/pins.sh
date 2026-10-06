@@ -20,7 +20,7 @@ MATERIA_REV=10d30e9a01af4dec6a9cf94317c9536fec5a24f4        # 2020-05-30
 # Companion GNOME Shell extensions.
 # Pinned to the commit this version of the theme was tested with (update it at each release).
 EXT_URL=https://github.com/maximeallanic/m3e-gnome-extensions.git
-EXT_REV=b22913fe4dd3bcbcda2af55600c49cc44dcd05b5
+EXT_REV=3e75a439c018098d7cb93850561fcbbfb0b318bd
 
 # Google Sans Flex (SIL OFL 1.1) from google/fonts.
 GSF_BASE=https://raw.githubusercontent.com/google/fonts/a0e3dbcdc3a3ecfafff3f071159ae0221628922d/ofl/googlesansflex
