@@ -1,7 +1,8 @@
 # Installation
 
-The installer runs as your user, never needs `sudo` except for `--install-deps`, changes only your home directory,
-is idempotent and is reversible with `./uninstall.sh`.
+The installer runs as your user and changes only your home directory, unless you ask otherwise: `sudo` is used only for
+`--install-deps` and for the opt-in `--gdm` login-screen theming ([gdm.md](gdm.md)). It is idempotent and reversible with
+`./uninstall.sh`.
 
 ## 1. Dependencies
 

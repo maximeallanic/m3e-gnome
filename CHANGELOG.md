@@ -7,6 +7,15 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- **Opt-in GDM login-screen theming** (`./install.sh --gdm`, `--gdm-only`, `--gdm-image`, `--gdm-force`;
+  `./uninstall.sh --gdm`; a GDM section in `./verify.sh`). A rebuild of the private script with a privilege boundary:
+  a root-owned helper (`gdm/`) that treats user-prepared data as untrusted (no links, size/format limits, CSS `url()`
+  allow-list, no `@import`), compiles and verifies the gresource in a root-owned directory and swaps it atomically.
+  `dpkg-divert` on Debian, `update-alternatives` on Ubuntu, in place with a stock copy elsewhere; apt, pacman and DNF
+  refresh hooks; greeter icons, cursor, font and dark scheme through a dconf database. Everything recorded in a root
+  manifest and undone exactly. Debian verified in a fake root and a nested Shell; other distributions untested
+  (see [docs/gdm.md](docs/gdm.md)).
+
 - First public release, extracted from a private desktop setup: Material 3 Expressive theme for GNOME 50 (GTK 3/4,
   libadwaita, Chrome, GNOME Shell), Material-Symbols icons, Googlebook cursor, Materia sounds, Google Sans Flex,
   and a palette computed as on a Pixel (2025 colour spec) from the wallpaper and rendered by matugen.
@@ -23,7 +32,6 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ### Not included
 
-- **GDM login-screen theming.** The private version ran a user-writable script as root; that design is not ported.
 - Personal integrations of the original setup (live wallpaper, Home Assistant, the Orchis/theme-sync service).
 
 ### Fixed

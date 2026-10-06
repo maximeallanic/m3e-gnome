@@ -20,6 +20,13 @@ time from its upstream at a pinned commit and is never committed to this reposit
 | **@material/material-color-utilities** 0.4.0 | <https://github.com/material-foundation/material-color-utilities> | Apache License 2.0 | Installed with `npm ci` (versions pinned by `tools/material-palette/package-lock.json`) and bundled with esbuild (MIT) into `~/.local/lib/material-palette/palette.mjs` on the user's machine. |
 | **m3e-gnome-extensions** | <https://github.com/maximeallanic/m3e-gnome-extensions> | MIT | The companion GNOME Shell extensions, fetched and built by the installer. |
 
+## Run as separate programs (nothing copied or linked)
+
+The opt-in GDM step ([docs/gdm.md](docs/gdm.md)) calls tools your distribution already ships: `ffmpeg` (blur of the
+background), `glib-compile-resources` and `gresource` (GLib, LGPL-2.1+), `dconf`, and `dpkg-divert` or
+`update-alternatives` (dpkg, GPL-2.0+). Their approach to theming the greeter follows the one documented by
+[gdm-settings](https://github.com/gdm-settings/gdm-settings) (AGPL-3.0); no code of it was copied.
+
 ### May we redistribute Material-Gnome?
 
 Legally yes, under the GPL-3.0-or-later: a copy may be redistributed if it stays under the GPL with its notices

@@ -8,6 +8,7 @@ English first; the [README](../README.md) is also available in French ([README.f
 | [Customisation](customization.md) | Wallpaper sources, fixed colour, `palette.json`, dark/light, accent, cursor, fonts, no-bold rule, tokens |
 | [Architecture](architecture.md) | The pipeline (with diagram), services, extensions, icon and cursor tools, installer layout |
 | [Compatibility](compatibility.md) | What was verified and what is untested: GNOME, distributions, applications |
+| [GDM login screen](gdm.md) | The opt-in login-screen theming: what it changes as root, security model, per-distribution status, recovery |
 | [Troubleshooting](troubleshooting.md) | Re-login, inactive extensions, Chrome, light mode, stale Shell CSS, uninstall and restore |
 | [Design notes](design-notes.md) | Why it looks and moves as it does; decisions still to validate; language and ownership |
 | [Development](development.md) | Tests, benches, nested-shell safety, regenerating assets, release and pin updates |

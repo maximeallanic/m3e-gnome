@@ -1,7 +1,8 @@
 # FAQ
 
-**Does it need root?** No. The installer changes only your home directory. `sudo` is used only if you pass
-`--install-deps`, to run your package manager, after showing the command.
+**Does it need root?** No, not by default. The installer changes only your home directory. `sudo` is used only if you pass
+`--install-deps` (your package manager) or `--gdm` (the opt-in login-screen theming, [docs/gdm.md](gdm.md)), after showing
+the exact plan or command and asking.
 
 **Which GNOME versions work?** GNOME 50, validated on 50.5. Other versions get a warning and the Shell extensions
 will not load (they declare Shell 50 only). See [compatibility](compatibility.md).
@@ -19,7 +20,7 @@ the icon and cursor themes load at login.
 toolbar and active tab in light mode. See [compatibility](compatibility.md).
 
 **Does it theme Qt, Firefox, Flatpak apps, the login screen?** Qt decorations: no. Firefox and Flatpak: untested. The
-GDM login screen: no, on purpose, because the original approach ran user-writable code as root.
+GDM login screen: yes, opt-in, with a root helper that never runs anything user-writable ([gdm.md](gdm.md)).
 
 **Can I use my own matugen setup alongside?** Yes. This project uses its own config in `~/.config/m3e-gnome/matugen/`
 and always passes it with `--config`; `~/.config/matugen/` is never read or replaced.
