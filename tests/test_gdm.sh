@@ -96,7 +96,8 @@ cp "$T_ROOT/distrib.keep" "$GR/usr/share/gnome-shell/gnome-shell-theme.gresource
 check "verify passes again once restored" gdm_verify
 
 echo "== Debian: idempotent re-apply and refresh"
-gdm_run apply --from "$T_ROOT/data" >/dev/null 2>&1
+gdm_ok apply --from "$T_ROOT/data"
+check "the second apply reports success" grep -q 'installed' <<<"$GDM_OUT"
 snap >"$T_ROOT/again.snap"
 if cmp -s "$T_ROOT/applied-debian.snap" "$T_ROOT/again.snap"; then pass "re-apply leaves the system byte-identical"; else fail "re-apply changed something"; diff "$T_ROOT/applied-debian.snap" "$T_ROOT/again.snap" | head; fi
 out="$(gdm_run refresh 2>&1)"
@@ -105,7 +106,7 @@ snap >"$T_ROOT/refresh.snap"
 check "…and changes nothing" cmp -s "$T_ROOT/applied-debian.snap" "$T_ROOT/refresh.snap"
 # A package update writes the NEW stock resource to the diverted name.
 gdm_make_stock "$GR/usr/share/gnome-shell/gnome-shell-theme.gresource.distrib" v2
-gdm_run refresh >/dev/null 2>&1
+gdm_ok refresh
 check "after an update, refresh rebuilds from the new stock" bash -c "gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -q 'stock dark v2'"
 check "…and still carries the marker" bash -c "gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -qF 'm3e-gnome gdm'"
 check "…and the old stock text is gone" bash -c "! gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -q 'stock dark v1'"
@@ -115,7 +116,7 @@ out="$(M3E_FAKE_GNOME_VERSION=48.1 gdm_run refresh 2>&1)"; rc=$?
 check "refresh on another major exits 0" test "$rc" -eq 0
 check "…and warns" grep -q 'not the verified version' <<<"$out"
 check "…the stock sheet is back in service" bash -c "! gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -qF 'm3e-gnome gdm'"
-gdm_run refresh >/dev/null 2>&1
+gdm_ok refresh
 check "back on the tested major, refresh rebuilds" bash -c "gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -qF 'm3e-gnome gdm'"
 out="$(M3E_FAKE_GNOME_VERSION=48.1 gdm_run apply --from "$T_ROOT/data" --dry-run 2>&1)"; rc=$?
 check "apply on another major is refused without --force" test "$rc" -ne 0
@@ -130,8 +131,8 @@ check "restore: the NEW stock resource is back in place" bash -c "gresource extr
 check "restore: no diversion left" bash -c "[ -z \"\$(dpkg-divert --admindir '$GR/var/lib/dpkg' --instdir '$GR' --list '*gnome-shell-theme*')\" ]"
 # Without an update in between the whole tree is byte-identical.
 gdm_install_helper_into "$GR"
-gdm_run apply --from "$T_ROOT/data" >/dev/null 2>&1
-gdm_run restore --remove-helper >/dev/null 2>&1
+gdm_ok apply --from "$T_ROOT/data"
+gdm_ok restore --remove-helper
 snap >"$T_ROOT/after2-debian.snap"
 if cmp -s "$T_ROOT/after-debian.snap" "$T_ROOT/after2-debian.snap"; then pass "apply then restore again: byte-identical"; else fail "second round trip differs"; fi
 
@@ -162,9 +163,9 @@ if diff <(grep '^f .*gnome-shell-theme.gresource' "$T_ROOT/before-ubuntu.snap") 
 common_checks ubuntu
 check "[ubuntu] verify passes" gdm_verify
 gdm_make_stock "$GR/usr/share/gnome-shell/theme/Yaru/gnome-shell-theme.gresource" yaru2
-gdm_run refresh >/dev/null 2>&1
+gdm_ok refresh
 check "[ubuntu] refresh after an update uses the new Yaru resource" bash -c "gresource extract '$GR/usr/local/share/m3e-gnome/gdm/gdm-theme.gresource' /org/gnome/shell/theme/gnome-shell-dark.css | grep -q 'stock dark yaru2'"
-gdm_run restore --remove-helper >/dev/null 2>&1
+gdm_ok restore --remove-helper
 after_alt="$("${UA[@]}" --query gdm-theme.gresource | sed "s|$GR||g")"
 check "[ubuntu] restore: the alternative is back to its previous state" test "$before_alt" = "$after_alt"
 snap >"$T_ROOT/after-ubuntu.snap"
@@ -181,33 +182,33 @@ for fam in arch fedora; do
     M3E_OS_RELEASE="$GR/etc/os-release" check "[$fam] verify passes" gdm_verify
     check "[$fam] the stock bytes are kept" test "$(sha256sum "$GR/var/lib/m3e-gnome/gdm/stock/gnome-shell-theme.gresource" | cut -d' ' -f1)" = "$orig"
     gdm_make_stock "$(LIVE)" v3      # a package update overwrites the file
-    gdm_run refresh >/dev/null 2>&1
+    gdm_ok refresh
     check "[$fam] refresh rebuilds from the updated stock" bash -c "gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -q 'stock dark v3'"
     check "[$fam] …with our sheet" bash -c "gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -qF 'm3e-gnome gdm'"
-    gdm_run restore --remove-helper >/dev/null 2>&1
+    gdm_ok restore --remove-helper
     check "[$fam] restore leaves the new stock resource" bash -c "gresource extract '$(LIVE)' /org/gnome/shell/theme/gnome-shell-dark.css | grep -q 'stock dark v3'"
     same_except_stock "[$fam] restore: everything else byte-identical" "$T_ROOT/before-$fam.snap"
 done
 new_system arch
 arch_stock="$(sha256sum "$(LIVE)" | cut -d' ' -f1)"
-gdm_run apply --from "$T_ROOT/data" >/dev/null 2>&1
+gdm_ok apply --from "$T_ROOT/data"
 check "[arch] pacman hook targets gnome-shell and runs refresh PostTransaction" bash -c "grep -q 'Target = gnome-shell' '$GR/etc/pacman.d/hooks/m3e-gdm.hook' && grep -q 'When = PostTransaction' '$GR/etc/pacman.d/hooks/m3e-gdm.hook' && grep -q 'Exec = /usr/local/sbin/m3e-gdm refresh' '$GR/etc/pacman.d/hooks/m3e-gdm.hook'"
-gdm_run restore --remove-helper >/dev/null 2>&1
+gdm_ok restore --remove-helper
 check "[arch] restore without an update puts the exact stock bytes back" test "$(sha256sum "$(LIVE)" | cut -d' ' -f1)" = "$arch_stock"
 new_system fedora
-gdm_run apply --from "$T_ROOT/data" >/dev/null 2>&1
+gdm_ok apply --from "$T_ROOT/data"
 check "[fedora] DNF 4 action file" grep -qx 'gnome-shell:in:/usr/local/sbin/m3e-gdm refresh --quiet' "$GR/etc/dnf/plugins/post-transaction-actions.d/m3e-gdm.action"
 check "[fedora] DNF 5 actions file" grep -qx 'post_transaction:gnome-shell:in::/usr/local/sbin/m3e-gdm refresh --quiet' "$GR/etc/dnf/libdnf5-plugins/actions.d/m3e-gdm.actions"
-gdm_run restore --remove-helper >/dev/null 2>&1
+gdm_ok restore --remove-helper
 
 echo "== a pre-existing /etc/dconf/profile/gdm is kept and restored"
 GR="$T_ROOT/root-profile"; gdm_make_root "$GR" debian
 mkdir -p "$GR/etc/dconf/profile"; printf 'user-db:user\nsystem-db:gdm\nfile-db:/usr/share/gdm/greeter-dconf-defaults\n' >"$GR/etc/dconf/profile/gdm"
 snap >"$T_ROOT/before-profile.snap"
 gdm_install_helper_into "$GR"
-gdm_run apply --from "$T_ROOT/data" >/dev/null 2>&1
+gdm_ok apply --from "$T_ROOT/data"
 check "profile gets our database and keeps system-db:gdm" bash -c "grep -q 'system-db:m3e-gdm' '$GR/etc/dconf/profile/gdm' && grep -q 'system-db:gdm' '$GR/etc/dconf/profile/gdm'"
-gdm_run restore --remove-helper >/dev/null 2>&1
+gdm_ok restore --remove-helper
 check "the original profile is back, byte for byte" bash -c "[ \"\$(cat '$GR/etc/dconf/profile/gdm')\" = \"\$(printf 'user-db:user\nsystem-db:gdm\nfile-db:/usr/share/gdm/greeter-dconf-defaults')\" ]"
 same_except_stock "the rest is identical too" "$T_ROOT/before-profile.snap"
 

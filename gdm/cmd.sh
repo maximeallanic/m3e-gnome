@@ -28,7 +28,7 @@ state_init() {
     ((DRY_RUN)) && return 0
     while [[ ! -d "$(rp "$cur")" ]]; do missing=("$cur" "${missing[@]}"); cur=$(dirname -- "$cur"); done
     for m in "${missing[@]}"; do safe_logical "$m"; mkdir -m 755 -- "$(rp "$m")"; done
-    mkdir -m 700 -- "$STATE/tmp" "$STATE/backup"
+    [[ -d "$STATE/backup" ]] || mkdir -m 700 -- "$STATE/backup"
     touch -- "$STATE/manifest"
     chmod 644 -- "$STATE/manifest"
     for m in "${missing[@]}"; do [[ "$m" == "$STATE_LOGICAL" ]] || m_has D "$m" || m_add D "$m"; done

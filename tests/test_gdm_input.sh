@@ -104,14 +104,14 @@ fresh; printf 'icon_theme=Material-Symbols\ncursor_theme=Googlebook\n' >"$T_ROOT
 
 echo "== the helper never follows or runs what the user controls"
 fresh
-gdm_run apply --from "$T_ROOT/data" >/dev/null 2>&1
+gdm_ok apply --from "$T_ROOT/data"
 before="$(sha256sum "$GR/usr/share/gnome-shell/gnome-shell-theme.gresource" | cut -d' ' -f1)"
 printf '.evil { color: red; }\n' >"$T_ROOT/data/theme.css"; rm -f "$T_ROOT/data/background.png"
-gdm_run refresh >/dev/null 2>&1
+gdm_ok refresh
 after="$(sha256sum "$GR/usr/share/gnome-shell/gnome-shell-theme.gresource" | cut -d' ' -f1)"
 check "editing the source directory after the install changes nothing (refresh uses the staged copy)" test "$before" = "$after"
 check "the staged copy is root-controlled data in the state directory" test -f "$GR/var/lib/m3e-gnome/gdm/data/theme.css"
-gdm_run restore --remove-helper >/dev/null 2>&1
+gdm_ok restore --remove-helper
 
 echo "== test hooks and trust of the helper directory"
 mkdir -p "$T_ROOT/fakeid"

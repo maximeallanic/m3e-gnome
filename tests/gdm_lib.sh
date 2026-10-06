@@ -111,6 +111,16 @@ gdm_install_helper_into() { # root
 GR=''
 gdm_run() { M3E_GDM_TEST=1 M3E_GDM_ROOT="$GR" "$GR/usr/local/libexec/m3e-gnome/gdm/m3e-gdm" "$@"; }
 
+# gdm_ok ARGS... : run the helper, assert exit status 0 AND a message (an assertion on silence would be vacuous). The
+# output is left in $GDM_OUT for further checks.
+GDM_OUT=''
+gdm_ok() {
+    local rc
+    GDM_OUT="$(gdm_run "$@" 2>&1)"; rc=$?
+    if ((rc == 0)) && [[ "$GDM_OUT" == *m3e-gdm:* ]]; then pass "m3e-gdm $* exits 0 and reports"
+    else fail "m3e-gdm $* (exit $rc): $GDM_OUT"; fi
+}
+
 gdm_snapshot() { python3 "$TESTS_DIR/snapshot.py" "$1"; }
 
 # The read-only verify section against the fake root; prints its lines, exit 0 when nothing failed.
