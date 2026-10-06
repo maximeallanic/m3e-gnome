@@ -2,6 +2,7 @@
 // still run: the scenario waits). All of them are public Shell UI calls, no private bus, no eval.
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
+import St from 'gi://St';
 import GLib from 'gi://GLib';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Dialog from 'resource:///org/gnome/shell/ui/dialog.js';
@@ -52,7 +53,24 @@ function clearNotifications() {
         source.destroy();
 }
 
+// The Shell draws an orange indicator while a screencast runs; the video should not show it. Kept hidden whatever the
+// Shell does with it (it toggles its own visibility when the recording starts and stops).
+function hideRecordingIndicator() {
+    const area = Main.panel.statusArea;
+    for (const indicator of [area.quickSettings?._remoteAccess, area.screenRecording, area.screenSharing]) {
+        if (!indicator)
+            continue;
+        indicator.hide();
+        indicator.connect('notify::visible', () => indicator.visible && indicator.hide());
+    }
+}
+
 export const ACTIONS = {
+    // "Slow down animations" of the nested Shell only (what the video recorder uses, see video.py).
+    'slow-down': factor => {
+        St.Settings.get().slow_down_factor = Number(factor) || 1;
+    },
+    'hide-recording-indicator': hideRecordingIndicator,
     'overview': () => Main.overview.show(),
     'appgrid': () => {
         Main.overview.show();
