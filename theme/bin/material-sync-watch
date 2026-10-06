@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+"""Watch the wallpaper, the (optional) Hanabi live-wallpaper video and the light/dark mode, and run material-sync.
+Changes are batched (2 s) so the palette is regenerated once per modification.
+Exits non-zero if the dconf watcher dies, so that systemd restarts the service."""
+import os
+import subprocess
+import sys
+import threading
+from pathlib import Path
+
+WATCHED = (
+    '/org/gnome/desktop/background/picture-uri',
+    '/org/gnome/desktop/background/picture-uri-dark',
+    '/org/gnome/desktop/interface/color-scheme',
+    '/io/github/jeffshee/hanabi-extension/video-path',   # optional extension: the key simply never changes if absent
+    '/org/gnome/shell/enabled-extensions',
+)
+DEBOUNCE_SECONDS = 2.0
+# material-sync is installed next to this script; fall back to PATH.
+_sibling = Path(__file__).resolve().parent / 'material-sync'
+SYNC = str(_sibling) if _sibling.is_file() else 'material-sync'
+ENV = {**os.environ, 'LC_ALL': 'C'}
+
+timer = None
+lock = threading.Lock()
+
+
+def run_sync():
+    # material-sync serialises concurrent runs itself (flock) and skips unchanged inputs.
+    r = subprocess.run([SYNC], env=ENV)
+    if r.returncode != 0:
+        print(f'material-sync exited with {r.returncode}', file=sys.stderr, flush=True)
+
+
+def schedule():
+    global timer
+    with lock:
+        if timer:
+            timer.cancel()
+        timer = threading.Timer(DEBOUNCE_SECONDS, run_sync)
+        timer.daemon = True
+        timer.start()
+
+
+def main():
+    proc = subprocess.Popen(['dconf', 'watch', '/'], stdout=subprocess.PIPE, text=True, bufsize=1, env=ENV)
+    for line in proc.stdout:
+        # dconf watch prints the changed key path on its own line, then the new value
+        if line.strip().startswith(WATCHED):
+            schedule()
+    code = proc.wait()
+    print(f'dconf watch exited with {code}', file=sys.stderr, flush=True)
+    return code or 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())

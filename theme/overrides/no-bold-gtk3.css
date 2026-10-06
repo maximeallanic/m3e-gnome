@@ -1,0 +1,6 @@
+/* No bold anywhere, GTK 3 (GTK 4: no-bold-gtk4.css).
+   Imported from ~/.config/gtk-3.0/gtk.css: "user" priority, which beats the theme (loaded as the GTK 3 theme)
+   whatever the specificity. Pango markup (<b>) written by an application stays bold: it is not styling. */
+* {
+  font-weight: normal;
+}

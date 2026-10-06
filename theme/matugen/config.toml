@@ -1,0 +1,209 @@
+# m3e-gnome: Material 3 palette rendered by matugen into the Shell, GTK, terminal and icon-colour templates.
+# Colours are not computed by matugen: bin/material-palette produces the palette (2025 colour spec, official
+# library) and `matugen json` only renders the templates below. Scheme, spec, contrast, fallback colour and terminal
+# ANSI colours live in ~/.config/m3e-gnome/matugen/palette.json.
+#
+# Layout assumed by this file (the installer creates it):
+#   ~/.config/m3e-gnome/matugen/        this file and palette.json (the palette scripts pass it to matugen with --config)
+#   ~/.config/m3e-gnome/shell/NN-*.css   Shell stylesheet parts (templates, copied from theme/shell/m3e-shell/)
+#   ~/.config/m3e-gnome/overrides/       other templates (theme/overrides/)
+#   ~/.cache/m3e-gnome/shell/NN-*.css    rendered parts, concatenated into the theme stylesheet
+
+[config]
+version_check = false
+
+# --- GTK colours -----------------------------------------------------------------------------------------------
+# Colour variables of the Material-Gnome base GTK theme (the theme the M3E GTK overrides sit on).
+[templates.gtk3]
+input_path  = "~/.themes/Material-Gnome/gtk-3.0/colors-template.css"
+output_path = "~/.themes/Material-Gnome/gtk-3.0/colors.css"
+
+[templates.gtk4]
+input_path  = "~/.themes/Material-Gnome/gtk-4.0/colors-template.css"
+output_path = "~/.themes/Material-Gnome/gtk-4.0/colors.css"
+
+# --- Shell theme (M3E-Shell) ---------------------------------------------------------------------------------
+# The Shell stylesheet is split by concern into parts. Each part is rendered to its own file (index = cascade order,
+# matugen renders in index order) and the post_hook of the LAST part concatenates them, in order, into the theme
+# stylesheet. Concatenation instead of @import: St gives @import-ed sheets a lower priority than the main sheet, which
+# breaks the cascade. Parts keep each matugen if/else block inside a single file. Add a part: declare it here with
+# the next index, before `shell-99-no-bold`, and add it to that part's post_hook list.
+
+[templates.shell-00-base]
+input_path  = "~/.config/m3e-gnome/shell/00-base.css"
+output_path = "~/.cache/m3e-gnome/shell/00-base.css"
+index = 10
+
+[templates.shell-10-top-bar]
+input_path  = "~/.config/m3e-gnome/shell/10-top-bar.css"
+output_path = "~/.cache/m3e-gnome/shell/10-top-bar.css"
+index = 11
+
+[templates.shell-11-menus]
+input_path  = "~/.config/m3e-gnome/shell/11-menus.css"
+output_path = "~/.cache/m3e-gnome/shell/11-menus.css"
+index = 12
+
+[templates.shell-20-quick-settings-panel-tiles]
+input_path  = "~/.config/m3e-gnome/shell/20-quick-settings-panel-tiles.css"
+output_path = "~/.cache/m3e-gnome/shell/20-quick-settings-panel-tiles.css"
+index = 13
+
+[templates.shell-21-quick-settings-sliders-buttons]
+input_path  = "~/.config/m3e-gnome/shell/21-quick-settings-sliders-buttons.css"
+output_path = "~/.cache/m3e-gnome/shell/21-quick-settings-sliders-buttons.css"
+index = 14
+
+[templates.shell-22-switches-checkboxes]
+input_path  = "~/.config/m3e-gnome/shell/22-switches-checkboxes.css"
+output_path = "~/.cache/m3e-gnome/shell/22-switches-checkboxes.css"
+index = 15
+
+[templates.shell-30-calendar]
+input_path  = "~/.config/m3e-gnome/shell/30-calendar.css"
+output_path = "~/.cache/m3e-gnome/shell/30-calendar.css"
+index = 16
+
+[templates.shell-31-notifications]
+input_path  = "~/.config/m3e-gnome/shell/31-notifications.css"
+output_path = "~/.cache/m3e-gnome/shell/31-notifications.css"
+index = 17
+
+[templates.shell-40-overview-search]
+input_path  = "~/.config/m3e-gnome/shell/40-overview-search.css"
+output_path = "~/.cache/m3e-gnome/shell/40-overview-search.css"
+index = 18
+
+[templates.shell-41-app-grid]
+input_path  = "~/.config/m3e-gnome/shell/41-app-grid.css"
+output_path = "~/.cache/m3e-gnome/shell/41-app-grid.css"
+index = 19
+
+[templates.shell-42-app-folder-window-previews]
+input_path  = "~/.config/m3e-gnome/shell/42-app-folder-window-previews.css"
+output_path = "~/.cache/m3e-gnome/shell/42-app-folder-window-previews.css"
+index = 20
+
+[templates.shell-43-overview-light]
+input_path  = "~/.config/m3e-gnome/shell/43-overview-light.css"
+output_path = "~/.cache/m3e-gnome/shell/43-overview-light.css"
+index = 21
+
+[templates.shell-50-dialogs]
+input_path  = "~/.config/m3e-gnome/shell/50-dialogs.css"
+output_path = "~/.cache/m3e-gnome/shell/50-dialogs.css"
+index = 22
+
+[templates.shell-51-osd-switcher-tooltips]
+input_path  = "~/.config/m3e-gnome/shell/51-osd-switcher-tooltips.css"
+output_path = "~/.cache/m3e-gnome/shell/51-osd-switcher-tooltips.css"
+index = 23
+
+[templates.shell-60-lock-login]
+input_path  = "~/.config/m3e-gnome/shell/60-lock-login.css"
+output_path = "~/.cache/m3e-gnome/shell/60-lock-login.css"
+index = 24
+
+[templates.shell-61-lock-notifications-top-bar]
+input_path  = "~/.config/m3e-gnome/shell/61-lock-notifications-top-bar.css"
+output_path = "~/.cache/m3e-gnome/shell/61-lock-notifications-top-bar.css"
+index = 25
+
+[templates.shell-70-screenshot]
+input_path  = "~/.config/m3e-gnome/shell/70-screenshot.css"
+output_path = "~/.cache/m3e-gnome/shell/70-screenshot.css"
+index = 26
+
+[templates.shell-80-keyboard]
+input_path  = "~/.config/m3e-gnome/shell/80-keyboard.css"
+output_path = "~/.cache/m3e-gnome/shell/80-keyboard.css"
+index = 27
+
+[templates.shell-90-flat-surfaces]
+input_path  = "~/.config/m3e-gnome/shell/90-flat-surfaces.css"
+output_path = "~/.cache/m3e-gnome/shell/90-flat-surfaces.css"
+index = 28
+
+[templates.shell-91-panel-surface]
+input_path  = "~/.config/m3e-gnome/shell/91-panel-surface.css"
+output_path = "~/.cache/m3e-gnome/shell/91-panel-surface.css"
+index = 29
+
+[templates.shell-99-no-bold]
+input_path  = "~/.config/m3e-gnome/shell/99-no-bold.css"
+output_path = "~/.cache/m3e-gnome/shell/99-no-bold.css"
+index = 30
+post_hook = 'mkdir -p "$HOME/.themes/M3E-Shell/gnome-shell" && cat "$HOME/.cache/m3e-gnome/shell/00-base.css" "$HOME/.cache/m3e-gnome/shell/10-top-bar.css" "$HOME/.cache/m3e-gnome/shell/11-menus.css" "$HOME/.cache/m3e-gnome/shell/20-quick-settings-panel-tiles.css" "$HOME/.cache/m3e-gnome/shell/21-quick-settings-sliders-buttons.css" "$HOME/.cache/m3e-gnome/shell/22-switches-checkboxes.css" "$HOME/.cache/m3e-gnome/shell/30-calendar.css" "$HOME/.cache/m3e-gnome/shell/31-notifications.css" "$HOME/.cache/m3e-gnome/shell/40-overview-search.css" "$HOME/.cache/m3e-gnome/shell/41-app-grid.css" "$HOME/.cache/m3e-gnome/shell/42-app-folder-window-previews.css" "$HOME/.cache/m3e-gnome/shell/43-overview-light.css" "$HOME/.cache/m3e-gnome/shell/50-dialogs.css" "$HOME/.cache/m3e-gnome/shell/51-osd-switcher-tooltips.css" "$HOME/.cache/m3e-gnome/shell/60-lock-login.css" "$HOME/.cache/m3e-gnome/shell/61-lock-notifications-top-bar.css" "$HOME/.cache/m3e-gnome/shell/70-screenshot.css" "$HOME/.cache/m3e-gnome/shell/80-keyboard.css" "$HOME/.cache/m3e-gnome/shell/90-flat-surfaces.css" "$HOME/.cache/m3e-gnome/shell/91-panel-surface.css" "$HOME/.cache/m3e-gnome/shell/99-no-bold.css" > "$HOME/.themes/M3E-Shell/gnome-shell/gnome-shell.css"'
+
+# --- Extensions stylesheet ---------------------------------------------------------------------------------------
+# Loaded as an EXTENSION stylesheet by the m3e-extensions extension (m3e-extensions@maximeallanic.github.io), which
+# reloads it when the file changes. It restyles third-party extensions (Dash to Dock, GSConnect) and sits above the
+# theme in the St cascade.
+[templates.m3e-extensions]
+input_path  = "~/.config/m3e-gnome/m3e-extensions-template.css"
+output_path = "~/.config/m3e-gnome/m3e-extensions.css"
+index = 60
+
+# --- Optional integrations -----------------------------------------------------------------------------------
+[templates.papirus-folders]
+# Papirus folder colour = Papirus hue closest to the primary colour (needs papirus-folders; remove if unused)
+input_path  = "~/.config/m3e-gnome/overrides/papirus-folders.template"
+output_path = "~/.cache/matugen-papirus-folders.txt"
+index = 70
+colors_to_compare = [
+    { name = "blue", color = "#5294e2" },
+    { name = "bluegrey", color = "#607d8b" },
+    { name = "breeze", color = "#57b8ec" },
+    { name = "brown", color = "#ae8e6c" },
+    { name = "carmine", color = "#a30002" },
+    { name = "cyan", color = "#00bcd4" },
+    { name = "darkcyan", color = "#45abb7" },
+    { name = "deeporange", color = "#eb6637" },
+    { name = "green", color = "#87b158" },
+    { name = "grey", color = "#8e8e8e" },
+    { name = "indigo", color = "#5c6bc0" },
+    { name = "magenta", color = "#ca71df" },
+    { name = "nordic", color = "#81a1c1" },
+    { name = "orange", color = "#ee923a" },
+    { name = "palebrown", color = "#d1bfae" },
+    { name = "paleorange", color = "#eeca8f" },
+    { name = "pink", color = "#f06292" },
+    { name = "red", color = "#e25252" },
+    { name = "teal", color = "#16a085" },
+    { name = "violet", color = "#7e57c2" },
+    { name = "yellow", color = "#f9bd30" }
+]
+compare_to = "{{colors.primary.default.hex}}"
+post_hook = '"$HOME/.local/bin/papirus-folders" -C {{closest_color}} --theme Papirus-Dark > "$HOME/.cache/papirus-folders.log" 2>&1'
+
+[templates.gnome-accent]
+# GNOME accent colour = preset accent closest to the primary colour (sets org.gnome.desktop.interface accent-color)
+input_path  = "~/.config/m3e-gnome/overrides/gnome-accent.template"
+output_path = "~/.cache/matugen-gnome-accent.txt"
+index = 71
+colors_to_compare = [
+    { name = "blue", color = "#3584e4" },
+    { name = "teal", color = "#2190a4" },
+    { name = "green", color = "#3a944a" },
+    { name = "yellow", color = "#c88800" },
+    { name = "orange", color = "#ed5b00" },
+    { name = "red", color = "#e62d42" },
+    { name = "pink", color = "#d56199" },
+    { name = "purple", color = "#9141ac" },
+    { name = "slate", color = "#6f8396" }
+]
+compare_to = "{{colors.primary.default.hex}}"
+post_hook = 'gsettings set org.gnome.desktop.interface accent-color {{closest_color}}'
+
+[templates.ptyxis]
+# Ptyxis terminal palette ("Material"): [Light] and [Dark] sections rendered together, Ptyxis picks by mode.
+input_path  = "~/.config/m3e-gnome/overrides/ptyxis-material.palette"
+output_path = "~/.local/share/org.gnome.Ptyxis/palettes/material.palette"
+index = 72
+
+[templates.chrome-dark]
+# Chrome: toolbar and active tab in dark-mode colours even with a light theme (".dark" roles). Imported at the top of
+# window-buttons-gtk4.css; Chrome only rereads GTK CSS when restarted.
+input_path  = "~/.config/m3e-gnome/overrides/chrome-dark-gtk4.template"
+output_path = "~/.config/m3e-gnome/overrides/chrome-dark-gtk4.css"
+index = 73

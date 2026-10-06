@@ -1,0 +1,266 @@
+/* == Screenshot UI == */
+/* Panel (.screenshot-ui-panel) = standard Floating toolbar: surface_container, full shape, level 3 shadow, 16 dp from
+   the bottom of the screen. Two rows (GNOME's JS layout kept): the pill becomes a stadium; 16 padding so the corner
+   pills (56 dp buttons, 28 corners) stay inside the container's curve.
+   Type choice (.screenshot-ui-type-button) = connected button group of toggleable Tonal buttons: unchecked
+   secondary_container / on_secondary_container, full outer corners, 8 dp inner corners (4 when pressed), 2 dp between
+   buttons; checked = Tonal Selected (secondary / on_secondary), full shape (ConnectedButtonGroupSmall.SelectedInnerCornerCornerSizePercent: inner corners at 50 %).
+   Photo / video (.screenshot-ui-shot-cast-*) = second connected button group, Small size (40 dp).
+   Capture button = primary trigger (ring + disc); "Show pointer" = toggleable Standard icon button; close = Filled
+   tonal icon button; tooltips = Plain tooltip (like .dash-label and .window-caption). */
+.screenshot-ui-panel {
+  margin-bottom: 16px; /* FloatingToolbar.ContainerExternalPadding */
+  padding: 16px; /* M3E-visual: 16 dp instead of FloatingToolbar.ContainerLeadingSpace (8): two-row stadium panel (148 dp high); the corner pills and the pointer button stay 3 dp or more from the curve */
+  spacing: 4px; /* FloatingToolbar.ContainerBetweenSpace */
+  border: none;
+  border-radius: 999px; /* FloatingToolbar.ContainerShape */
+  background-color: {{colors.surface_container.default.hex}};
+  color: {{colors.on_surface.default.hex}};
+  box-shadow: 0 4px 8px 3px rgba({{colors.shadow.default.red}}, {{colors.shadow.default.green}}, {{colors.shadow.default.blue}}, 0.15); /* M3E-visual: Elevation level 3 shadow (Elevation.Level3 = 6 dp, floating toolbar); St draws only one shadow: the wider of the two shadows of this level */
+}
+/* Connected group for the type choice. */
+/* The 12 spacing between buttons is set in JS (the container's Clutter.BoxLayout): neither `spacing` (no effect on a
+   St.Widget with a Clutter layout manager) nor negative margins (St reads them as unsigned integers: giant margins)
+   bring it back to the 2 dp of ConnectedButtonGroupSmall.BetweenSpace (St limitation). */
+.screenshot-ui-type-button {
+  height: 42px; /* M3E-visual: 42 content (24 icon + 2 + 16 label); St counts the height without the padding: 42 + 2 x 7 = 56 dp (ButtonMedium.ContainerHeight) */
+  min-width: 0;
+  padding: 7px 16px; /* M3E-visual: (56 - 42) / 2: 24 icon and Label large label fit in 56 dp (Medium size: the 40 dp Small, ConnectedButtonGroupSmall.ContainerHeight, cannot hold the icon-above-label layout forced by the JS); 16 dp on the sides (ButtonSmall.LeadingSpace) */
+  border: none;
+  border-radius: 8px; /* ConnectedButtonGroupSmall.InnerCornerCornerSize */
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+  box-shadow: none;
+  font-size: 14px; /* TypeScale.LabelLargeSize */
+}
+.screenshot-ui-type-button:first-child {
+  border-radius: 28px 8px 8px 28px; /* M3E-visual: ConnectedButtonGroupSmall.ContainerShape (full: 28 = half of the 56 dp height) and InnerCornerCornerSize (8); St scales all corners down proportionally when two corners on one side exceed its length, so 999 px would erase the inner corners */
+}
+.screenshot-ui-type-button:last-child {
+  border-radius: 8px 28px 28px 8px; /* M3E-visual: ConnectedButtonGroupSmall.InnerCornerCornerSize (8) and ContainerShape (full: 28 = half of the 56 dp height); St scales all corners down proportionally when two corners on one side exceed its length, so 999 px would erase the inner corners */
+}
+.screenshot-ui-type-button .icon-label-button-container {
+  spacing: 2px; /* M3E-visual: 2 dp between icon and label (height fits in 56 dp) */
+}
+.screenshot-ui-type-button .icon-label-button-container > StIcon {
+  icon-size: 24px; /* ButtonMedium.IconSize */
+}
+.screenshot-ui-type-button .icon-label-button-container StLabel {
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.screenshot-ui-type-button:hover {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 8%); /* M3E-visual: on_secondary_container state layer at 8 % (State.HoverStateLayerOpacity) blended into the background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.screenshot-ui-type-button:focus,
+.screenshot-ui-type-button:focus:hover {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 10%); /* M3E-visual: on_secondary_container state layer at 10 % (State.FocusStateLayerOpacity) blended into the background: on focus, the stock !important ring replaces the inner shadow */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.screenshot-ui-type-button:active,
+.screenshot-ui-type-button:active:hover,
+.screenshot-ui-type-button:active:focus {
+  border-radius: 4px; /* ConnectedButtonGroupSmall.PressedInnerCornerCornerSize */
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 10%); /* M3E-visual: on_secondary_container state layer at 10 % (State.PressedStateLayerOpacity) blended into the background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.screenshot-ui-type-button:first-child:active {
+  border-radius: 28px 4px 4px 28px; /* M3E-visual: ConnectedButtonGroupSmall.ContainerShape (full: 28 = half of the 56 dp) and PressedInnerCornerCornerSize (4); St scales all corners down proportionally when two corners on one side exceed its length, so 999 px would erase the inner corners */
+}
+.screenshot-ui-type-button:last-child:active {
+  border-radius: 4px 28px 28px 4px; /* M3E-visual: ConnectedButtonGroupSmall.PressedInnerCornerCornerSize (4) and ContainerShape (full: 28 = half of the 56 dp); St scales all corners down proportionally when two corners on one side exceed its length, so 999 px would erase the inner corners */
+}
+.screenshot-ui-type-button:checked,
+.screenshot-ui-type-button:checked:hover,
+.screenshot-ui-type-button:checked:active,
+.screenshot-ui-type-button:checked:focus {
+  border-radius: 999px; /* ConnectedButtonGroupSmall.ContainerShape */
+  background-color: {{colors.secondary.default.hex}};
+  color: {{colors.on_secondary.default.hex}};
+}
+.screenshot-ui-type-button:checked .icon-label-button-container StLabel {
+  color: {{colors.on_secondary.default.hex}};
+}
+.screenshot-ui-type-button:checked:hover {
+  background-color: st-mix({{colors.on_secondary.default.hex}}, {{colors.secondary.default.hex}}, 8%); /* M3E-visual: on_secondary state layer at 8 % (State.HoverStateLayerOpacity) blended into the background */
+}
+.screenshot-ui-type-button:checked:active {
+  background-color: st-mix({{colors.on_secondary.default.hex}}, {{colors.secondary.default.hex}}, 10%); /* M3E-visual: on_secondary state layer at 10 % (State.PressedStateLayerOpacity) blended into the background */
+}
+.screenshot-ui-type-button:insensitive {
+  background-color: st-mix({{colors.on_surface.default.hex}}, {{colors.surface_container.default.hex}}, 12%); /* M3E-visual: on_surface at 12 % (FilledTonalButton.DisabledContainerOpacity) blended into the panel background: opaque, because St painted the translucent version at a different level in the rounded corners and in the rest */
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* FilledTonalButton.DisabledLabelTextOpacity */
+}
+.screenshot-ui-type-button:insensitive .icon-label-button-container StLabel {
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* FilledTonalButton.DisabledLabelTextOpacity */
+}
+/* Photo / video connected group (Small size). */
+.screenshot-ui-shot-cast-container {
+  padding: 0;
+  spacing: 2px; /* ConnectedButtonGroupSmall.BetweenSpace */
+  border-radius: 0;
+  background-color: transparent;
+}
+.screenshot-ui-shot-cast-button {
+  height: 20px; /* M3E-visual: 20 icon (ButtonSmall.IconSize); St counts the height without the padding: 20 + 2 x 10 = 40 dp (ConnectedButtonGroupSmall.ContainerHeight) */
+  padding: 10px 16px; /* M3E-visual: (40 - 20) / 2 top and bottom; 16 dp on the sides (ButtonSmall.LeadingSpace) */
+  border-radius: 8px; /* ConnectedButtonGroupSmall.InnerCornerCornerSize */
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.screenshot-ui-shot-cast-button:first-child {
+  border-radius: 20px 8px 8px 20px; /* M3E-visual: ConnectedButtonGroupSmall.ContainerShape (full: 20 = half of the 40 dp height) and InnerCornerCornerSize (8); St scales all corners down proportionally when two corners on one side exceed its length, so 999 px would erase the inner corners */
+}
+.screenshot-ui-shot-cast-button:last-child {
+  border-radius: 8px 20px 20px 8px; /* M3E-visual: ConnectedButtonGroupSmall.InnerCornerCornerSize (8) and ContainerShape (full: 20 = half of the 40 dp height); St scales all corners down proportionally when two corners on one side exceed its length, so 999 px would erase the inner corners */
+}
+.screenshot-ui-shot-cast-button > StIcon {
+  icon-size: 20px; /* ButtonSmall.IconSize */
+}
+.screenshot-ui-shot-cast-button:hover,
+.screenshot-ui-shot-cast-button:focus {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 8%); /* M3E-visual: on_secondary_container state layer at 8 % (State.HoverStateLayerOpacity) blended into the background */
+}
+.screenshot-ui-shot-cast-button:active {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 10%); /* M3E-visual: on_secondary_container state layer at 10 % (State.PressedStateLayerOpacity) blended into the background */
+}
+.screenshot-ui-shot-cast-button:checked,
+.screenshot-ui-shot-cast-button:checked:hover,
+.screenshot-ui-shot-cast-button:checked:active {
+  border-radius: 999px; /* ConnectedButtonGroupSmall.ContainerShape */
+  background-color: {{colors.secondary.default.hex}};
+  color: {{colors.on_secondary.default.hex}};
+}
+.screenshot-ui-shot-cast-button:checked:hover {
+  background-color: st-mix({{colors.on_secondary.default.hex}}, {{colors.secondary.default.hex}}, 8%); /* M3E-visual: on_secondary state layer at 8 % (State.HoverStateLayerOpacity) blended into the background */
+}
+.screenshot-ui-shot-cast-button:checked:active {
+  background-color: st-mix({{colors.on_secondary.default.hex}}, {{colors.secondary.default.hex}}, 10%); /* M3E-visual: on_secondary state layer at 10 % (State.PressedStateLayerOpacity) blended into the background */
+}
+.screenshot-ui-shot-cast-button:insensitive {
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* FilledTonalButton.DisabledLabelTextOpacity */
+}
+/* Capture button: 56 dp (MediumIconButton) primary trigger, 4 dp ring and 40 dp disc; on_primary state layers on
+   the disc. Recording (:cast): error / on_error (the stock red, error role). */
+.screenshot-ui-capture-button {
+  width: 40px; /* SmallIconButton.ContainerHeight */
+  height: 40px; /* SmallIconButton.ContainerHeight */
+  padding: 4px; /* M3E-visual: ring detached from the disc by 4 dp, total 40 + 2 x (4 + 4) = 56 dp (MediumIconButton.ContainerHeight) */
+  border: 4px solid {{colors.primary.default.hex}}; /* M3E-visual: 4 dp ring from the stock theme (camera shutter) */
+  border-radius: 999px; /* MediumIconButton.ContainerShapeRound */
+  background-color: transparent;
+}
+.screenshot-ui-capture-button .screenshot-ui-capture-button-circle {
+  border-radius: 999px; /* SmallIconButton.ContainerShapeRound */
+  background-color: {{colors.primary.default.hex}};
+}
+.screenshot-ui-capture-button:hover .screenshot-ui-capture-button-circle,
+.screenshot-ui-capture-button .screenshot-ui-capture-button-circle:hover {
+  background-color: st-mix({{colors.on_primary.default.hex}}, {{colors.primary.default.hex}}, 8%); /* M3E-visual: on_primary state layer at 8 % (State.HoverStateLayerOpacity) blended into the disc */
+}
+.screenshot-ui-capture-button:focus .screenshot-ui-capture-button-circle,
+.screenshot-ui-capture-button .screenshot-ui-capture-button-circle:focus {
+  background-color: st-mix({{colors.on_primary.default.hex}}, {{colors.primary.default.hex}}, 10%); /* M3E-visual: on_primary state layer at 10 % (State.FocusStateLayerOpacity) blended into the disc */
+}
+.screenshot-ui-capture-button:active .screenshot-ui-capture-button-circle,
+.screenshot-ui-capture-button .screenshot-ui-capture-button-circle:active {
+  background-color: st-mix({{colors.on_primary.default.hex}}, {{colors.primary.default.hex}}, 10%); /* M3E-visual: on_primary state layer at 10 % (State.PressedStateLayerOpacity) blended into the disc */
+}
+.screenshot-ui-capture-button:cast {
+  border-color: {{colors.error.default.hex}};
+}
+.screenshot-ui-capture-button:cast .screenshot-ui-capture-button-circle {
+  background-color: {{colors.error.default.hex}};
+}
+.screenshot-ui-capture-button:cast:hover .screenshot-ui-capture-button-circle,
+.screenshot-ui-capture-button:cast:focus .screenshot-ui-capture-button-circle {
+  background-color: st-mix({{colors.on_error.default.hex}}, {{colors.error.default.hex}}, 8%); /* M3E-visual: on_error state layer at 8 % (State.HoverStateLayerOpacity) blended into the disc */
+}
+.screenshot-ui-capture-button:cast:active .screenshot-ui-capture-button-circle {
+  background-color: st-mix({{colors.on_error.default.hex}}, {{colors.error.default.hex}}, 10%); /* M3E-visual: on_error state layer at 10 % (State.PressedStateLayerOpacity) blended into the disc */
+}
+/* "Show pointer" = toggleable Small Standard icon button; checked = secondary_container ("4 color roles in the
+   standard color scheme of the floating toolbar", element 3), Selected shape. */
+.screenshot-ui-show-pointer-button {
+  min-width: 0;
+  min-height: 0;
+  width: 24px; /* SmallIconButton.IconSize */
+  height: 24px; /* SmallIconButton.IconSize */
+  padding: 8px; /* SmallIconButton.DefaultLeadingSpace */
+  border: none;
+  border-radius: 999px; /* SmallIconButton.ContainerShapeRound */
+  background-color: transparent;
+  color: {{colors.on_surface_variant.default.hex}};
+  box-shadow: none;
+}
+.screenshot-ui-show-pointer-button StIcon {
+  icon-size: 24px; /* SmallIconButton.IconSize */
+}
+.screenshot-ui-show-pointer-button:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.screenshot-ui-show-pointer-button:focus,
+.screenshot-ui-show-pointer-button:focus:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.screenshot-ui-show-pointer-button:active,
+.screenshot-ui-show-pointer-button:active:hover,
+.screenshot-ui-show-pointer-button:active:focus {
+  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.screenshot-ui-show-pointer-button:checked,
+.screenshot-ui-show-pointer-button:checked:hover,
+.screenshot-ui-show-pointer-button:checked:focus {
+  border-radius: 12px; /* SmallIconButton.SelectedContainerShapeRound */
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.screenshot-ui-show-pointer-button:checked:hover {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 8%); /* M3E-visual: on_secondary_container state layer at 8 % (State.HoverStateLayerOpacity) blended into the background */
+}
+.screenshot-ui-show-pointer-button:checked:active {
+  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 10%); /* M3E-visual: on_secondary_container state layer at 10 % (State.PressedStateLayerOpacity) blended into the background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+/* Close (.screenshot-ui-close-button, outside the panel) = Small Filled tonal icon button: the capture button keeps
+   the only primary. The stock sheet forces a 6 px padding with !important: 28 content for 40 dp. */
+.screenshot-ui-close-button {
+  width: 28px; /* M3E-visual: 40 dp (SmallIconButton.ContainerHeight) - 2 x 6 of the stock !important padding */
+  height: 28px; /* M3E-visual: 40 dp (SmallIconButton.ContainerHeight) - 2 x 6 of the stock !important padding */
+  border: none;
+  border-radius: 999px; /* SmallIconButton.ContainerShapeRound */
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+  box-shadow: 0 4px 8px 3px rgba({{colors.shadow.default.red}}, {{colors.shadow.default.green}}, {{colors.shadow.default.blue}}, 0.15); /* M3E-visual: Elevation level 3 shadow, like the floating panel */
+}
+.screenshot-ui-close-button StIcon {
+  icon-size: 24px; /* SmallIconButton.IconSize */
+}
+.screenshot-ui-close-button:hover {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 8%); /* M3E-visual: on_secondary_container state layer at 8 % (State.HoverStateLayerOpacity) blended into the background */
+}
+.screenshot-ui-close-button:active {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 10%); /* M3E-visual: on_secondary_container state layer at 10 % (State.PressedStateLayerOpacity) blended into the background */
+}
+/* Tooltips (.screenshot-ui-tooltip) = Plain tooltip, same values as .dash-label (Tooltips block) and .window-caption;
+   the stock vertical offset (-y-offset 24) is kept: the tooltip sits above the panel. */
+.screenshot-ui-tooltip {
+  padding: 4px 8px; /* M3E-visual: (24 - 16) / 2 and 8 dp (plain tooltip measurements), like the GTK tooltips */
+  border: none;
+  border-radius: 4px; /* PlainTooltip.ContainerShape */
+  background-color: {{colors.inverse_surface.default.hex}};
+  color: {{colors.inverse_on_surface.default.hex}};
+  box-shadow: none;
+  font-size: 12px; /* PlainTooltip.SupportingTextFont.size */
+}
+/* Window selection and area handles: GNOME accent colors kept (synced with primary by the gnome-accent hook);
+   area handles in primary. */
+.screenshot-ui-area-selector-handle {
+  background-color: {{colors.primary.default.hex}};
+}
+

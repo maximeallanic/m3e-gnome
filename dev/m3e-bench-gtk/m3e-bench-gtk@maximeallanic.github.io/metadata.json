@@ -1,0 +1,14 @@
+{
+  "uuid": "m3e-bench-gtk@maximeallanic.github.io",
+  "name": "M3E GTK motion bench",
+  "description": "Bench extension of the GTK motion bench: runs the GTK scenarios, drives the virtual pointer and keyboard of the nested Shell, reports window geometry and takes screenshots. Never enable it in a real session.",
+  "shell-version": [
+    "50"
+  ],
+  "version": 1,
+  "m3e-bench-name": "io.github.maximeallanic.M3eBenchGtk",
+  "m3e-bench-path": "/io/github/maximeallanic/M3eBenchGtk",
+  "session-modes": [
+    "user"
+  ]
+}

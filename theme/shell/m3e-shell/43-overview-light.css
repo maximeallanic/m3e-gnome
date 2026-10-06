@@ -1,0 +1,100 @@
+/* Light overview: the background is primary (#overviewGroup), so the grid labels, state layers, running-app dots and
+   page indicators use on_primary (layers 8 / 10 / 10%, disabled 38%). So do the grid search results
+   (.grid-search-results: found apps and settings, drawn straight on that background). Folders keep their
+   surface_container_high tile (more specific .app-folder rules); the open folder (.app-folder-dialog, the same
+   .icon-grid on its own background) goes back to the on_surface colors. List search results sit on
+   .search-section-content (surface_container_high) and are unchanged, except for the status text drawn on the
+   background. */
+<* if {{ is_dark_mode }} *><* else *>
+.icon-grid .overview-tile,
+.grid-search-results .grid-search-result,
+.grid-search-results .overview-tile {
+  color: {{colors.on_primary.default.hex}};
+}
+.icon-grid .overview-tile:hover,
+.grid-search-results .grid-search-result:hover,
+.grid-search-results .overview-tile:hover {
+  background-color: rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_primary.default.hex}};
+}
+.icon-grid .overview-tile:focus,
+.grid-search-results .grid-search-result:focus,
+.grid-search-results .overview-tile:focus,
+.icon-grid .overview-tile:focus:hover,
+.grid-search-results .grid-search-result:focus:hover,
+.grid-search-results .overview-tile:focus:hover {
+  background-color: rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_primary.default.hex}};
+}
+.icon-grid .overview-tile:active,
+.grid-search-results .grid-search-result:active,
+.grid-search-results .overview-tile:active,
+.icon-grid .overview-tile:active:hover,
+.grid-search-results .grid-search-result:active:hover,
+.grid-search-results .overview-tile:active:hover,
+.icon-grid .overview-tile:active:focus,
+.grid-search-results .grid-search-result:active:focus,
+.grid-search-results .overview-tile:active:focus {
+  background-color: rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_primary.default.hex}};
+}
+.icon-grid .overview-tile:insensitive,
+.grid-search-results .grid-search-result:insensitive,
+.grid-search-results .overview-tile:insensitive {
+  color: rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.38); /* List.ItemDisabledLabelTextOpacity */
+}
+.icon-grid .app-grid-running-dot,
+.page-indicator .page-indicator-icon {
+  background-color: {{colors.on_primary.default.hex}};
+}
+.search-statustext {
+  color: {{colors.on_primary.default.hex}};
+}
+.app-folder-dialog .icon-grid .overview-tile {
+  color: {{colors.on_surface.default.hex}};
+}
+.app-folder-dialog .icon-grid .overview-tile:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.app-folder-dialog .icon-grid .overview-tile:focus,
+.app-folder-dialog .icon-grid .overview-tile:focus:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.app-folder-dialog .icon-grid .overview-tile:active,
+.app-folder-dialog .icon-grid .overview-tile:active:hover,
+.app-folder-dialog .icon-grid .overview-tile:active:focus {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.app-folder-dialog .icon-grid .overview-tile:insensitive {
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* List.ItemDisabledLabelTextOpacity */
+}
+.app-folder-dialog .icon-grid .app-grid-running-dot {
+  background-color: {{colors.primary.default.hex}};
+}
+.app-folder-dialog .page-indicator .page-indicator-icon {
+  background-color: {{colors.on_surface_variant.default.hex}}; /* M3E-visual: PagerDots: onSurfaceVariant */
+}
+/* Top bar over the light overview: the panel is transparent there (the stock sheet) and the overview is primary, so
+   its buttons, icons and clock use on_primary like the grid; on_surface (the rule of the Top bar section) was
+   near-black on a mid-tone primary, unreadable. The selected (open menu) look is left alone: it already uses on_primary. */
+#panel:overview .panel-button,
+#panel:overview .panel-button:hover,
+#panel:overview .panel-button:focus,
+#panel:overview .panel-button.clock-display,
+#panel:overview .panel-button.clock-display:hover,
+#panel:overview .panel-button.clock-display:focus,
+#panel:overview .panel-button.clock-display .clock {
+  color: {{colors.on_primary.default.hex}};
+}
+#panel:overview .panel-button:hover,
+#panel:overview .panel-button.clock-display:hover .clock {
+  background-color: rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+}
+#panel:overview .panel-button:focus,
+#panel:overview .panel-button.clock-display:focus .clock {
+  background-color: rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+}
+<* endif *>

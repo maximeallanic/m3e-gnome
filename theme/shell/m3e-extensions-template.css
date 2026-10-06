@@ -1,0 +1,201 @@
+/* M3E stylesheet for third-party extensions. matugen template, loaded as an EXTENSION stylesheet by the
+   m3e-extensions extension (m3e-extensions@maximeallanic.github.io).
+
+   St cascade (st-theme.c, get_origin): rank = origin + N*important + 2N*extension. An extension stylesheet therefore
+   beats the M3E-Shell theme, even against a theme !important; between extension stylesheets of equal rank,
+   specificity then REVERSE load order decide (the list is filled with g_slist_prepend: the first one loaded wins).
+   So as not to depend on activation order or on the specificity of third-party sheets, every declaration that
+   overrides a value from a third-party extension (dash-to-dock, gsconnect) carries !important (rank 3N, the highest).
+
+   Same rules as the theme: matugen scheme-tonal-spot colors, no bold, every number carries its token in a comment
+   or "M3E-visual: <reason>". */
+
+/* == Base == */
+/* No bold in extensions: the theme rule (rank N) does not beat the bold of extension stylesheets (dash-to-dock badge,
+   gsconnect device name...); this one is at rank 3N. */
+* {
+  font-weight: normal !important;
+}
+
+/* == Dash to Dock: floating toolbar == */
+/* Standard FloatingToolbar (FloatingToolbarTokens.kt): surface_container container (85 %, tinted surface without blur,
+   design choice), full corners, height 64 = 56 element + 2 x 4, leading and trailing space 8, 4 between elements,
+   16 between the bar and the screen edge. Elements = round icon buttons (48 app icon + 4 each side), on_surface state
+   layer. The clickable area of each element extends down to the screen edge (bottom margin inside the element, not
+   below the dock), like the stock dash.
+   Geometry is written for a bottom dock (#dashtodockContainer.bottom); colors apply to every position. */
+#dashtodockContainer.bottom #dashtodockBox #dash {
+  padding: 16px 16px 0 16px !important; /* M3E-visual: FloatingToolbar.ContainerExternalPadding (16 dp) on the left, top and right, 0 at the bottom (the dock touches the edge) */
+}
+#dashtodockContainer #dash .dash-background,
+#dashtodockContainer.transparent-dash #dash .dash-background,
+#dashtodockContainer .transparent-dash .dash-background,
+#dashtodockContainer .light-dash .dash-background,
+#dashtodockContainer .dark-dash .dash-background {
+  border: none !important;
+  border-radius: 999px !important; /* FloatingToolbar.ContainerShape */
+  background-color: rgba({{colors.surface_container.default.red}}, {{colors.surface_container.default.green}}, {{colors.surface_container.default.blue}}, 0.85) !important; /* M3E-visual: translucent surface_container without blur, like the top bar (design choice) */
+  box-shadow: 0 4px 8px 3px rgba({{colors.shadow.default.red}}, {{colors.shadow.default.green}}, {{colors.shadow.default.blue}}, 0.15) !important; /* M3E-visual: Elevation level 3 shadow (Elevation.Level3 = 6 dp); St draws only one shadow: the wider of the two shadows of this level */
+}
+#dashtodockContainer.bottom #dash .dash-background {
+  margin: 0 0 16px 0 !important; /* FloatingToolbar.ContainerExternalPadding */
+  padding: 0 !important;
+}
+#dashtodockContainer.bottom #dash #dashtodockDashContainer {
+  padding: 0 8px !important; /* FloatingToolbar.ContainerLeadingSpace */
+}
+#dashtodockContainer.bottom #dash .dash-item-container {
+  margin: 0 2px !important; /* M3E-visual: 2 + 2 between two elements = FloatingToolbar.ContainerBetweenSpace (4) */
+}
+#dashtodockContainer.bottom #dash .dash-item-container:ltr:first-child,
+#dashtodockContainer.bottom #dash .dash-item-container:rtl:last-child {
+  margin-left: 0 !important;
+}
+#dashtodockContainer.bottom #dash .dash-item-container:ltr:last-child,
+#dashtodockContainer.bottom #dash .dash-item-container:rtl:first-child {
+  margin-right: 0 !important;
+}
+#dashtodockContainer.bottom #dash .dash-item-container .app-well-app,
+#dashtodockContainer.bottom #dash .dash-item-container .show-apps,
+#dashtodockContainer.bottom #dash .dash-item-container .overview-tile {
+  margin: 0 !important;
+  padding: 4px 0 20px 0 !important; /* M3E-visual: (64 - 56) / 2 at the top; at the bottom 4 + 16 (FloatingToolbar.ContainerExternalPadding), the clickable area reaches the screen edge */
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+#dashtodockContainer.bottom #dash .dash-separator {
+  width: 1px !important; /* M3E-visual: 1 dp separator (Divider) between favorites and running apps */
+  margin: 0 4px 16px 4px !important; /* M3E-visual: 4 on each side (FloatingToolbar.ContainerBetweenSpace), 16 at the bottom like the container (FloatingToolbar.ContainerExternalPadding) */
+}
+#dashtodockContainer #dash .dash-separator {
+  background-color: {{colors.outline_variant.default.hex}} !important;
+}
+/* Round 56 icon button: 48 app icon (dash-max-icon-size setting) + 4 on each side. */
+#dashtodockContainer #dash .dash-item-container .show-apps .overview-icon,
+#dashtodockContainer #dash .dash-item-container .overview-tile .overview-icon {
+  padding: 4px !important; /* M3E-visual: (56 - 48) / 2: 48 icon inside a 56 button, 64 bar (FloatingToolbar.ContainerHeight) */
+  border-radius: 999px !important; /* SmallIconButton.ContainerShapeRound */
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: {{colors.on_surface_variant.default.hex}} !important;
+  transition-duration: 150ms !important; /* Motion.DurationShort3 */
+}
+#dashtodockContainer #dash .dash-item-container .show-apps:hover .overview-icon,
+#dashtodockContainer #dash .dash-item-container .overview-tile:hover .overview-icon {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08) !important; /* State.HoverStateLayerOpacity */
+}
+#dashtodockContainer #dash .dash-item-container .show-apps:focus .overview-icon,
+#dashtodockContainer #dash .dash-item-container .overview-tile:focus .overview-icon {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1) !important; /* State.FocusStateLayerOpacity */
+}
+#dashtodockContainer #dash .dash-item-container .show-apps:active .overview-icon,
+#dashtodockContainer #dash .dash-item-container .overview-tile:active .overview-icon,
+#dashtodockContainer #dash .dash-item-container .show-apps:checked .overview-icon {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1) !important; /* State.PressedStateLayerOpacity */
+}
+/* Foreground app: active indicator (solid secondary_container, like NavigationDrawer.ActiveIndicatorColor). */
+#dashtodockContainer #dash .dash-item-container .overview-tile.focused .overview-icon,
+#dashtodockContainer #dash .dash-item-container .app-well-app.focused .overview-icon {
+  background-color: {{colors.secondary_container.default.hex}} !important;
+}
+#dashtodockContainer #dash .dash-item-container .overview-tile.focused:hover .overview-icon,
+#dashtodockContainer #dash .dash-item-container .app-well-app.focused:hover .overview-icon {
+  background-color: {{colors.secondary_container.default.hex}} !important;
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.08) !important; /* M3E-visual: state layer over a solid background (St draws only one background, like the theme); State.HoverStateLayerOpacity */
+}
+/* "Show applications" button in primary (design choice); running-app dot in primary. */
+#dashtodockContainer #dash .dash-item-container .show-apps .overview-icon {
+  color: {{colors.primary.default.hex}} !important;
+}
+#dashtodockContainer #dash .dash-item-container .app-grid-running-dot,
+#dashtodockContainer #dash .dash-item-container .app-well-app-running-dot {
+  background-color: {{colors.primary.default.hex}} !important;
+}
+/* Tooltip: the theme's Plain tooltip; 4 gap to the anchor (Tooltip.kt, SpacingBetweenTooltipAndAnchor) instead of 10. */
+.dash-label.bottom {
+  -x-offset: 4px !important; /* M3E-visual: SpacingBetweenTooltipAndAnchor = 4 dp (Tooltip.kt) */
+  margin: 0 !important;
+}
+/* Notification badge: large M3 Badge (error / on_error, 16 high, pill, Label small). */
+#dashtodockContainer .notification-badge,
+.overview-tile .notification-badge {
+  min-height: 16px !important; /* M3E-visual: large Badge = 16 dp (no badge token in the pinned token set) */
+  padding: 0 4px !important; /* M3E-visual: 4 dp padding of the large Badge */
+  margin: 2px !important; /* M3E-visual: badge sits in the icon corner, like dash-to-dock */
+  border-radius: 999px !important; /* Shape.CornerFull */
+  background-color: {{colors.error.default.hex}} !important;
+  color: {{colors.on_error.default.hex}} !important;
+  font-size: 11px !important; /* TypeScale.LabelSmallSize */
+}
+/* Shortcut number (Super+n): Plain tooltip. */
+#dashtodockContainer .number-overlay,
+.overview-tile .number-overlay {
+  border-radius: 4px !important; /* PlainTooltip.ContainerShape */
+  background-color: {{colors.inverse_surface.default.hex}} !important;
+  color: {{colors.inverse_on_surface.default.hex}} !important;
+}
+/* Progress bar (launcher API): M3E linear indicator (secondary_container track, primary bar, no outline). */
+#dashtodockContainer.dashtodock .progress-bar,
+#dashtodockContainer .progress-bar,
+.overview-tile .progress-bar {
+  -progress-bar-track-background: {{colors.secondary_container.default.hex}} !important;
+  -progress-bar-track-border: transparent !important;
+  -progress-bar-background: {{colors.primary.default.hex}} !important;
+  -progress-bar-border: transparent !important;
+}
+
+/* == GSConnect == */
+/* Device menu: name in Title small, battery and signal in Label small on_surface_variant; icon buttons = Standard
+   icon button Small (40, round) instead of the hardcoded 12.5 % white; tooltip = Plain tooltip. */
+.gsconnect-device-name {
+  font-size: 14px !important; /* TypeScale.TitleSmallSize */
+  color: {{colors.on_surface.default.hex}} !important;
+}
+.gsconnect-device-battery StLabel,
+.gsconnect-device-signal-strength StLabel {
+  font-size: 11px !important; /* TypeScale.LabelSmallSize */
+  color: {{colors.on_surface_variant.default.hex}} !important;
+}
+.gsconnect-device-battery StIcon,
+.gsconnect-device-signal-strength StIcon {
+  color: {{colors.on_surface_variant.default.hex}} !important;
+}
+.gsconnect-icon-button {
+  padding: 8px !important; /* SmallIconButton.DefaultLeadingSpace */
+  border-radius: 999px !important; /* SmallIconButton.ContainerShapeRound */
+  background-color: transparent !important;
+  color: {{colors.on_surface_variant.default.hex}} !important;
+  transition-duration: 150ms !important; /* Motion.DurationShort3 */
+}
+.gsconnect-icon-button StIcon {
+  icon-size: 24px !important; /* SmallIconButton.IconSize */
+}
+.gsconnect-icon-button:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.08) !important; /* State.HoverStateLayerOpacity */
+}
+.gsconnect-icon-button:focus,
+.gsconnect-icon-button:active {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1) !important; /* State.PressedStateLayerOpacity */
+}
+.gsconnect-tooltip {
+  padding: 4px 8px !important; /* M3E-visual: 4 / 8 dp padding of the Plain tooltip (Tooltip.kt, PlainTooltipContentPadding) */
+  border-radius: 4px !important; /* PlainTooltip.ContainerShape */
+  background-color: {{colors.inverse_surface.default.hex}} !important;
+  box-shadow: none !important;
+}
+.gsconnect-tooltip StLabel,
+.gsconnect-tooltip StIcon {
+  font-size: 12px !important; /* PlainTooltip.SupportingTextFont.size */
+  color: {{colors.inverse_on_surface.default.hex}} !important;
+}
+
+/* == Shell: notification spacing == */
+/* Not an extension: a theme value (M3E-Shell, Notifications block) that the theme stylesheet cannot set. The stock Shell
+   sheet puts a 12 px bottom margin with !important on ".message-view .message" (origin + important rank); only a
+   higher-rank !important declaration beats it. The theme allows !important only as a number-free exception; this
+   sheet, loaded as an extension stylesheet, sits at the highest rank. Pixel-style joined notifications: 2 dp between
+   neighbouring cards (SystemUI notification_divider_height). Without m3e-extensions the gap stays 12 px. */
+.message-view .message {
+  margin-bottom: 2px !important; /* M3E-visual: notification_divider_height 2 dp (x 56/72 = 1.6, rounded up to 2 to keep a visible gap) */
+}

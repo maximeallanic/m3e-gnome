@@ -1,0 +1,9 @@
+/* == miscellaneous == */
+/* Scroll overshoot: no halo (it flashes while scrolling; M3 stretches the content instead of drawing a halo). */
+scrolledwindow overshoot.top,
+scrolledwindow overshoot.bottom,
+scrolledwindow overshoot.left,
+scrolledwindow overshoot.right {
+  background: none;
+  box-shadow: none;
+}

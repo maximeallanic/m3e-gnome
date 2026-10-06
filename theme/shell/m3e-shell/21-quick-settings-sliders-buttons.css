@@ -1,0 +1,222 @@
+/* == Sliders == */
+/* Pixel brightness slider (Android 17, SystemUI BrightnessSlider: 40 dp track, 12 dp outer and 2 dp inner corners,
+   6 dp gap around a 4 x 52 dp bar handle, 2 dp while pressed; active track primary, inactive surfaceEffect1),
+   lengths x 56/72 (desktop density, design choice). St draws the slider in JS (barLevel.js / slider.js: solid
+   track, round handle); m3e-motion (components/slider.js, constants at the top) redraws it: track of
+   -barlevel-height, 9 px outer and 2 px inner corners, 5 px gap, 4 x 40 px handle. This sheet only provides the
+   colors, the track height and the handle radius that sets the value travel. */
+.slider,
+.slider:hover,
+.slider:active,
+.slider:focus {
+  color: {{colors.primary.default.hex}};
+  -barlevel-height: 31px; /* M3E-visual: BrightnessSlider track, 40 dp x 56/72 */
+  -barlevel-background-color: rgba({{colors.surface_effect_1.default.red}}, {{colors.surface_effect_1.default.green}}, {{colors.surface_effect_1.default.blue}}, {{colors.surface_effect_1.default.opacity}}); /* M3E-visual: BrightnessSlider: inactive track = surfaceEffect1 */
+  -barlevel-active-background-color: {{colors.primary.default.hex}};
+  -barlevel-overdrive-color: {{colors.error.default.hex}};
+  -slider-handle-radius: 2px; /* M3E-visual: half of the bar handle (Slider.HandleWidth = 4 dp) drawn by m3e-motion: value travels from 2 px to width - 2 px, like the bar's center */
+}
+/* Slider focus ring: on its .slider-bin container (the stock sheet's ring is !important); background = focus state layer. */
+.quick-slider .slider-bin:focus,
+.quick-slider .slider-bin:focus:hover {
+  background-color: rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+/* A slider without a menu button (the brightness slider, or any extension's slider) has no chevron, so its track
+   would run to the panel edge. Any .slider-bin that is the last visible child of its row reserves the room of that
+   button: 40 px (Small icon button, see "System buttons") + 6 px (stock row spacing), so every track ends at the same x. */
+.quick-slider .slider-bin:last-child:ltr {
+  margin-right: 46px; /* M3E-visual: 40 dp small icon button + 6 px stock row spacing */
+}
+.quick-slider .slider-bin:last-child:rtl {
+  margin-left: 46px; /* M3E-visual: 40 dp small icon button + 6 px stock row spacing */
+}
+
+/* == Tile menu == */
+/* Menu expanded from a tile (.quick-toggle-menu): surface_container_high, Large corners, M3E list items
+   (ListTokens: 56 dp one-line row, 16 dp margins, Body large; Expressive corners 4 dp, 12 on hover, 16 on press
+   and focus; on_surface layer). The stock sheet makes it a card that lightens on hover: here the background is
+   fixed in every state. Header: icon = Small tonal icon button (Filled when the tile is active), title
+   Title large, subtitle on_surface_variant. */
+.quick-toggle-menu,
+.quick-toggle-menu:hover,
+.quick-toggle-menu:active,
+.quick-toggle-menu:active:hover,
+.quick-toggle-menu:active:focus,
+.quick-toggle-menu:focus,
+.quick-toggle-menu:focus:hover,
+.quick-toggle-menu:insensitive {
+  padding: 12px; /* M3E-visual: card inner padding (GNOME: 0.818em), the items carry their own 16 dp margins */
+  border: none;
+  border-radius: 16px; /* M3E-visual: Shape.CornerLarge, menu corners nested inside the panel (Extra large) */
+  background-color: {{colors.surface_container_high.default.hex}};
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-menu .header .icon {
+  icon-size: 24px; /* SmallIconButton.IconSize */
+  padding: 8px; /* SmallIconButton.DefaultLeadingSpace */
+  border-radius: 999px; /* SmallIconButton.ContainerShapeRound */
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.quick-toggle-menu .header .icon.active {
+  background-color: {{colors.primary.default.hex}};
+  color: {{colors.on_primary.default.hex}};
+}
+.quick-toggle-menu .header .title {
+  font-size: 22px; /* TypeScale.TitleLargeSize */
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-menu .header .subtitle {
+  font-size: 12px; /* TypeScale.LabelMediumSize */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.quick-toggle-menu .popup-menu-item {
+  min-height: 56px; /* List.ItemOneLineContainerHeight */
+  padding: 0 16px; /* List.ItemLeadingSpace */
+  border-radius: 4px; /* List.ItemContainerExpressiveShape */
+  background-color: transparent;
+  box-shadow: none;
+  font-size: 16px; /* List.ItemLabelTextFont.size */
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-menu .popup-menu-item > StIcon {
+  icon-size: 24px; /* List.ItemLeadingIconSize */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.quick-toggle-menu .popup-menu-item:hover,
+.quick-toggle-menu .popup-menu-item:selected {
+  border-radius: 12px; /* List.ItemHoveredContainerExpressiveShape */
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-menu .popup-menu-item:focus {
+  border-radius: 16px; /* List.ItemFocusedContainerExpressiveShape */
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-menu .popup-menu-item:active,
+.quick-toggle-menu .popup-menu-item:active:hover,
+.quick-toggle-menu .popup-menu-item:active:focus {
+  border-radius: 16px; /* List.ItemPressedContainerExpressiveShape */
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-menu .popup-menu-item:insensitive {
+  background-color: transparent;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* List.ItemDisabledLabelTextOpacity */
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or the icons of children). */
+.quick-toggle-menu .popup-menu-item {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+
+/* == System buttons == */
+/* System row (.quick-settings-system-item) and other icon buttons of the panel: Small tonal icon button
+   (40 dp, 24 dp icon, round, 8 dp when pressed). Flat slider buttons (.icon-button.flat): Standard icon
+   button (no container, on_surface_variant). Battery (.power-item, QuickToggle): Small tonal button. Focus:
+   the stock sheet's !important ring, no state layer (see the tiles). */
+.quick-settings .icon-button {
+  padding: 8px; /* SmallIconButton.DefaultLeadingSpace */
+  border-radius: 999px; /* SmallIconButton.ContainerShapeRound */
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.quick-settings .icon-button StIcon {
+  icon-size: 24px; /* SmallIconButton.IconSize */
+}
+.quick-settings .icon-button:hover {
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.08); /* M3E-visual: on_secondary_container state layer at 8% (State.HoverStateLayerOpacity) as a full inner shadow, since St only has a background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.quick-settings .icon-button:focus,
+.quick-settings .icon-button:focus:hover {
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.quick-settings .icon-button:active,
+.quick-settings .icon-button:active:hover,
+.quick-settings .icon-button:active:focus {
+  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.1); /* M3E-visual: on_secondary_container state layer at 10% (State.PressedStateLayerOpacity) as a full inner shadow, since St only has a background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.quick-settings .icon-button:insensitive {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* FilledTonalIconButton.DisabledContainerOpacity */
+  box-shadow: none;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* FilledTonalIconButton.DisabledOpacity */
+}
+.quick-settings .icon-button.flat,
+.quick-settings .icon-button.flat:focus {
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.quick-settings .icon-button.flat:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  box-shadow: none;
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.quick-settings .icon-button.flat:active,
+.quick-settings .icon-button.flat:active:hover {
+  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  box-shadow: none;
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.quick-settings .icon-button.flat:insensitive {
+  background-color: transparent;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* IconButton.DisabledOpacity */
+}
+.quick-settings-system-item .power-item {
+  min-height: 40px; /* ButtonSmall.ContainerHeight */
+  border-radius: 999px; /* ButtonSmall.ContainerShapeRound */
+}
+.quick-settings-system-item .power-item .quick-toggle-icon {
+  icon-size: 20px; /* ButtonSmall.IconSize */
+  padding: 10px; /* M3E-visual: (ButtonSmall.ContainerHeight 40 - ButtonSmall.IconSize 20) / 2: the tile's 11 px icon padding would make the pill 42 px high and stretch the whole row */
+}
+/* The battery is not a toggle (it only opens the power panel): Tonal button Small in every state, never the primary
+   of a checked tile, and not the faint surfaceEffect1 of an inactive tile. */
+.quick-settings-system-item .power-item,
+.quick-settings-system-item .power-item:focus,
+.quick-settings-system-item .power-item:checked,
+.quick-settings-system-item .power-item:checked:focus {
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.quick-settings-system-item .power-item:hover,
+.quick-settings-system-item .power-item:focus:hover,
+.quick-settings-system-item .power-item:checked:hover,
+.quick-settings-system-item .power-item:checked:focus:hover {
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.08); /* M3E-visual: on_secondary_container state layer at 8% (State.HoverStateLayerOpacity) as a full inner shadow, since St only has a background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.quick-settings-system-item .power-item:active,
+.quick-settings-system-item .power-item:active:hover,
+.quick-settings-system-item .power-item:active:focus,
+.quick-settings-system-item .power-item:checked:active {
+  border-radius: 8px; /* ButtonSmall.PressedContainerShape */
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.1); /* M3E-visual: on_secondary_container state layer at 10% (State.PressedStateLayerOpacity) as a full inner shadow, since St only has a background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+/* Non-clickable battery (no power panel): text only, like the stock sheet. */
+.quick-settings-system-item .power-item:insensitive {
+  background-color: transparent;
+  color: {{colors.on_surface.default.hex}};
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or the icons of children). */
+.quick-settings .icon-button {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

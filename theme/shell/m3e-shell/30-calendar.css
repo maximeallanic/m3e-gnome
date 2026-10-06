@@ -1,0 +1,243 @@
+/* == Calendar == */
+/* Clock menu (.datemenu-popover: calendar, cards, notification list) = the modal Date picker's container:
+   Extra large corners (the base menu rules set 16 dp); background is the base menus' and quick settings panel's
+   surface_container, not DatePickerModal.ContainerColor (surface_container_high): in light mode the Filled cards
+   (surface_container_highest) barely stood out against it (M3E-visual). Calendar (.calendar) = the Date picker
+   grid: round 40 dp days in 48 dp cells, Body large on_surface labels, on_surface layer on hover and press;
+   today = the Date picker's selected date, solid primary (the DateToday* tokens describe an outline, kept for
+   the chosen day when it is not today); days outside the month are dimmed; weekends look like other days (no
+   gray). Header (day button, .datemenu-today-button) = Date picker header: day in Label large, date in Headline
+   large, both on_surface_variant. Previous / next month = Small standard icon buttons. Focus: the stock sheet's
+   !important ring (box-shadow, GNOME accent), no drawable focus layer. */
+.popup-menu-content.datemenu-popover {
+  padding: 12px; /* M3E-visual: Date picker 12 dp margins (12 dp at the edges of the grid and actions) */
+  border-radius: 28px; /* DatePickerModal.ContainerShape */
+}
+.datemenu-today-button,
+.datemenu-today-button:focus {
+  padding: 8px 12px; /* M3E-visual: Date picker header aligned with the grid (12 dp from the edge), 8 dp top and bottom */
+  border-radius: 12px; /* Shape.CornerMedium */
+  background-color: transparent;
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.datemenu-today-button:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.datemenu-today-button:active,
+.datemenu-today-button:active:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.datemenu-today-button .day-label {
+  font-size: 14px; /* DatePickerModal.HeaderSupportingTextFont.size */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.datemenu-today-button .date-label {
+  font-size: 32px; /* DatePickerModal.HeaderHeadlineFont.size */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+/* Month: plain text (the stock sheet makes it a pill). Its color is set !important by the stock sheet
+   (white in dark, #222226 in light): known limitation. */
+.calendar .calendar-month-header .calendar-month-label,
+.calendar .calendar-month-header .calendar-month-label:hover,
+.calendar .calendar-month-header .calendar-month-label:focus {
+  font-size: 14px; /* TypeScale.LabelLargeSize */
+  background-color: transparent;
+  box-shadow: none;
+}
+.calendar .calendar-month-header .pager-button {
+  width: 40px; /* SmallIconButton.ContainerHeight */
+  height: 40px; /* SmallIconButton.ContainerHeight */
+  padding: 0;
+  border-radius: 999px; /* SmallIconButton.ContainerShapeRound */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.calendar .calendar-month-header .pager-button StIcon {
+  icon-size: 24px; /* SmallIconButton.IconSize */
+}
+.calendar .calendar-month-header .pager-button:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.calendar .calendar-month-header .pager-button:focus {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.calendar .calendar-month-header .pager-button:active,
+.calendar .calendar-month-header .pager-button:active:hover {
+  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.calendar .calendar-day-heading {
+  margin: 4px; /* M3E-visual: 48 dp cell around the 40 dp day */
+  padding: 0;
+  font-size: 16px; /* DatePickerModal.WeekdaysLabelTextFont.size */
+  background-color: transparent;
+  color: {{colors.on_surface.default.hex}};
+}
+.calendar .calendar-week-number {
+  background-color: transparent;
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.calendar .calendar-day {
+  width: 40px; /* DatePickerModal.DateContainerWidth */
+  height: 40px; /* DatePickerModal.DateContainerHeight */
+  margin: 4px; /* M3E-visual: 48 dp cell around the 40 dp day */
+  padding: 0;
+  border-radius: 999px; /* DatePickerModal.DateContainerShape */
+  font-size: 16px; /* DatePickerModal.DateLabelTextFont.size */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.calendar .calendar-day.calendar-weekend {
+  color: {{colors.on_surface.default.hex}};
+}
+.calendar .calendar-day.calendar-other-month,
+.calendar .calendar-day.calendar-other-month.calendar-weekend {
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* M3E-visual: days outside the month dimmed, disabled-label opacity (List.ItemDisabledLabelTextOpacity) */
+}
+.calendar .calendar-day:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.calendar .calendar-day:focus {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.calendar .calendar-day:active,
+.calendar .calendar-day:active:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+/* Chosen day (other than today): 1 dp primary outline, primary label (DateToday*). Outline drawn as an inner
+   shadow: a border would grow the day to 42 dp. */
+.calendar .calendar-day:selected,
+.calendar .calendar-day:selected:hover {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px {{colors.primary.default.hex}}; /* DatePickerModal.DateTodayContainerOutlineWidth */
+  color: {{colors.primary.default.hex}};
+}
+.calendar .calendar-day:selected:hover {
+  background-color: rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+}
+/* Today: solid primary, on_primary label. The stock sheet forces the GNOME accent (white) on the label with
+   !important: marked !important exception, the only one in this sheet besides the event dot. */
+.calendar .calendar-day.calendar-today,
+.calendar .calendar-day.calendar-today:selected,
+.calendar .calendar-day.calendar-today:focus {
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_primary.default.hex}} !important; /* important-exception: the stock sheet sets "color: -st-accent-fg-color !important" (white) on the current day, whose label is a ClutterText with no style node; an !important in the theme sheet wins over the stock one (origin-stylesheet precedence) */
+}
+.calendar .calendar-day.calendar-today:hover,
+.calendar .calendar-day.calendar-today:selected:hover {
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.08); /* M3E-visual: on_primary state layer at 8% (State.HoverStateLayerOpacity) as a full inner shadow, since St only has a background */
+  color: {{colors.on_primary.default.hex}} !important; /* important-exception: the stock sheet sets "color: -st-accent-fg-color !important" (white) on the current day, whose label is a ClutterText with no style node; an !important in the theme sheet wins over the stock one (origin-stylesheet precedence) */
+}
+.calendar .calendar-day.calendar-today:active,
+.calendar .calendar-day.calendar-today:active:hover {
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.1); /* M3E-visual: on_primary state layer at 10% (State.PressedStateLayerOpacity) as a full inner shadow, since St only has a background */
+  color: {{colors.on_primary.default.hex}} !important; /* important-exception: the stock sheet sets "color: -st-accent-fg-color !important" (white) on the current day, whose label is a ClutterText with no style node; an !important in the theme sheet wins over the stock one (origin-stylesheet precedence) */
+}
+/* "Day with events" dot on the current day: the stock sheet forces (!important) the white dot
+   (calendar-today.svg), barely visible on the light primary of dark mode. Dark dot from the gresource
+   (calendar-today-light.svg, #242424) in dark mode, white dot in light mode (on the dark primary): chosen by
+   the mode rendered by matugen. SVG colors come from GNOME, close to on_primary (#ffffff in light) but not
+   equal to it (limitation). */
+.calendar .calendar-day.calendar-today.calendar-day-with-events {
+  background-image: url("resource:///org/gnome/shell/theme/calendar-today{{ mode | replace: "light", "" | replace: "dark", "-light" }}.svg") !important; /* important-exception: the stock sheet forces the white dot on the current day with !important, unreadable on the light primary of dark mode */
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or the icons of children). */
+.calendar .calendar-day,
+.calendar .calendar-month-header .pager-button,
+.datemenu-today-button {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+
+/* == World clocks, weather, events == */
+/* Calendar cards = Filled cards: surface_container_highest, Medium corners, on_surface layer on hover and
+   press. Filled rather than Elevated: an Elevated card (surface_container_low, level 1) would be darker than the
+   menu (surface_container) carrying it and barely distinguishable in light mode; the Filled card
+   (surface_container_highest) stands out in both modes without a shadow. Cards spaced 8 dp apart, 16 dp inner
+   padding. Titles on_surface_variant, content on_surface, secondary text on_surface_variant. */
+.datemenu-calendar-column .datemenu-displays-box {
+  spacing: 8px; /* M3E-visual: cards spaced 8 dp apart */
+}
+.events-button,
+.world-clocks-button,
+.weather-button,
+.events-button:focus,
+.world-clocks-button:focus,
+.weather-button:focus {
+  margin: 0;
+  padding: 16px; /* M3E-visual: card inner padding */
+  border: none;
+  border-radius: 12px; /* FilledCard.ContainerShape */
+  background-color: {{colors.surface_container_highest.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.events-button:hover,
+.world-clocks-button:hover,
+.weather-button:hover {
+  background-color: {{colors.surface_container_highest.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: on_surface state layer at 8% (State.HoverStateLayerOpacity) as a full inner shadow, since St only has a background */
+  color: {{colors.on_surface.default.hex}};
+}
+.events-button:active,
+.world-clocks-button:active,
+.weather-button:active,
+.events-button:active:hover,
+.world-clocks-button:active:hover,
+.weather-button:active:hover {
+  background-color: {{colors.surface_container_highest.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* M3E-visual: on_surface state layer at 10% (State.PressedStateLayerOpacity) as a full inner shadow, since St only has a background */
+  color: {{colors.on_surface.default.hex}};
+}
+.events-button:insensitive,
+.world-clocks-button:insensitive,
+.weather-button:insensitive {
+  background-color: rgba({{colors.surface_variant.default.red}}, {{colors.surface_variant.default.green}}, {{colors.surface_variant.default.blue}}, 0.38); /* FilledCard.DisabledContainerOpacity */
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* List.ItemDisabledLabelTextOpacity */
+}
+.events-button .events-box .events-title,
+.world-clocks-button .world-clocks-header,
+.weather-button .weather-box .weather-header-box .weather-header {
+  font-size: 14px; /* TypeScale.TitleSmallSize */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.world-clocks-button .world-clocks-header.no-world-clocks,
+.weather-button .weather-box .weather-header-box .weather-header.no-location {
+  color: {{colors.on_surface.default.hex}};
+}
+.events-button .events-box .events-list .event-box .event-summary,
+.world-clocks-button .world-clocks-grid .world-clocks-city,
+.world-clocks-button .world-clocks-grid .world-clocks-time,
+.weather-button .weather-box .weather-grid .weather-forecast-temp {
+  color: {{colors.on_surface.default.hex}};
+}
+.events-button .events-box .events-list .event-box .event-time,
+.events-button .events-box .events-list .event-placeholder,
+.world-clocks-button .world-clocks-grid .world-clocks-timezone,
+.weather-button .weather-box .weather-grid .weather-forecast-time,
+.weather-button .weather-box .weather-grid .weather-forecast-icon {
+  color: {{colors.on_surface_variant.default.hex}};
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or the icons of children). */
+.events-button,
+.weather-button,
+.world-clocks-button {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

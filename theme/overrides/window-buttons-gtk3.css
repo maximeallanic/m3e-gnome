@@ -1,0 +1,119 @@
+/* Unified title bars and window buttons (GTK 3, libhandy, libdecor).
+   Same geometry as window-buttons-gtk4.css (matched to Chrome):
+     bar 40 px · buttons 30 × 30 · glyph 16 px · gap 6 px (internal spacing
+     of GtkHeaderBar) · 10 px at the edge.
+   Single bar: title, bar icons and window buttons in on_surface, at 50 % when the window is inactive
+   (GTK 3 has no filter: translucent colour, same level as libadwaita's filter in GTK 4). Hover = 30 px circle, on_surface at 8 % (12 % on press), no animation. */
+
+/* ---- Bar height ---- */
+headerbar,
+headerbar:backdrop,
+window.maximized headerbar {
+  min-height: 40px;
+  padding: 0 10px;
+}
+headerbar > box.left,
+headerbar > box.right { padding: 0; }
+/* "default" bar of windows without a headerbar: 5 + 30 + 5 = 40 px */
+.titlebar.default-decoration,
+.background.csd .titlebar.default-decoration,
+.titlebar.default-decoration:backdrop {
+  min-height: 30px;
+  padding: 5px 10px;
+}
+headerbar button {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* ---- Bar colours: a single content colour ----
+   Material-Gnome sets .titlebar to primary (70 % when the window is inactive); libhandy bars (e.g. GNOME Disks)
+   inherit on_surface; the bar buttons use on_surface (m3e-gtk3.css). */
+headerbar,
+.titlebar,
+headerbar .title,
+.titlebar .title {
+  color: @on_surface;
+}
+headerbar:backdrop,
+.titlebar:backdrop,
+headerbar .title:backdrop,
+.titlebar .title:backdrop,
+headerbar button:backdrop:not(.suggested-action):not(.destructive-action):not(:checked) {
+  color: alpha(@on_surface, 0.5);
+}
+
+/* ---- Window buttons ---- */
+headerbar button.titlebutton,
+.titlebar button.titlebutton,
+.titlebar.default-decoration button.titlebutton,
+headerbar button.titlebutton:hover,
+.titlebar button.titlebutton:hover,
+headerbar button.titlebutton:active,
+.titlebar button.titlebutton:active,
+headerbar button.titlebutton:backdrop,
+.titlebar button.titlebutton:backdrop {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  color: @on_surface;
+  -gtk-icon-shadow: none;
+  transition: none;
+}
+headerbar button.titlebutton image,
+.titlebar button.titlebutton image { background: none; padding: 0; -gtk-icon-transform: none; }
+headerbar button.titlebutton:hover,
+.titlebar button.titlebutton:hover {
+  background-image: radial-gradient(circle closest-side, alpha(@on_surface, 0.08) 94%, transparent 100%);
+}
+headerbar button.titlebutton:active,
+.titlebar button.titlebutton:active {
+  background-image: radial-gradient(circle closest-side, alpha(@on_surface, 0.12) 94%, transparent 100%);
+}
+headerbar button.titlebutton:backdrop,
+/* inactive: same dimming as the title; Material-Gnome adds an opacity of 0.65 here, reset to 1 */
+.titlebar button.titlebutton:backdrop { color: alpha(@on_surface, 0.5); opacity: 1; }
+
+/* ---- Window: corners and shadow identical to GTK 4 (Material-Gnome's window.csd) ----
+   Material-Gnome's GTK 3 theme sets "box-shadow: none" on decoration: GTK 3 windows had no shadow.
+   GTK 3 blurs much more than GTK 4 for the same radius: blurs x 0.55 (active) and x 0.65 (inactive); profiles measured equal within +-2 grey levels.
+   "window" and "messagedialog" only: menus (.popup) and tooltips keep their own. */
+window.csd:not(.popup) > decoration,
+messagedialog.csd > decoration {
+  border-radius: 12px;
+  box-shadow: 0 8px 3.3px -5px rgba(0, 0, 0, 0.2),
+              0 16px 8.25px 2px rgba(0, 0, 0, 0.14),
+              0 6px 9.9px 5px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 75ms cubic-bezier(0, 0, 0.2, 1);
+}
+window.csd:not(.popup):backdrop > decoration,
+messagedialog.csd:backdrop > decoration {
+  box-shadow: 0 2px 1.95px -1px rgba(0, 0, 0, 0.15),
+              0 4px 1.95px 0 rgba(0, 0, 0, 0.18),
+              0 1px 3.9px 0 rgba(0, 0, 0, 0.12);
+}
+window.csd.maximized:not(.popup) > decoration, window.csd.fullscreen:not(.popup) > decoration,
+window.csd.tiled:not(.popup) > decoration, window.csd.tiled-top:not(.popup) > decoration,
+window.csd.tiled-right:not(.popup) > decoration, window.csd.tiled-bottom:not(.popup) > decoration,
+window.csd.tiled-left:not(.popup) > decoration, window.solid-csd:not(.popup) > decoration {
+  border-radius: 0;
+  box-shadow: none;
+}
+/* libhandy (e.g. GNOME Disks) clips the window to its own border-radius, which the theme sets to "0 0 12px 12px":
+   the top corners came out square. */
+window.background.csd.unified { border-radius: 12px; }
+window.background.csd.unified.maximized, window.background.csd.unified.fullscreen,
+window.background.csd.unified.tiled, window.background.csd.unified.tiled-top,
+window.background.csd.unified.tiled-right, window.background.csd.unified.tiled-bottom,
+window.background.csd.unified.tiled-left, window.background.solid-csd.unified { border-radius: 0; }
+/* top highlight line tinted like GTK 4 (primary 10 % instead of on_surface 10 %) */
+.csd .titlebar,
+.csd headerbar.titlebar,
+window.background.csd.unified headerbar { box-shadow: inset 0 1px alpha(@primary, 0.1); }
+.csd.maximized .titlebar, .csd.fullscreen .titlebar, .csd.tiled .titlebar { box-shadow: none; }

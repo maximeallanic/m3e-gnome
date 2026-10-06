@@ -1,0 +1,126 @@
+/* == slider-progress == */
+/* Expressive slider: 16 dp track (active primary, inactive secondary_container), 4 x 44 dp bar handle,
+   6 dp gap around the handle, 4 dp stop indicator 6 dp from the end. GTK does not cut the track around
+   the handle: the gap is a shadow in the window background colour (surface); on any other background it shows
+   (known limitation, see the project docs). */
+scale:not(#m3e) {
+  padding: 14px 0; /* M3E-visual: (44 - 16) / 2: room for the handle that overflows the track */
+  outline: none;
+}
+scale:not(#m3e) > trough {
+  min-height: 16px; /* Slider.InactiveTrackHeight */
+  border-radius: 9999px; /* Slider.InactiveTrackShape */
+  outline: none;
+  opacity: 1;
+  background-color: var(--secondary_container);
+  background-image: radial-gradient(circle 2px at calc(100% - 8px) 50%, var(--primary) 1.5px, alpha(var(--primary), 0) 2px); /* M3E-visual: 4 dp stop indicator (Slider.StopIndicatorSize) 6 dp from the end (Slider.StopIndicatorTrailingSpace); primary colour (Slider.HoverStopColor) */
+  background-repeat: no-repeat;
+}
+scale:not(#m3e) > trough > highlight {
+  min-height: 16px; /* Slider.ActiveTrackHeight */
+  border-radius: 9999px 2px 2px 9999px; /* M3E-visual: full outer end, 2 dp inner corner next to the handle ("sliders" images) */
+  background-color: var(--primary);
+  opacity: 1;
+}
+scale:not(#m3e) > trough > highlight:dir(rtl) {
+  border-radius: 2px 9999px 9999px 2px; /* M3E-visual: mirrored for right-to-left scripts */
+}
+scale:not(#m3e) > trough > slider {
+  min-width: 4px; /* Slider.HandleWidth */
+  min-height: 44px; /* Slider.HandleHeight */
+  margin: -14px 0; /* M3E-visual: (44 - 16) / 2: handle centred on the track */
+  border: none;
+  border-radius: 9999px; /* Slider.HandleShape */
+  outline: 0 solid transparent;
+  outline-offset: 2px; /* M3E-visual: focus ring offset by 2 dp */
+  background-color: var(--primary);
+  box-shadow: 0 0 0 6px var(--surface); /* M3E-visual: 6 dp gap (Slider.ActiveHandleLeadingSpace) drawn in the background colour */
+  transform: none;
+}
+scale:not(#m3e) > trough > slider:hover {
+  background-color: var(--primary);
+  box-shadow: 0 0 0 6px var(--surface); /* M3E-visual: 6 dp gap (Slider.ActiveHandleLeadingSpace) */
+}
+scale:not(#m3e):active > trough > slider,
+scale:not(#m3e) > trough > slider:active {
+  min-width: 2px; /* M3E-visual: handle thinned on press ("5 states of sliders" image) */
+  margin: -14px 1px; /* M3E-visual: keeps the centre of the 4 dp handle */
+  background-color: var(--primary);
+  box-shadow: 0 0 0 7px var(--surface); /* M3E-visual: 6 dp gap + 1 dp released by the thinning */
+}
+scale:not(#m3e):focus-visible > trough > slider {
+  outline: 3px solid var(--secondary); /* M3E-visual: 3 dp focus ring */
+}
+scale:not(#m3e).vertical {
+  padding: 0 14px; /* M3E-visual: (44 - 16) / 2 */
+}
+scale:not(#m3e).vertical > trough {
+  min-width: 16px; /* Slider.InactiveTrackHeight */
+  min-height: 0;
+  background-image: none;
+}
+scale:not(#m3e).vertical > trough > highlight {
+  min-width: 16px; /* Slider.ActiveTrackHeight */
+  min-height: 0;
+  border-radius: 9999px; /* Slider.ActiveTrackShape */
+}
+scale:not(#m3e).vertical > trough > slider {
+  min-width: 44px; /* Slider.HandleHeight */
+  min-height: 4px; /* Slider.HandleWidth */
+  margin: 0 -14px; /* M3E-visual: (44 - 16) / 2 */
+}
+scale:not(#m3e).vertical:active > trough > slider,
+scale:not(#m3e).vertical > trough > slider:active {
+  min-height: 2px; /* M3E-visual: handle thinned on press, as in horizontal */
+  margin: 1px -14px; /* M3E-visual: keeps the centre of the 4 dp handle */
+}
+scale:not(#m3e) > trough:disabled,
+scale:not(#m3e):disabled > trough {
+  background-color: alpha(var(--on_surface), 0.12); /* Slider.DisabledInactiveTrackOpacity */
+  background-image: none;
+  opacity: 1;
+  filter: none;
+}
+scale:not(#m3e):disabled > trough > highlight,
+scale:not(#m3e) > trough > highlight:disabled {
+  background-color: alpha(var(--on_surface), 0.38); /* Slider.DisabledActiveTrackOpacity */
+}
+scale:not(#m3e):disabled > trough > slider,
+scale:not(#m3e) > trough > slider:disabled {
+  background-color: color-mix(in srgb, var(--on_surface) 38%, var(--surface)); /* M3E-visual: on_surface at 38 % (Slider.DisabledHandleOpacity) made opaque, otherwise the track shows through */
+}
+scale:not(#m3e):disabled {
+  filter: none;
+  opacity: 1;
+}
+
+/* Linear progress bar: 4 dp, active primary, track secondary_container, 4 dp gap between the two
+   (shadow in the background colour, as for the slider), 4 dp stop indicator at the end of the track. */
+progressbar:not(#m3e) > trough {
+  min-height: 4px; /* LinearProgressIndicator.TrackThickness */
+  min-width: 0;
+  border: none;
+  border-radius: 9999px; /* ProgressIndicator.TrackShape */
+  background-color: var(--secondary_container);
+  background-image: radial-gradient(circle 2px at calc(100% - 2px) 50%, var(--primary) 1.5px, alpha(var(--primary), 0) 2px); /* M3E-visual: 4 dp stop indicator (LinearProgressIndicator.StopSize) at the end of the track (StopTrailingSpace = 0) */
+  background-repeat: no-repeat;
+  box-shadow: none;
+}
+progressbar:not(#m3e) > trough > progress {
+  min-height: 4px; /* LinearProgressIndicator.ActiveThickness */
+  border: none;
+  border-radius: 9999px; /* ProgressIndicator.ActiveShape */
+  background-color: var(--primary);
+  background-image: none;
+  box-shadow: 4px 0 0 0 var(--surface); /* M3E-visual: 4 dp gap (LinearProgressIndicator.TrackActiveSpace) drawn in the background colour */
+}
+progressbar:not(#m3e) > trough > progress:dir(rtl) {
+  box-shadow: -4px 0 0 0 var(--surface); /* M3E-visual: 4 dp gap, mirrored */
+}
+progressbar:not(#m3e).vertical > trough,
+progressbar:not(#m3e).vertical > trough > progress {
+  min-height: 0;
+  min-width: 4px; /* LinearProgressIndicator.TrackThickness */
+  background-image: none;
+  box-shadow: none;
+}

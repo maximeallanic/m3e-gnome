@@ -1,0 +1,84 @@
+/* Navigation drawer (sidebars): 40 dp items (desktop density; 56 dp was too big in Files and Settings),
+   active indicator as a secondary_container pill, 12 dp margins around, 16 dp before the label. */
+stacksidebar:not(#m3e) list > row:not(#m3e),
+list.navigation-sidebar:not(#m3e) > row:not(#m3e) {
+  min-height: 40px; /* M3E-visual: NavigationDrawer.ActiveIndicatorHeight (56) reduced to 40 dp, desktop density */
+  margin: 0 12px 0 12px; /* M3E-visual: 12 dp margins ("standard navigation drawer ... padding and margins" image) */
+  padding: 0 0 0 16px; /* M3E-visual: 16 dp before the label, nothing on the right: the eject button in Files (the only row with content on the right) touches the right edge of the pill, all aligned */
+  border-radius: 9999px; /* NavigationDrawer.ActiveIndicatorShape */
+  background-color: transparent;
+  background-image: none;
+  color: var(--on_surface_variant);
+  box-shadow: none;
+  outline: none;
+}
+stacksidebar:not(#m3e) list > row:not(#m3e):hover,
+list.navigation-sidebar:not(#m3e) > row:not(#m3e):hover {
+  background-color: alpha(var(--on_surface), 0.08); /* State.HoverStateLayerOpacity */
+  color: var(--on_surface);
+}
+stacksidebar:not(#m3e) list > row:not(#m3e):active,
+list.navigation-sidebar:not(#m3e) > row:not(#m3e):active {
+  background-color: alpha(var(--on_surface), 0.1); /* State.PressedStateLayerOpacity */
+}
+stacksidebar:not(#m3e) list > row:not(#m3e):selected,
+list.navigation-sidebar:not(#m3e) > row:not(#m3e):selected {
+  border-radius: 9999px; /* NavigationDrawer.ActiveIndicatorShape */
+  background-color: var(--secondary_container);
+  color: var(--on_secondary_container);
+}
+stacksidebar:not(#m3e) list > row:not(#m3e):selected:hover,
+list.navigation-sidebar:not(#m3e) > row:not(#m3e):selected:hover {
+  background-image: image(alpha(var(--on_secondary_container), 0.08)); /* State.HoverStateLayerOpacity */
+}
+stacksidebar:not(#m3e) list > row:not(#m3e) label,
+list.navigation-sidebar:not(#m3e) > row:not(#m3e) label,
+list.navigation-sidebar:not(#m3e) > row:not(#m3e) image {
+  color: inherit;
+}
+stacksidebar:not(#m3e),
+stacksidebar:not(#m3e) > scrolledwindow {
+  border: none;
+  box-shadow: none;
+}
+stacksidebar:not(#m3e) list,
+.navigation-sidebar:not(#m3e) {
+  background-color: var(--surface);
+}
+/* Settings (gnome-control-center): each row carries a grid with fixed 12 px margins (set in code),
+   stuck to the top when the row is taller than its content: icon and label sat 6 px too high in the pill.
+   Label (not the description, hidden outside search) and icon set to 16 px: grid of 12 + 16 + 12 = 40,
+   content centred, same pill as Files. The "> grid" selector targets Settings rows only. */
+list.navigation-sidebar:not(#m3e) > row:not(#m3e) > grid > label:not(.dim-label),
+list.navigation-sidebar:not(#m3e) > row:not(#m3e) > grid > image {
+  min-height: 16px; /* M3E-visual: 40 dp (reduced row height) - 2 x 12 margin set by gnome-control-center */
+}
+/* Files: eject button of a volume (24 px instead of the 40 dp of an icon button, in a 40 dp row). */
+button:not(#m3e).sidebar-button {
+  min-width: 24px; /* M3E-visual: 24 px eject button = 16 dp icon + 2 x 4 */
+  min-height: 24px; /* M3E-visual: 24 px eject button = 16 dp icon + 2 x 4 */
+  padding: 4px; /* M3E-visual: 16 dp icon + 2 x 4 = 24 dp */
+  margin: 0 0 0 4px; /* M3E-visual: 4 px gap before the eject button */
+  -gtk-icon-size: 16px; /* M3E-visual: 16 dp icon */
+}
+/* Files: no favourite star (list view, properties window), by design choice.
+   Nautilus has no setting to hide it: the button is shrunk to nothing and made invisible (GTK has no display:none). */
+button:not(#m3e).star {
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  -gtk-icon-size: 0;
+}
+/* Files: the content of a places row is inside a GtkRevealer ("sidebar-revealer") that adds its own
+   16 dp inset on each side; on the right it is removed so the eject button sits against the edge of the pill. */
+revealer.sidebar-revealer:not(#m3e) {
+  padding-right: 0;
+}
+/* Separators between groups (Settings, Files): outline_variant divider aligned with the row content.
+   Material-Gnome makes them surface_variant at 12 % (invisible): only a gap showed between two groups. */
+list.navigation-sidebar:not(#m3e) > separator {
+  margin: 8px 28px 8px 28px; /* M3E-visual: 12 dp row margin + 16 dp (List.DividerLeadingSpace) at the sides, 8 dp above and below */
+  background-color: var(--outline_variant);
+}

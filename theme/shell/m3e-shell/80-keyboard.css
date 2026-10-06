@@ -1,0 +1,129 @@
+/* == On-screen keyboard == */
+/* Background (#keyboard) surface_dim and normal keys surface_bright / on_surface: surface roles from lowest to
+   highest, light keys on a grey background in light mode, grey keys on a near-black background in dark mode (Material
+   keyboard look);
+   M3E-visual: surface_container (DockedToolbar.ContainerColor) under surface_container_highest keys hardly stood out
+   in light mode (12 per channel). Keys = Medium square-shaped buttons (16 dp, 12 when pressed), no shadow, Title large
+   label. Special key (.default-key: Shift, backspace, Enter, ?123...) = Tonal button, secondary_container /
+   on_secondary_container; the normal key takes a neutral surface rather than the Tonal
+   (M3E-visual: if it were secondary_container too, the special keys would be indistinguishable).
+   Latched Shift (:latched) and checked keys = Selected Tonal (secondary / on_secondary). 8 / 10% layers of the
+   content color, blended into the background (the stock !important focus ring occupies the shadow). */
+#keyboard {
+  background-color: {{colors.surface_dim.default.hex}};
+  box-shadow: none;
+}
+#keyboard .page-indicator .page-indicator-icon {
+  color: {{colors.on_surface_variant.default.hex}};
+}
+/* Keyboard page dots: stock sizes kept (the app grid block sets the Pixel PagerDots on .page-indicator, which would
+   otherwise take precedence over the stock #keyboard rules). */
+#keyboard .page-indicator {
+  padding: 6px; /* M3E-visual: stock margin (#keyboard .page-indicator) */
+}
+#keyboard .page-indicator .page-indicator-icon {
+  width: 8px; /* M3E-visual: stock dot (#keyboard .page-indicator-icon) */
+  height: 8px; /* M3E-visual: see width */
+}
+.keyboard-key {
+  font-size: 22px; /* TypeScale.TitleLargeSize */
+  border: none;
+  border-radius: 16px; /* ButtonMedium.ContainerShapeSquare */
+  box-shadow: none;
+  background-color: {{colors.surface_bright.default.hex}};
+  color: {{colors.on_surface.default.hex}};
+}
+.keyboard-key StIcon {
+  icon-size: 24px; /* ButtonMedium.IconSize */
+}
+.keyboard-key:hover {
+  background-color: st-mix({{colors.on_surface.default.hex}}, {{colors.surface_bright.default.hex}}, 8%); /* M3E-visual: on_surface state layer at 8% (State.HoverStateLayerOpacity) blended into the background */
+  color: {{colors.on_surface.default.hex}};
+}
+.keyboard-key:focus,
+.keyboard-key:focus:hover {
+  background-color: st-mix({{colors.on_surface.default.hex}}, {{colors.surface_bright.default.hex}}, 10%); /* M3E-visual: on_surface state layer at 10% (State.FocusStateLayerOpacity) blended into the background */
+  color: {{colors.on_surface.default.hex}};
+}
+.keyboard-key:active,
+.keyboard-key:active:hover,
+.keyboard-key:active:focus {
+  border-radius: 12px; /* ButtonMedium.PressedContainerShape */
+  background-color: st-mix({{colors.on_surface.default.hex}}, {{colors.surface_bright.default.hex}}, 10%); /* M3E-visual: on_surface state layer at 10% (State.PressedStateLayerOpacity) blended into the background */
+  color: {{colors.on_surface.default.hex}};
+}
+.keyboard-key:checked,
+.keyboard-key:checked:hover,
+.keyboard-key:checked:active {
+  background-color: {{colors.secondary.default.hex}};
+  color: {{colors.on_secondary.default.hex}};
+}
+.keyboard-key.default-key {
+  border: none;
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.keyboard-key.default-key:hover {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 8%); /* M3E-visual: on_secondary_container state layer at 8% (State.HoverStateLayerOpacity) blended into the background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.keyboard-key.default-key:focus,
+.keyboard-key.default-key:focus:hover {
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 10%); /* M3E-visual: on_secondary_container state layer at 10% (State.FocusStateLayerOpacity) blended into the background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.keyboard-key.default-key:active,
+.keyboard-key.default-key:active:hover,
+.keyboard-key.default-key:active:focus {
+  border-radius: 12px; /* ButtonMedium.PressedContainerShape */
+  background-color: st-mix({{colors.on_secondary_container.default.hex}}, {{colors.secondary_container.default.hex}}, 10%); /* M3E-visual: on_secondary_container state layer at 10% (State.PressedStateLayerOpacity) blended into the background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.keyboard-key.default-key:checked,
+.keyboard-key.default-key:checked:hover,
+.keyboard-key.default-key:checked:active,
+.keyboard-key.default-key:latched {
+  background-color: {{colors.secondary.default.hex}};
+  color: {{colors.on_secondary.default.hex}};
+}
+/* Emoji page keys: no container (stock), selected emoji (:latched) in Selected Tonal. */
+.emoji-page .keyboard-key {
+  background-color: transparent;
+}
+.emoji-panel .keyboard-key:latched {
+  background-color: {{colors.secondary.default.hex}};
+  color: {{colors.on_secondary.default.hex}};
+}
+/* Subkeys (accents): floating menu surface_container_high, Extra large corners, like the menus. */
+.keyboard-subkeys-boxpointer {
+  -arrow-border-radius: 28px; /* Shape.CornerExtraLarge */
+  -arrow-background-color: {{colors.surface_container_high.default.hex}};
+  -arrow-border-width: 0;
+  -arrow-border-color: transparent;
+  border-radius: 28px; /* Shape.CornerExtraLarge */
+  box-shadow: 0 2px 6px 2px rgba({{colors.shadow.default.red}}, {{colors.shadow.default.green}}, {{colors.shadow.default.blue}}, 0.15); /* M3E-visual: Elevation level 2 shadow (Menu.ContainerElevation = 3 dp), like the menus */
+}
+/* Word suggestions = on_surface Text buttons (pill, on_surface layers). */
+.word-suggestions {
+  color: {{colors.on_surface.default.hex}};
+}
+.word-suggestions StButton {
+  border-radius: 999px; /* ButtonSmall.ContainerShapeRound */
+  color: {{colors.on_surface.default.hex}};
+}
+.word-suggestions StButton:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.word-suggestions StButton:focus,
+.word-suggestions StButton:focus:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.word-suggestions StButton:active,
+.word-suggestions StButton:active:hover,
+.word-suggestions StButton:checked {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+

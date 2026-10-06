@@ -1,0 +1,5773 @@
+{
+ "ButtonGroupSmall": {
+  "BetweenSpace": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 40.0
+  }
+ },
+ "ButtonLarge": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 96.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "IconLabelSpace": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "LeadingSpace": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "TrailingSpace": {
+   "type": "dp",
+   "value": 48.0
+  }
+ },
+ "ButtonMedium": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "IconLabelSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "LeadingSpace": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "TrailingSpace": {
+   "type": "dp",
+   "value": 24.0
+  }
+ },
+ "ButtonSmall": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "IconLabelSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "LeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "TrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  }
+ },
+ "ButtonXLarge": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 136.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "IconLabelSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "LeadingSpace": {
+   "type": "dp",
+   "value": 64.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 3.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "TrailingSpace": {
+   "type": "dp",
+   "value": 64.0
+  }
+ },
+ "ButtonXSmall": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "IconLabelSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "LeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "TrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  }
+ },
+ "Checkbox": {
+  "ContainerShape": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "ContainerSize": {
+   "type": "dp",
+   "value": 18.0
+  },
+  "FocusIndicatorColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 18.0
+  },
+  "SelectedContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedDisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "SelectedDisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "SelectedDisabledContainerOutlineWidth": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "SelectedDisabledIconColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "SelectedErrorContainerColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "SelectedErrorFocusContainerColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "SelectedErrorFocusIconColor": {
+   "type": "role",
+   "value": "on_error"
+  },
+  "SelectedErrorHoverContainerColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "SelectedErrorHoverIconColor": {
+   "type": "role",
+   "value": "on_error"
+  },
+  "SelectedErrorIconColor": {
+   "type": "role",
+   "value": "on_error"
+  },
+  "SelectedErrorPressedContainerColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "SelectedErrorPressedIconColor": {
+   "type": "role",
+   "value": "on_error"
+  },
+  "SelectedFocusContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedFocusIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedFocusOutlineWidth": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "SelectedHoverContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedHoverIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedHoverOutlineWidth": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "SelectedIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedOutlineWidth": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "SelectedPressedContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedPressedIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedPressedOutlineWidth": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "StateLayerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "StateLayerSize": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "UnselectedDisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "UnselectedDisabledOutlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "UnselectedDisabledOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "UnselectedErrorFocusOutlineColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "UnselectedErrorHoverOutlineColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "UnselectedErrorOutlineColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "UnselectedErrorPressedOutlineColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "UnselectedFocusOutlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "UnselectedFocusOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "UnselectedHoverOutlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "UnselectedHoverOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "UnselectedOutlineColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "UnselectedPressedOutlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "UnselectedPressedOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  }
+ },
+ "CircularProgressIndicator": {
+  "ActiveThickness": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "ActiveWaveAmplitude": {
+   "type": "dp",
+   "value": 1.6
+  },
+  "ActiveWaveWavelength": {
+   "type": "dp",
+   "value": 15.0
+  },
+  "Size": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "TrackActiveSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "TrackThickness": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "WaveSize": {
+   "type": "dp",
+   "value": 48.0
+  }
+ },
+ "ColorSchemeKey": {},
+ "ConnectedButtonGroupSmall": {
+  "BetweenSpace": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "InnerCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "PressedInnerCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "SelectedInnerCornerCornerSizePercent": {
+   "type": "number",
+   "value": 50.0
+  }
+ },
+ "DatePickerModal": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface_container_high"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level3",
+   "type": "dp",
+   "value": 6.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 568.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "ContainerWidth": {
+   "type": "dp",
+   "value": 360.0
+  },
+  "DateContainerHeight": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "DateContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "DateContainerWidth": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "DateLabelTextFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "DateSelectedContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "DateSelectedLabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "DateStateLayerHeight": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "DateStateLayerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "DateStateLayerWidth": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "DateTodayContainerOutlineColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "DateTodayContainerOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "DateTodayLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "DateUnselectedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HeaderContainerHeight": {
+   "type": "dp",
+   "value": 120.0
+  },
+  "HeaderContainerWidth": {
+   "type": "dp",
+   "value": 360.0
+  },
+  "HeaderHeadlineColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HeaderHeadlineFont": {
+   "source": "TypographyKeyTokens.HeadlineLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 40.0,
+    "size": 32.0,
+    "tracking": 0.0,
+    "weight": 400
+   }
+  },
+  "HeaderSupportingTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HeaderSupportingTextFont": {
+   "source": "TypographyKeyTokens.LabelLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "RangeSelectionActiveIndicatorContainerColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "RangeSelectionActiveIndicatorContainerHeight": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "RangeSelectionActiveIndicatorContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "RangeSelectionContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "RangeSelectionContainerShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "RangeSelectionHeaderContainerHeight": {
+   "type": "dp",
+   "value": 128.0
+  },
+  "RangeSelectionHeaderHeadlineFont": {
+   "source": "TypographyKeyTokens.TitleLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 28.0,
+    "size": 22.0,
+    "tracking": 0.0,
+    "weight": 400
+   }
+  },
+  "RangeSelectionMonthSubheadColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "RangeSelectionMonthSubheadFont": {
+   "source": "TypographyKeyTokens.TitleSmall",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "SelectionDateInRangeLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "SelectionYearContainerHeight": {
+   "type": "dp",
+   "value": 36.0
+  },
+  "SelectionYearContainerWidth": {
+   "type": "dp",
+   "value": 72.0
+  },
+  "SelectionYearLabelTextFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "SelectionYearSelectedContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectionYearSelectedLabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectionYearStateLayerHeight": {
+   "type": "dp",
+   "value": 36.0
+  },
+  "SelectionYearStateLayerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "SelectionYearStateLayerWidth": {
+   "type": "dp",
+   "value": 72.0
+  },
+  "SelectionYearUnselectedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "WeekdaysLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "WeekdaysLabelTextFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  }
+ },
+ "Dialog": {
+  "ActionFocusLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActionHoverLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActionLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActionLabelTextFont": {
+   "source": "TypographyKeyTokens.LabelLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "ActionPressedLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface_container_high"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level3",
+   "type": "dp",
+   "value": 6.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "HeadlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HeadlineFont": {
+   "source": "TypographyKeyTokens.HeadlineSmall",
+   "type": "typography",
+   "value": {
+    "line_height": 32.0,
+    "size": 24.0,
+    "tracking": 0.0,
+    "weight": 400
+   }
+  },
+  "IconColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "SupportingTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "SupportingTextFont": {
+   "source": "TypographyKeyTokens.BodyMedium",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.2,
+    "weight": 400
+   }
+  }
+ },
+ "DockedToolbar": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface_container"
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 64.0
+  },
+  "ContainerLeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "ContainerMaxSpacing": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "ContainerMinSpacing": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerTrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  }
+ },
+ "ElevatedCard": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface_container_low"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "DisabledContainerColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "DisabledContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  },
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DraggedContainerElevation": {
+   "source": "ElevationTokens.Level4",
+   "type": "dp",
+   "value": 8.0
+  },
+  "FocusContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  },
+  "FocusIndicatorColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "HoverContainerElevation": {
+   "source": "ElevationTokens.Level2",
+   "type": "dp",
+   "value": 3.0
+  },
+  "IconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "PressedContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  }
+ },
+ "Elevation": {
+  "Level0": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "Level1": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "Level2": {
+   "type": "dp",
+   "value": 3.0
+  },
+  "Level3": {
+   "type": "dp",
+   "value": 6.0
+  },
+  "Level4": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "Level5": {
+   "type": "dp",
+   "value": 12.0
+  }
+ },
+ "ExpressiveMotion": {
+  "SpringDefaultEffectsDamping": {
+   "type": "number",
+   "value": 1.0
+  },
+  "SpringDefaultEffectsStiffness": {
+   "type": "number",
+   "value": 1600.0
+  },
+  "SpringDefaultSpatialDamping": {
+   "type": "number",
+   "value": 0.8
+  },
+  "SpringDefaultSpatialStiffness": {
+   "type": "number",
+   "value": 380.0
+  },
+  "SpringFastEffectsDamping": {
+   "type": "number",
+   "value": 1.0
+  },
+  "SpringFastEffectsStiffness": {
+   "type": "number",
+   "value": 3800.0
+  },
+  "SpringFastSpatialDamping": {
+   "type": "number",
+   "value": 0.6
+  },
+  "SpringFastSpatialStiffness": {
+   "type": "number",
+   "value": 800.0
+  },
+  "SpringSlowEffectsDamping": {
+   "type": "number",
+   "value": 1.0
+  },
+  "SpringSlowEffectsStiffness": {
+   "type": "number",
+   "value": 800.0
+  },
+  "SpringSlowSpatialDamping": {
+   "type": "number",
+   "value": 0.8
+  },
+  "SpringSlowSpatialStiffness": {
+   "type": "number",
+   "value": 200.0
+  }
+ },
+ "FilledButton": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "DisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "DisabledIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "DisabledIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "DisabledLabelTextOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "FocusedContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "FocusedIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "FocusedLabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "HoveredContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  },
+  "HoveredIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "HoveredLabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "IconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "LabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "LabelTextSelectedColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "LabelTextUnselectedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "PressedContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "PressedIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "PressedLabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedFocusedIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedFocusedLabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedHoveredIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedHoveredLabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedPressedIconColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedPressedLabelTextColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "UnselectedContainerColor": {
+   "type": "role",
+   "value": "surface_container"
+  },
+  "UnselectedFocusedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedFocusedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedHoveredIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedHoveredLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  }
+ },
+ "FilledCard": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "DisabledContainerColor": {
+   "type": "role",
+   "value": "surface_variant"
+  },
+  "DisabledContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DraggedContainerElevation": {
+   "source": "ElevationTokens.Level3",
+   "type": "dp",
+   "value": 6.0
+  },
+  "FocusContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "FocusIndicatorColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "HoverContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  },
+  "IconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "PressedContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  }
+ },
+ "FilledIconButton": {
+  "Color": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "ContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "DisabledColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "DisabledOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "FocusedColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "HoveredColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "PressedColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedFocusedColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedHoveredColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedPressedColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "UnselectedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedContainerColor": {
+   "type": "role",
+   "value": "surface_container"
+  },
+  "UnselectedFocusedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedHoveredColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  }
+ },
+ "FilledTextField": {
+  "ActiveIndicatorColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ActiveIndicatorHeight": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "CaretColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerExtraSmallTop",
+   "type": "corners",
+   "value": [
+    4.0,
+    4.0,
+    0.0,
+    0.0
+   ]
+  },
+  "DisabledActiveIndicatorColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledActiveIndicatorHeight": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "DisabledActiveIndicatorOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.04
+  },
+  "DisabledInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledInputOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledLabelColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledLabelOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledLeadingIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledSupportingColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledSupportingOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledTrailingIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ErrorActiveIndicatorColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusActiveIndicatorColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusCaretColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ErrorFocusLabelColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ErrorFocusSupportingColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusTrailingIconColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorHoverActiveIndicatorColor": {
+   "type": "role",
+   "value": "on_error_container"
+  },
+  "ErrorHoverInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ErrorHoverLabelColor": {
+   "type": "role",
+   "value": "on_error_container"
+  },
+  "ErrorHoverLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ErrorHoverSupportingColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorHoverTrailingIconColor": {
+   "type": "role",
+   "value": "on_error_container"
+  },
+  "ErrorInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ErrorLabelColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ErrorSupportingColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorTrailingIconColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "FocusActiveIndicatorColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "FocusActiveIndicatorHeight": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "FocusInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "FocusLabelColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "FocusLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "FocusSupportingColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "FocusTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoverActiveIndicatorColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HoverActiveIndicatorHeight": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "HoverInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HoverLabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoverLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoverSupportingColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoverTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InputFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "InputPlaceholderColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InputPrefixColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InputSuffixColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LabelFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "LeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LeadingIconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "SupportingColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "SupportingFont": {
+   "source": "TypographyKeyTokens.BodySmall",
+   "type": "typography",
+   "value": {
+    "line_height": 16.0,
+    "size": 12.0,
+    "tracking": 0.4,
+    "weight": 400
+   }
+  },
+  "TrailingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "TrailingIconSize": {
+   "type": "dp",
+   "value": 24.0
+  }
+ },
+ "FilledTonalButton": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "DisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.12
+  },
+  "DisabledIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledLabelTextOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "FocusContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "FocusIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "FocusLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "HoverContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  },
+  "HoverIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "HoverLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "IconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 18.0
+  },
+  "LabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "LabelTextFont": {
+   "source": "TypographyKeyTokens.LabelLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "PressedContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "PressedIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "PressedLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  }
+ },
+ "FilledTonalIconButton": {
+  "Color": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ContainerColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "DisabledColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "DisabledOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "FocusedColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "HoveredColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "PressedColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "SelectedColor": {
+   "type": "role",
+   "value": "on_secondary"
+  },
+  "SelectedContainerColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "SelectedFocusedColor": {
+   "type": "role",
+   "value": "on_secondary"
+  },
+  "SelectedHoveredColor": {
+   "type": "role",
+   "value": "on_secondary"
+  },
+  "SelectedPressedColor": {
+   "type": "role",
+   "value": "on_secondary"
+  },
+  "UnselectedColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "UnselectedContainerColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "UnselectedFocusedColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "UnselectedHoveredColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "UnselectedPressedColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  }
+ },
+ "FloatingToolbar": {
+  "ContainerBetweenSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "ContainerExternalPadding": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 64.0
+  },
+  "ContainerLeadingSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerTrailingSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "StandardContainerColor": {
+   "type": "role",
+   "value": "surface_container"
+  },
+  "VibrantButtonSelectedContainerColor": {
+   "type": "role",
+   "value": "surface_container"
+  },
+  "VibrantButtonSelectedIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "VibrantButtonSelectedTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "VibrantButtonUnselectedIconColor": {
+   "type": "role",
+   "value": "on_primary_container"
+  },
+  "VibrantButtonUnselectedTextColor": {
+   "type": "role",
+   "value": "on_primary_container"
+  },
+  "VibrantContainerColor": {
+   "type": "role",
+   "value": "primary_container"
+  }
+ },
+ "IconButton": {
+  "Color": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "DisabledColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "FocusedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoveredColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "PressedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "SelectedColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedFocusedColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedHoveredColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedPressedColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "UnselectedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedFocusedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedHoveredColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  }
+ },
+ "LargeIconButton": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 96.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "NarrowLeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "NarrowTrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "UniformLeadingSpace": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "UniformTrailingSpace": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "WideLeadingSpace": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "WideTrailingSpace": {
+   "type": "dp",
+   "value": 48.0
+  }
+ },
+ "LinearProgressIndicator": {
+  "ActiveThickness": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "ActiveWaveAmplitude": {
+   "type": "dp",
+   "value": 3.0
+  },
+  "ActiveWaveWavelength": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "Height": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "IndeterminateActiveWaveWavelength": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "StopSize": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "StopTrailingSpace": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "TrackActiveSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "TrackThickness": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "WaveHeight": {
+   "type": "dp",
+   "value": 10.0
+  }
+ },
+ "List": {
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "DividerBottomSpace": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "DividerLeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "DividerTopSpace": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "DividerTrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "FocusIndicatorColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "ItemBetweenSpace": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "ItemBottomSpace": {
+   "type": "dp",
+   "value": 10.0
+  },
+  "ItemContainerColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "ItemContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ItemContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "ItemContainerShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ItemDisabledContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "ItemDisabledLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemDisabledLabelTextOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemDisabledLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemDisabledLeadingIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemDisabledOverlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemDisabledOverlineOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemDisabledStateLayerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "ItemDisabledSupportingTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemDisabledSupportingTextOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemDisabledTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemDisabledTrailingIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemDraggedContainerElevation": {
+   "source": "ElevationTokens.Level4",
+   "type": "dp",
+   "value": 8.0
+  },
+  "ItemDraggedContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemDraggedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemDraggedLeadingIconIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemDraggedTrailingIconIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemFocusLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemFocusLeadingIconIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemFocusTrailingIconIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemFocusedContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemHoverLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemHoverLeadingIconIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemHoverTrailingIconIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemHoveredContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "ItemLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemLabelTextFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "ItemLargeLeadingVideoHeight": {
+   "type": "dp",
+   "value": 64.0
+  },
+  "ItemLargeLeadingVideoWidth": {
+   "type": "dp",
+   "value": 114.0
+  },
+  "ItemLeadingAvatarColor": {
+   "type": "role",
+   "value": "primary_container"
+  },
+  "ItemLeadingAvatarLabelColor": {
+   "type": "role",
+   "value": "on_primary_container"
+  },
+  "ItemLeadingAvatarLabelFont": {
+   "source": "TypographyKeyTokens.TitleMedium",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.2,
+    "weight": 500
+   }
+  },
+  "ItemLeadingAvatarShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ItemLeadingAvatarSize": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "ItemLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemLeadingIconExpressiveSize": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "ItemLeadingIconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "ItemLeadingImageExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "ItemLeadingImageHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ItemLeadingImageShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ItemLeadingImageWidth": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ItemLeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemLeadingVideoShape": {
+   "source": "ShapeKeyTokens.CornerSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "ItemLeadingVideoWidth": {
+   "type": "dp",
+   "value": 100.0
+  },
+  "ItemOneLineContainerHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ItemOverlineColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemOverlineFont": {
+   "source": "TypographyKeyTokens.LabelSmall",
+   "type": "typography",
+   "value": {
+    "line_height": 16.0,
+    "size": 11.0,
+    "tracking": 0.5,
+    "weight": 500
+   }
+  },
+  "ItemPressedContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemPressedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemPressedLeadingIconIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemPressedTrailingIconIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemSegmentedContainerColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "ItemSelectedContainerColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "ItemSelectedContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemSelectedContainerShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemSelectedDisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedDisabledContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemSelectedDisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemSelectedDisabledLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedDisabledLabelTextOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemSelectedDisabledLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedDisabledLeadingIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemSelectedDisabledOverlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedDisabledOverlineOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemSelectedDisabledStateLayerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "ItemSelectedDisabledSupportingTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedDisabledSupportingTextOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemSelectedDisabledTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedDisabledTrailingIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemSelectedDisabledTrailingSupportingTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedDisabledTrailingSupportingTextOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ItemSelectedDraggedContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemSelectedDraggedLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedDraggedLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedDraggedTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedFocusLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedFocusLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedFocusTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedFocusedContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemSelectedHoverLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedHoverLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedHoverTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedHoveredContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemSelectedLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedLeadingIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedOverlineColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedPressedContainerExpressiveShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemSelectedPressedLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedPressedLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedPressedTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ItemSelectedSupportingTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedTrailingIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSelectedTrailingSupportingTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemSmallLeadingVideoHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ItemSmallLeadingVideoWidth": {
+   "type": "dp",
+   "value": 100.0
+  },
+  "ItemSupportingTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemSupportingTextFont": {
+   "source": "TypographyKeyTokens.BodyMedium",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.2,
+    "weight": 400
+   }
+  },
+  "ItemThreeLineContainerHeight": {
+   "type": "dp",
+   "value": 88.0
+  },
+  "ItemTopSpace": {
+   "type": "dp",
+   "value": 10.0
+  },
+  "ItemTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemTrailingIconExpressiveSize": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "ItemTrailingIconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "ItemTrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "ItemTrailingSupportingTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemTrailingSupportingTextFont": {
+   "source": "TypographyKeyTokens.LabelSmall",
+   "type": "typography",
+   "value": {
+    "line_height": 16.0,
+    "size": 11.0,
+    "tracking": 0.5,
+    "weight": 500
+   }
+  },
+  "ItemTwoLineContainerHeight": {
+   "type": "dp",
+   "value": 72.0
+  },
+  "ItemUnselectedTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "SegmentedGap": {
+   "type": "dp",
+   "value": 2.0
+  }
+ },
+ "MediumIconButton": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "DefaultLeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "DefaultTrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "NarrowLeadingSpace": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "NarrowTrailingSpace": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "WideLeadingSpace": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "WideTrailingSpace": {
+   "type": "dp",
+   "value": 24.0
+  }
+ },
+ "Menu": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface_container"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level2",
+   "type": "dp",
+   "value": 3.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "FocusIndicatorColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "ListItemSelectedContainerColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "ListItemSelectedLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ListItemSelectedLeadingTrailingIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "MenuListItemLeadingIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  }
+ },
+ "Motion": {
+  "DurationExtraLong1": {
+   "type": "ms",
+   "value": 700.0
+  },
+  "DurationExtraLong2": {
+   "type": "ms",
+   "value": 800.0
+  },
+  "DurationExtraLong3": {
+   "type": "ms",
+   "value": 900.0
+  },
+  "DurationExtraLong4": {
+   "type": "ms",
+   "value": 1000.0
+  },
+  "DurationLong1": {
+   "type": "ms",
+   "value": 450.0
+  },
+  "DurationLong2": {
+   "type": "ms",
+   "value": 500.0
+  },
+  "DurationLong3": {
+   "type": "ms",
+   "value": 550.0
+  },
+  "DurationLong4": {
+   "type": "ms",
+   "value": 600.0
+  },
+  "DurationMedium1": {
+   "type": "ms",
+   "value": 250.0
+  },
+  "DurationMedium2": {
+   "type": "ms",
+   "value": 300.0
+  },
+  "DurationMedium3": {
+   "type": "ms",
+   "value": 350.0
+  },
+  "DurationMedium4": {
+   "type": "ms",
+   "value": 400.0
+  },
+  "DurationShort1": {
+   "type": "ms",
+   "value": 50.0
+  },
+  "DurationShort2": {
+   "type": "ms",
+   "value": 100.0
+  },
+  "DurationShort3": {
+   "type": "ms",
+   "value": 150.0
+  },
+  "DurationShort4": {
+   "type": "ms",
+   "value": 200.0
+  },
+  "EasingEmphasizedAccelerateCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.3,
+    0.0,
+    0.8,
+    0.15
+   ]
+  },
+  "EasingEmphasizedCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.2,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "EasingEmphasizedDecelerateCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.05,
+    0.7,
+    0.1,
+    1.0
+   ]
+  },
+  "EasingLegacyAccelerateCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.4,
+    0.0,
+    1.0,
+    1.0
+   ]
+  },
+  "EasingLegacyCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.4,
+    0.0,
+    0.2,
+    1.0
+   ]
+  },
+  "EasingLegacyDecelerateCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.0,
+    0.0,
+    0.2,
+    1.0
+   ]
+  },
+  "EasingLinearCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+   ]
+  },
+  "EasingStandardAccelerateCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.3,
+    0.0,
+    1.0,
+    1.0
+   ]
+  },
+  "EasingStandardCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.2,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "EasingStandardDecelerateCubicBezier": {
+   "type": "curve",
+   "value": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  }
+ },
+ "MotionSchemeKey": {},
+ "NavigationDrawer": {
+  "ActiveFocusIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ActiveFocusLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ActiveHoverIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ActiveHoverLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ActiveIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ActiveIndicatorColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "ActiveIndicatorHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ActiveIndicatorShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ActiveIndicatorWidth": {
+   "type": "dp",
+   "value": 336.0
+  },
+  "ActiveLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ActivePressedIconColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ActivePressedLabelTextColor": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "BottomContainerShape": {
+   "source": "ShapeKeyTokens.CornerLargeTop",
+   "type": "corners",
+   "value": [
+    16.0,
+    16.0,
+    0.0,
+    0.0
+   ]
+  },
+  "ContainerHeightPercent": {
+   "type": "number",
+   "value": 100.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerLargeEnd",
+   "type": "corners",
+   "value": [
+    0.0,
+    16.0,
+    16.0,
+    0.0
+   ]
+  },
+  "ContainerWidth": {
+   "type": "dp",
+   "value": 360.0
+  },
+  "FocusIndicatorColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "HeadlineColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HeadlineFont": {
+   "source": "TypographyKeyTokens.TitleSmall",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "InactiveFocusIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactiveFocusLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactiveHoverIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactiveHoverLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactiveIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InactiveLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InactivePressedIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactivePressedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "LabelTextFont": {
+   "source": "TypographyKeyTokens.LabelLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "LargeBadgeLabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LargeBadgeLabelFont": {
+   "source": "TypographyKeyTokens.LabelLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "ModalContainerColor": {
+   "type": "role",
+   "value": "surface_container_low"
+  },
+  "ModalContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  },
+  "StandardContainerColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "StandardContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  }
+ },
+ "NavigationRailBaselineItem": {
+  "ActiveIndicatorIconLabelSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "ActiveIndicatorLeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "ActiveIndicatorShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ActiveIndicatorTrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 64.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerVerticalSpace": {
+   "type": "dp",
+   "value": 6.0
+  },
+  "HeaderSpaceMinimum": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  }
+ },
+ "NavigationRailCollapsed": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerWidth": {
+   "type": "dp",
+   "value": 96.0
+  },
+  "ItemVerticalSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "NarrowContainerWidth": {
+   "type": "dp",
+   "value": 80.0
+  },
+  "TopSpace": {
+   "type": "dp",
+   "value": 44.0
+  }
+ },
+ "NavigationRailColor": {
+  "ItemActiveFocusedStateLayer": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemActiveHoveredStateLayer": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemActiveIcon": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemActiveIndicator": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "ItemActiveLabelText": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "ItemActivePressedStateLayer": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemInactiveFocusedStateLayer": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemInactiveHoveredStateLayer": {
+   "type": "role",
+   "value": "on_secondary_container"
+  },
+  "ItemInactiveIcon": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemInactiveLabelText": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ItemInactivePressedStateLayer": {
+   "type": "role",
+   "value": "on_secondary_container"
+  }
+ },
+ "NavigationRailExpanded": {
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerWidthMaximum": {
+   "type": "dp",
+   "value": 360.0
+  },
+  "ContainerWidthMinimum": {
+   "type": "dp",
+   "value": 220.0
+  },
+  "ModalContainerColor": {
+   "type": "role",
+   "value": "surface_container"
+  },
+  "ModalContainerElevation": {
+   "source": "ElevationTokens.Level2",
+   "type": "dp",
+   "value": 3.0
+  },
+  "ModalContainerShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "TopSpace": {
+   "type": "dp",
+   "value": 44.0
+  }
+ },
+ "NavigationRailHorizontalItem": {
+  "ActiveIndicatorHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "FullWidthLeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "FullWidthTrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "IconLabelSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "LabelTextFont": {
+   "source": "TypographyKeyTokens.LabelLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "LeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  }
+ },
+ "NavigationRailVerticalItem": {
+  "ActiveIndicatorHeight": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "ActiveIndicatorWidth": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "IconLabelSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "LabelTextFont": {
+   "source": "TypographyKeyTokens.LabelMedium",
+   "type": "typography",
+   "value": {
+    "line_height": 16.0,
+    "size": 12.0,
+    "tracking": 0.5,
+    "weight": 500
+   }
+  },
+  "LeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "TrailingSpace": {
+   "type": "dp",
+   "value": 16.0
+  }
+ },
+ "OutlinedButton": {
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "DisabledIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "DisabledIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "DisabledLabelTextOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "FocusedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "FocusedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "FocusedOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "HoveredIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoveredLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoveredOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "IconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "OutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "PressedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "PressedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "PressedOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "SelectedContainerColor": {
+   "type": "role",
+   "value": "inverse_surface"
+  },
+  "SelectedDisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "SelectedFocusedIconColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedFocusedLabelTextColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedHoveredIconColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedHoveredLabelTextColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedIconColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedLabelTextColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedPressedIconColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedPressedLabelTextColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "UnselectedDisabledOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "UnselectedFocusedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedFocusedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedFocusedOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "UnselectedHoveredIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedHoveredLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedHoveredOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "UnselectedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  }
+ },
+ "OutlinedCard": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "DisabledContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "DisabledOutlineColor": {
+   "type": "role",
+   "value": "outline"
+  },
+  "DisabledOutlineOpacity": {
+   "type": "opacity",
+   "value": 0.12
+  },
+  "DraggedContainerElevation": {
+   "source": "ElevationTokens.Level3",
+   "type": "dp",
+   "value": 6.0
+  },
+  "DraggedOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "FocusContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "FocusOutlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HoverContainerElevation": {
+   "source": "ElevationTokens.Level1",
+   "type": "dp",
+   "value": 1.0
+  },
+  "HoverOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "IconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "OutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "OutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "PressedContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "PressedOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  }
+ },
+ "OutlinedIconButton": {
+  "Color": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "DisabledColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "FocusedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoveredColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "OutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "PressedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "SelectedColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedContainerColor": {
+   "type": "role",
+   "value": "inverse_surface"
+  },
+  "SelectedDisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "SelectedDisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "SelectedFocusedColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedHoveredColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SelectedPressedColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "UnselectedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedDisabledOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "UnselectedFocusedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedHoveredColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedOutlineColor": {
+   "type": "role",
+   "value": "outline_variant"
+  },
+  "UnselectedPressedColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  }
+ },
+ "OutlinedTextField": {
+  "CaretColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "DisabledInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledInputOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledLabelColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledLabelOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledLeadingIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledOutlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledOutlineOpacity": {
+   "type": "opacity",
+   "value": 0.12
+  },
+  "DisabledOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "DisabledSupportingColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledSupportingOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledTrailingIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "ErrorFocusCaretColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ErrorFocusLabelColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ErrorFocusOutlineColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusSupportingColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorFocusTrailingIconColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorHoverInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ErrorHoverLabelColor": {
+   "type": "role",
+   "value": "on_error_container"
+  },
+  "ErrorHoverLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ErrorHoverOutlineColor": {
+   "type": "role",
+   "value": "on_error_container"
+  },
+  "ErrorHoverSupportingColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorHoverTrailingIconColor": {
+   "type": "role",
+   "value": "on_error_container"
+  },
+  "ErrorInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ErrorLabelColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "ErrorOutlineColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorSupportingColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "ErrorTrailingIconColor": {
+   "type": "role",
+   "value": "error"
+  },
+  "FocusInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "FocusLabelColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "FocusLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "FocusOutlineColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "FocusOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "FocusSupportingColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "FocusTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoverInputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HoverLabelColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HoverLeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoverOutlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HoverOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "HoverSupportingColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoverTrailingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InputColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InputFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "InputPlaceholderColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InputPrefixColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InputSuffixColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LabelFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "LeadingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LeadingIconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "OutlineColor": {
+   "type": "role",
+   "value": "outline"
+  },
+  "OutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "SupportingColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "SupportingFont": {
+   "source": "TypographyKeyTokens.BodySmall",
+   "type": "typography",
+   "value": {
+    "line_height": 16.0,
+    "size": 12.0,
+    "tracking": 0.4,
+    "weight": 400
+   }
+  },
+  "TrailingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "TrailingIconSize": {
+   "type": "dp",
+   "value": 24.0
+  }
+ },
+ "PlainTooltip": {
+  "ContainerColor": {
+   "type": "role",
+   "value": "inverse_surface"
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "SupportingTextColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "SupportingTextFont": {
+   "source": "TypographyKeyTokens.BodySmall",
+   "type": "typography",
+   "value": {
+    "line_height": 16.0,
+    "size": 12.0,
+    "tracking": 0.4,
+    "weight": 400
+   }
+  }
+ },
+ "PrimaryNavigationTab": {
+  "ActiveFocusIconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActiveFocusLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActiveHoverIconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActiveHoverLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActiveIconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActiveIndicatorColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActiveIndicatorHeight": {
+   "type": "dp",
+   "value": 3.0
+  },
+  "ActiveIndicatorShape": {
+   "type": "dp",
+   "value": 3.0
+  },
+  "ActiveLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActivePressedIconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActivePressedLabelTextColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "IconAndLabelTextContainerHeight": {
+   "type": "dp",
+   "value": 64.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "InactiveFocusIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactiveFocusLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactiveHoverIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactiveHoverLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactiveIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InactiveLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InactivePressedIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InactivePressedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "LabelTextFont": {
+   "source": "TypographyKeyTokens.TitleSmall",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  }
+ },
+ "ProgressIndicator": {
+  "ActiveIndicatorColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActiveShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "StopColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "StopShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "TrackColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "TrackShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  }
+ },
+ "RadioButton": {
+  "DisabledSelectedIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledSelectedIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledUnselectedIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledUnselectedIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "SelectedFocusIconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedHoverIconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedIconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedPressedIconColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "StateLayerSize": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "UnselectedFocusIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "UnselectedHoverIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "UnselectedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  }
+ },
+ "SearchBar": {
+  "AvatarShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "AvatarSize": {
+   "type": "dp",
+   "value": 30.0
+  },
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface_container_high"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level3",
+   "type": "dp",
+   "value": 6.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "FocusIndicatorColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "HoverSupportingTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InputTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "InputTextFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "LeadingIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "PressedSupportingTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "SupportingTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "SupportingTextFont": {
+   "source": "TypographyKeyTokens.BodyLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 24.0,
+    "size": 16.0,
+    "tracking": 0.5,
+    "weight": 400
+   }
+  },
+  "TrailingIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  }
+ },
+ "SecondaryNavigationTab": {
+  "ActiveIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ActiveLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "ContainerColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "ContainerElevation": {
+   "source": "ElevationTokens.Level0",
+   "type": "dp",
+   "value": 0.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerNone",
+   "type": "dp",
+   "value": 0.0
+  },
+  "DividerColor": {
+   "type": "role",
+   "value": "surface_variant"
+  },
+  "DividerHeight": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "FocusIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "FocusLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HoverIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "HoverLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "InactiveIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "InactiveLabelTextColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LabelTextFont": {
+   "source": "TypographyKeyTokens.TitleSmall",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  },
+  "PressedIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "PressedLabelTextColor": {
+   "type": "role",
+   "value": "on_surface"
+  }
+ },
+ "Shape": {
+  "CornerExtraExtraLarge": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "CornerExtraLarge": {
+   "type": "dp",
+   "value": 28.0
+  },
+  "CornerExtraLargeIncreased": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "CornerExtraLargeTop": {
+   "type": "corners",
+   "value": [
+    28.0,
+    28.0,
+    0.0,
+    0.0
+   ]
+  },
+  "CornerExtraSmall": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "CornerExtraSmallTop": {
+   "type": "corners",
+   "value": [
+    4.0,
+    4.0,
+    0.0,
+    0.0
+   ]
+  },
+  "CornerFull": {
+   "type": "shape",
+   "value": "full"
+  },
+  "CornerLarge": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "CornerLargeEnd": {
+   "type": "corners",
+   "value": [
+    0.0,
+    16.0,
+    16.0,
+    0.0
+   ]
+  },
+  "CornerLargeIncreased": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "CornerLargeStart": {
+   "type": "corners",
+   "value": [
+    16.0,
+    0.0,
+    0.0,
+    16.0
+   ]
+  },
+  "CornerLargeTop": {
+   "type": "corners",
+   "value": [
+    16.0,
+    16.0,
+    0.0,
+    0.0
+   ]
+  },
+  "CornerMedium": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "CornerNone": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "CornerSmall": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "CornerValueExtraExtraLarge": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "CornerValueExtraLarge": {
+   "type": "dp",
+   "value": 28.0
+  },
+  "CornerValueExtraLargeIncreased": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "CornerValueExtraSmall": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "CornerValueLarge": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "CornerValueLargeIncreased": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "CornerValueMedium": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "CornerValueNone": {
+   "type": "dp",
+   "value": 0.0
+  },
+  "CornerValueSmall": {
+   "type": "dp",
+   "value": 8.0
+  }
+ },
+ "ShapeKey": {},
+ "Slider": {
+  "ActiveContainerOpacity": {
+   "type": "opacity",
+   "value": 1.0
+  },
+  "ActiveHandleHeight": {
+   "type": "dp",
+   "value": 44.0
+  },
+  "ActiveHandleLeadingSpace": {
+   "type": "dp",
+   "value": 6.0
+  },
+  "ActiveHandlePadding": {
+   "type": "dp",
+   "value": 6.0
+  },
+  "ActiveHandleShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ActiveHandleTrailingSpace": {
+   "type": "dp",
+   "value": 6.0
+  },
+  "ActiveHandleWidth": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "ActiveTrackColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "ActiveTrackHeight": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "ActiveTrackShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ActiveTrackShapeLeading": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "DisabledActiveTrackColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledActiveTrackOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledHandleColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledHandleOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledHandleWidth": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "DisabledInactiveTrackColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledInactiveTrackOpacity": {
+   "type": "opacity",
+   "value": 0.12
+  },
+  "DisabledStopColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "FocusActiveTrackColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "FocusHandleWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "FocusInactiveTrackColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "FocusStopColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "HandleColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "HandleHeight": {
+   "type": "dp",
+   "value": 44.0
+  },
+  "HandleShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "HandleWidth": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "HoverHandleColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "HoverHandleWidth": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "HoverStopColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "InactiveContainerOpacity": {
+   "type": "opacity",
+   "value": 1.0
+  },
+  "InactiveTrackColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "InactiveTrackHeight": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "InactiveTrackShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "LabelContainerColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "LabelTextColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "PressedActiveTrackColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "PressedHandleColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "PressedHandleWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "PressedInactiveTrackColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "PressedStopColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SliderActiveHandleColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "StopIndicatorColor": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "StopIndicatorColorSelected": {
+   "type": "role",
+   "value": "secondary_container"
+  },
+  "StopIndicatorShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "StopIndicatorSize": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "StopIndicatorTrailingSpace": {
+   "type": "dp",
+   "value": 6.0
+  },
+  "ValueIndicatorActiveBottomSpace": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "ValueIndicatorContainerColor": {
+   "type": "role",
+   "value": "inverse_surface"
+  },
+  "ValueIndicatorLabelTextColor": {
+   "type": "role",
+   "value": "inverse_on_surface"
+  },
+  "ValueIndicatorLabelTextFont": {
+   "source": "TypographyKeyTokens.LabelLarge",
+   "type": "typography",
+   "value": {
+    "line_height": 20.0,
+    "size": 14.0,
+    "tracking": 0.1,
+    "weight": 500
+   }
+  }
+ },
+ "SmallIconButton": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "DefaultLeadingSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "DefaultTrailingSpace": {
+   "type": "dp",
+   "value": 8.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "NarrowLeadingSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "NarrowTrailingSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "WideLeadingSpace": {
+   "type": "dp",
+   "value": 14.0
+  },
+  "WideTrailingSpace": {
+   "type": "dp",
+   "value": 14.0
+  }
+ },
+ "SplitButtonLarge": {
+  "BetweenSpace": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 96.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "InnerCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "InnerHoveredCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueLargeIncreased",
+   "type": "dp",
+   "value": 20.0
+  },
+  "InnerPressedCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueLargeIncreased",
+   "type": "dp",
+   "value": 20.0
+  },
+  "LeadingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "LeadingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "TrailingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 29.0
+  },
+  "TrailingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 29.0
+  },
+  "TrailingIconSize": {
+   "type": "dp",
+   "value": 38.0
+  },
+  "TrailingInnerSelectedCornerCornerSizePercent": {
+   "type": "number",
+   "value": 50.0
+  }
+ },
+ "SplitButtonMedium": {
+  "BetweenSpace": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 56.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "InnerCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "InnerHoveredCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "InnerPressedCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "LeadingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "LeadingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "TrailingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 15.0
+  },
+  "TrailingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 15.0
+  },
+  "TrailingIconSize": {
+   "type": "dp",
+   "value": 26.0
+  },
+  "TrailingInnerSelectedCornerCornerSizePercent": {
+   "type": "number",
+   "value": 50.0
+  }
+ },
+ "SplitButtonSmall": {
+  "BetweenSpace": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "InnerCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "InnerHoveredCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "InnerPressedCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "LeadingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "LeadingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "TrailingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 13.0
+  },
+  "TrailingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 13.0
+  },
+  "TrailingIconSize": {
+   "type": "dp",
+   "value": 22.0
+  },
+  "TrailingInnerSelectedCornerCornerSizePercent": {
+   "type": "number",
+   "value": 50.0
+  }
+ },
+ "SplitButtonXLarge": {
+  "BetweenSpace": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 136.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "InnerCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "InnerHoveredCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueLargeIncreased",
+   "type": "dp",
+   "value": 20.0
+  },
+  "InnerPressedCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueLargeIncreased",
+   "type": "dp",
+   "value": 20.0
+  },
+  "LeadingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 64.0
+  },
+  "LeadingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 64.0
+  },
+  "TrailingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 43.0
+  },
+  "TrailingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 43.0
+  },
+  "TrailingIconSize": {
+   "type": "dp",
+   "value": 50.0
+  },
+  "TrailingInnerSelectedCornerCornerSizePercent": {
+   "type": "number",
+   "value": 50.0
+  }
+ },
+ "SplitButtonXSmall": {
+  "BetweenSpace": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "ContainerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "InnerCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueExtraSmall",
+   "type": "dp",
+   "value": 4.0
+  },
+  "InnerHoveredCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "InnerPressedCornerCornerSize": {
+   "source": "ShapeTokens.CornerValueSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "LeadingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 12.0
+  },
+  "LeadingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 10.0
+  },
+  "OuterCornerCornerSizePercent": {
+   "type": "number",
+   "value": 50.0
+  },
+  "TrailingButtonLeadingSpace": {
+   "type": "dp",
+   "value": 13.0
+  },
+  "TrailingButtonTrailingSpace": {
+   "type": "dp",
+   "value": 13.0
+  },
+  "TrailingIconSize": {
+   "type": "dp",
+   "value": 22.0
+  },
+  "TrailingInnerSelectedCornerCornerSizePercent": {
+   "type": "number",
+   "value": 50.0
+  }
+ },
+ "State": {
+  "DraggedStateLayerOpacity": {
+   "type": "opacity",
+   "value": 0.16
+  },
+  "FocusStateLayerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "HoverStateLayerOpacity": {
+   "type": "opacity",
+   "value": 0.08
+  },
+  "PressedStateLayerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  }
+ },
+ "Switch": {
+  "DisabledSelectedHandleColor": {
+   "type": "role",
+   "value": "surface"
+  },
+  "DisabledSelectedHandleOpacity": {
+   "type": "opacity",
+   "value": 1.0
+  },
+  "DisabledSelectedIconColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledSelectedIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledSelectedTrackColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledTrackOpacity": {
+   "type": "opacity",
+   "value": 0.12
+  },
+  "DisabledUnselectedHandleColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledUnselectedHandleOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledUnselectedIconColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "DisabledUnselectedIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledUnselectedTrackColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "DisabledUnselectedTrackOutlineColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "FocusIndicatorColor": {
+   "type": "role",
+   "value": "secondary"
+  },
+  "HandleShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "IconHandleHeight": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "IconHandleWidth": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "PressedHandleHeight": {
+   "type": "dp",
+   "value": 28.0
+  },
+  "PressedHandleWidth": {
+   "type": "dp",
+   "value": 28.0
+  },
+  "SelectedFocusHandleColor": {
+   "type": "role",
+   "value": "primary_container"
+  },
+  "SelectedFocusIconColor": {
+   "type": "role",
+   "value": "on_primary_container"
+  },
+  "SelectedFocusTrackColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedHandleColor": {
+   "type": "role",
+   "value": "on_primary"
+  },
+  "SelectedHandleHeight": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "SelectedHandleWidth": {
+   "type": "dp",
+   "value": 24.0
+  },
+  "SelectedHoverHandleColor": {
+   "type": "role",
+   "value": "primary_container"
+  },
+  "SelectedHoverIconColor": {
+   "type": "role",
+   "value": "on_primary_container"
+  },
+  "SelectedHoverTrackColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedIconColor": {
+   "type": "role",
+   "value": "on_primary_container"
+  },
+  "SelectedIconSize": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "SelectedPressedHandleColor": {
+   "type": "role",
+   "value": "primary_container"
+  },
+  "SelectedPressedIconColor": {
+   "type": "role",
+   "value": "on_primary_container"
+  },
+  "SelectedPressedTrackColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "SelectedTrackColor": {
+   "type": "role",
+   "value": "primary"
+  },
+  "StateLayerShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "StateLayerSize": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "TrackHeight": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "TrackOutlineWidth": {
+   "type": "dp",
+   "value": 2.0
+  },
+  "TrackShape": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "TrackWidth": {
+   "type": "dp",
+   "value": 52.0
+  },
+  "UnselectedFocusHandleColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedFocusIconColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "UnselectedFocusTrackColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "UnselectedFocusTrackOutlineColor": {
+   "type": "role",
+   "value": "outline"
+  },
+  "UnselectedHandleColor": {
+   "type": "role",
+   "value": "outline"
+  },
+  "UnselectedHandleHeight": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "UnselectedHandleWidth": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "UnselectedHoverHandleColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedHoverIconColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "UnselectedHoverTrackColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "UnselectedHoverTrackOutlineColor": {
+   "type": "role",
+   "value": "outline"
+  },
+  "UnselectedIconColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "UnselectedIconSize": {
+   "type": "dp",
+   "value": 16.0
+  },
+  "UnselectedPressedHandleColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "UnselectedPressedIconColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "UnselectedPressedTrackColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "UnselectedPressedTrackOutlineColor": {
+   "type": "role",
+   "value": "outline"
+  },
+  "UnselectedTrackColor": {
+   "type": "role",
+   "value": "surface_container_highest"
+  },
+  "UnselectedTrackOutlineColor": {
+   "type": "role",
+   "value": "outline"
+  }
+ },
+ "TextButton": {
+  "DisabledContainerColor": {
+   "type": "role",
+   "value": "on_surface"
+  },
+  "DisabledContainerOpacity": {
+   "type": "opacity",
+   "value": 0.1
+  },
+  "DisabledIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "DisabledIconOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "DisabledLabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "DisabledLabelOpacity": {
+   "type": "opacity",
+   "value": 0.38
+  },
+  "FocusedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "FocusedLabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoveredIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "HoveredLabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "IconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "LabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "PressedIconColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  },
+  "PressedLabelColor": {
+   "type": "role",
+   "value": "on_surface_variant"
+  }
+ },
+ "TypeScale": {
+  "BodyLargeEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 24.0
+  },
+  "BodyLargeEmphasizedSize": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "BodyLargeEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.15
+  },
+  "BodyLargeEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "BodyLargeLineHeight": {
+   "type": "sp",
+   "value": 24.0
+  },
+  "BodyLargeSize": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "BodyLargeTracking": {
+   "type": "sp",
+   "value": 0.5
+  },
+  "BodyLargeWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "BodyMediumEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 20.0
+  },
+  "BodyMediumEmphasizedSize": {
+   "type": "sp",
+   "value": 14.0
+  },
+  "BodyMediumEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.25
+  },
+  "BodyMediumEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "BodyMediumLineHeight": {
+   "type": "sp",
+   "value": 20.0
+  },
+  "BodyMediumSize": {
+   "type": "sp",
+   "value": 14.0
+  },
+  "BodyMediumTracking": {
+   "type": "sp",
+   "value": 0.2
+  },
+  "BodyMediumWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "BodySmallEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "BodySmallEmphasizedSize": {
+   "type": "sp",
+   "value": 12.0
+  },
+  "BodySmallEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.4
+  },
+  "BodySmallEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "BodySmallLineHeight": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "BodySmallSize": {
+   "type": "sp",
+   "value": 12.0
+  },
+  "BodySmallTracking": {
+   "type": "sp",
+   "value": 0.4
+  },
+  "BodySmallWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "DisplayLargeEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 64.0
+  },
+  "DisplayLargeEmphasizedSize": {
+   "type": "sp",
+   "value": 57.0
+  },
+  "DisplayLargeEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "DisplayLargeEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "DisplayLargeLineHeight": {
+   "type": "sp",
+   "value": 64.0
+  },
+  "DisplayLargeSize": {
+   "type": "sp",
+   "value": 57.0
+  },
+  "DisplayLargeTracking": {
+   "type": "sp",
+   "value": -0.2
+  },
+  "DisplayLargeWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "DisplayMediumEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 52.0
+  },
+  "DisplayMediumEmphasizedSize": {
+   "type": "sp",
+   "value": 45.0
+  },
+  "DisplayMediumEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "DisplayMediumEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "DisplayMediumLineHeight": {
+   "type": "sp",
+   "value": 52.0
+  },
+  "DisplayMediumSize": {
+   "type": "sp",
+   "value": 45.0
+  },
+  "DisplayMediumTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "DisplayMediumWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "DisplaySmallEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 44.0
+  },
+  "DisplaySmallEmphasizedSize": {
+   "type": "sp",
+   "value": 36.0
+  },
+  "DisplaySmallEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "DisplaySmallEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "DisplaySmallLineHeight": {
+   "type": "sp",
+   "value": 44.0
+  },
+  "DisplaySmallSize": {
+   "type": "sp",
+   "value": 36.0
+  },
+  "DisplaySmallTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "DisplaySmallWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "HeadlineLargeEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 40.0
+  },
+  "HeadlineLargeEmphasizedSize": {
+   "type": "sp",
+   "value": 32.0
+  },
+  "HeadlineLargeEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "HeadlineLargeEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "HeadlineLargeLineHeight": {
+   "type": "sp",
+   "value": 40.0
+  },
+  "HeadlineLargeSize": {
+   "type": "sp",
+   "value": 32.0
+  },
+  "HeadlineLargeTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "HeadlineLargeWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "HeadlineMediumEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 36.0
+  },
+  "HeadlineMediumEmphasizedSize": {
+   "type": "sp",
+   "value": 28.0
+  },
+  "HeadlineMediumEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "HeadlineMediumEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "HeadlineMediumLineHeight": {
+   "type": "sp",
+   "value": 36.0
+  },
+  "HeadlineMediumSize": {
+   "type": "sp",
+   "value": 28.0
+  },
+  "HeadlineMediumTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "HeadlineMediumWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "HeadlineSmallEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 32.0
+  },
+  "HeadlineSmallEmphasizedSize": {
+   "type": "sp",
+   "value": 24.0
+  },
+  "HeadlineSmallEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "HeadlineSmallEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "HeadlineSmallLineHeight": {
+   "type": "sp",
+   "value": 32.0
+  },
+  "HeadlineSmallSize": {
+   "type": "sp",
+   "value": 24.0
+  },
+  "HeadlineSmallTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "HeadlineSmallWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "LabelLargeEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 20.0
+  },
+  "LabelLargeEmphasizedSize": {
+   "type": "sp",
+   "value": 14.0
+  },
+  "LabelLargeEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.1
+  },
+  "LabelLargeEmphasizedWeight": {
+   "type": "weight",
+   "value": 700
+  },
+  "LabelLargeLineHeight": {
+   "type": "sp",
+   "value": 20.0
+  },
+  "LabelLargeSize": {
+   "type": "sp",
+   "value": 14.0
+  },
+  "LabelLargeTracking": {
+   "type": "sp",
+   "value": 0.1
+  },
+  "LabelLargeWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "LabelMediumEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "LabelMediumEmphasizedSize": {
+   "type": "sp",
+   "value": 12.0
+  },
+  "LabelMediumEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.5
+  },
+  "LabelMediumEmphasizedWeight": {
+   "type": "weight",
+   "value": 700
+  },
+  "LabelMediumLineHeight": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "LabelMediumSize": {
+   "type": "sp",
+   "value": 12.0
+  },
+  "LabelMediumTracking": {
+   "type": "sp",
+   "value": 0.5
+  },
+  "LabelMediumWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "LabelSmallEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "LabelSmallEmphasizedSize": {
+   "type": "sp",
+   "value": 11.0
+  },
+  "LabelSmallEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.5
+  },
+  "LabelSmallEmphasizedWeight": {
+   "type": "weight",
+   "value": 700
+  },
+  "LabelSmallLineHeight": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "LabelSmallSize": {
+   "type": "sp",
+   "value": 11.0
+  },
+  "LabelSmallTracking": {
+   "type": "sp",
+   "value": 0.5
+  },
+  "LabelSmallWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "TitleLargeEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 28.0
+  },
+  "TitleLargeEmphasizedSize": {
+   "type": "sp",
+   "value": 22.0
+  },
+  "TitleLargeEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "TitleLargeEmphasizedWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "TitleLargeLineHeight": {
+   "type": "sp",
+   "value": 28.0
+  },
+  "TitleLargeSize": {
+   "type": "sp",
+   "value": 22.0
+  },
+  "TitleLargeTracking": {
+   "type": "sp",
+   "value": 0.0
+  },
+  "TitleLargeWeight": {
+   "type": "weight",
+   "value": 400
+  },
+  "TitleMediumEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 24.0
+  },
+  "TitleMediumEmphasizedSize": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "TitleMediumEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.15
+  },
+  "TitleMediumEmphasizedWeight": {
+   "type": "weight",
+   "value": 700
+  },
+  "TitleMediumLineHeight": {
+   "type": "sp",
+   "value": 24.0
+  },
+  "TitleMediumSize": {
+   "type": "sp",
+   "value": 16.0
+  },
+  "TitleMediumTracking": {
+   "type": "sp",
+   "value": 0.2
+  },
+  "TitleMediumWeight": {
+   "type": "weight",
+   "value": 500
+  },
+  "TitleSmallEmphasizedLineHeight": {
+   "type": "sp",
+   "value": 20.0
+  },
+  "TitleSmallEmphasizedSize": {
+   "type": "sp",
+   "value": 14.0
+  },
+  "TitleSmallEmphasizedTracking": {
+   "type": "sp",
+   "value": 0.1
+  },
+  "TitleSmallEmphasizedWeight": {
+   "type": "weight",
+   "value": 700
+  },
+  "TitleSmallLineHeight": {
+   "type": "sp",
+   "value": 20.0
+  },
+  "TitleSmallSize": {
+   "type": "sp",
+   "value": 14.0
+  },
+  "TitleSmallTracking": {
+   "type": "sp",
+   "value": 0.1
+  },
+  "TitleSmallWeight": {
+   "type": "weight",
+   "value": 500
+  }
+ },
+ "Typeface": {
+  "WeightBold": {
+   "type": "weight",
+   "value": 700
+  },
+  "WeightMedium": {
+   "type": "weight",
+   "value": 500
+  },
+  "WeightRegular": {
+   "type": "weight",
+   "value": 400
+  }
+ },
+ "Typography": {},
+ "TypographyKey": {},
+ "XLargeIconButton": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 136.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "DefaultLeadingSpace": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "DefaultTrailingSpace": {
+   "type": "dp",
+   "value": 48.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 40.0
+  },
+  "NarrowLeadingSpace": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "NarrowTrailingSpace": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 3.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerLarge",
+   "type": "dp",
+   "value": 16.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerExtraLarge",
+   "type": "dp",
+   "value": 28.0
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "WideLeadingSpace": {
+   "type": "dp",
+   "value": 72.0
+  },
+  "WideTrailingSpace": {
+   "type": "dp",
+   "value": 72.0
+  }
+ },
+ "XSmallIconButton": {
+  "ContainerHeight": {
+   "type": "dp",
+   "value": 32.0
+  },
+  "ContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "ContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "DefaultLeadingSpace": {
+   "type": "dp",
+   "value": 6.0
+  },
+  "DefaultTrailingSpace": {
+   "type": "dp",
+   "value": 6.0
+  },
+  "IconSize": {
+   "type": "dp",
+   "value": 20.0
+  },
+  "NarrowLeadingSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "NarrowTrailingSpace": {
+   "type": "dp",
+   "value": 4.0
+  },
+  "OutlinedOutlineWidth": {
+   "type": "dp",
+   "value": 1.0
+  },
+  "PressedContainerShape": {
+   "source": "ShapeKeyTokens.CornerSmall",
+   "type": "dp",
+   "value": 8.0
+  },
+  "SelectedContainerShapeRound": {
+   "source": "ShapeKeyTokens.CornerMedium",
+   "type": "dp",
+   "value": 12.0
+  },
+  "SelectedContainerShapeSquare": {
+   "source": "ShapeKeyTokens.CornerFull",
+   "type": "shape",
+   "value": "full"
+  },
+  "WideLeadingSpace": {
+   "type": "dp",
+   "value": 10.0
+  },
+  "WideTrailingSpace": {
+   "type": "dp",
+   "value": 10.0
+  }
+ }
+}

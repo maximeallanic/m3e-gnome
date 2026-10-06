@@ -1,0 +1,185 @@
+/* == buttons == */
+/* Default button = Filled tonal, Small size. State layer = label colour (currentColor) at 8 / 10 %.
+   The GTK 3 theme draws its states with inset box-shadows and radial gradients: reset here. */
+button {
+  min-height: 40px; /* ButtonSmall.ContainerHeight */
+  min-width: 0;
+  padding: 0 16px 0 16px; /* ButtonSmall.TrailingSpace ButtonSmall.LeadingSpace */
+  border: none;
+  border-radius: 20px; /* M3E-visual: CornerFull (ButtonSmall.ContainerShapeRound) = height 40 / 2 in px: GTK interpolates the value, 9999px made the shape morph invisible */
+  outline: none;
+  outline-offset: 2px; /* M3E-visual: focus ring offset by 2 dp (spec images "states") */
+  box-shadow: none;
+  background-image: none;
+  background-size: auto;
+  -gtk-icon-effect: none;
+}
+button,
+button:hover,
+button:active,
+button.keyboard-activating,
+button:focus {
+  background-color: @secondary_container;
+  color: @on_secondary_container;
+}
+button:hover {
+  border-radius: 20px; /* M3E-visual: CornerFull (ButtonSmall.ContainerShapeRound) = height 40 / 2 in px: GTK interpolates the value, 9999px made the shape morph invisible */
+  background-image: image(alpha(currentColor, 0.08)); /* State.HoverStateLayerOpacity */
+  box-shadow: 0 1px 2px alpha(@shadow, 0.3), 0 1px 3px 1px alpha(@shadow, 0.15); /* M3E-visual: Elevation level 1 shadow (FilledTonalButton.HoverContainerElevation = 1 dp) */
+}
+button:active,
+button.keyboard-activating {
+  border-radius: 8px; /* ButtonSmall.PressedContainerShape */
+  background-image: image(alpha(currentColor, 0.1)); /* State.PressedStateLayerOpacity */
+  box-shadow: none;
+  outline: none;
+}
+button:focus {
+  outline: 3px solid @secondary; /* M3E-visual: 3 dp focus ring in the secondary colour (Switch.FocusIndicatorColor, spec images "states"); GTK 3 has no :focus-visible and only shows it for keyboard focus */
+}
+button:checked,
+button:checked:hover,
+button:checked:active {
+  border-radius: 12px; /* ButtonSmall.ContainerShapeSquare */
+  background-color: @secondary;
+  color: @on_secondary;
+}
+button:checked label,
+button:checked image {
+  color: inherit;
+}
+
+/* Filled: suggested action */
+button.suggested-action,
+button.suggested-action:hover,
+button.suggested-action:active,
+button.suggested-action:focus {
+  background-color: @primary;
+  color: @on_primary;
+}
+/* Filled, error role: destructive action */
+button.destructive-action,
+button.destructive-action:hover,
+button.destructive-action:active,
+button.destructive-action:focus {
+  background-color: @error;
+  color: @on_error;
+}
+
+/* Text button (flat): primary label (spec image "default text button style states") */
+button.flat,
+button.flat:hover,
+button.flat:active,
+button.flat:focus {
+  background-color: transparent;
+  color: @primary;
+}
+button.flat:hover {
+  box-shadow: none;
+}
+
+/* Icon buttons: icon-only button = Filled tonal icon button, flat = Standard icon button.
+   GTK 3 cannot enlarge an icon through CSS: a 16 px glyph is scaled at render time. */
+button.image-button,
+button.circular {
+  min-width: 0;
+  min-height: 0;
+  padding: 12px; /* M3E-visual: GTK 3 keeps a 16 px icon: 12 + 16 + 12 = 40 dp (SmallIconButton.ContainerHeight) */
+}
+button.image-button image,
+button.circular image {
+  -gtk-icon-transform: scale(1.5); /* M3E-visual: 16 px x 1.5 = 24 dp (SmallIconButton.IconSize) */
+}
+button.image-button:active,
+button.circular:active {
+  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+}
+button.image-button.flat,
+button.circular.flat,
+button.image-button.flat:hover,
+button.circular.flat:hover,
+button.image-button.flat:active,
+button.circular.flat:active {
+  color: @on_surface_variant;
+}
+
+/* Pill = Medium size */
+button.pill {
+  min-height: 56px; /* ButtonMedium.ContainerHeight */
+  padding: 0 24px 0 24px; /* ButtonMedium.TrailingSpace ButtonMedium.LeadingSpace */
+  border-radius: 28px; /* M3E-visual: CornerFull (ButtonMedium.ContainerShapeRound) = height 56 / 2 in px, for the shape morph */
+}
+button.pill:active {
+  border-radius: 12px; /* ButtonMedium.PressedContainerShape */
+}
+
+/* Header bar: XSmall size (the bar is 40 px tall, see the project docs), Text / Standard icon button styles. Content in
+   on_surface, like the title and the window buttons (single bar, window-buttons-gtk3.css). */
+headerbar button:not(.suggested-action):not(.destructive-action),
+headerbar button:hover:not(.suggested-action):not(.destructive-action),
+headerbar button:active:not(.suggested-action):not(.destructive-action) {
+  background-color: transparent;
+  color: @on_surface;
+  box-shadow: none;
+}
+headerbar button,
+headerbar button:hover {
+  border-radius: 16px; /* M3E-visual: CornerFull (ButtonXSmall.ContainerShapeRound) = height 32 / 2 in px, for the shape morph */
+}
+headerbar button {
+  min-height: 32px; /* ButtonXSmall.ContainerHeight */
+  padding: 0 16px 0 16px; /* ButtonXSmall.TrailingSpace ButtonXSmall.LeadingSpace */
+}
+headerbar button.image-button {
+  min-width: 0;
+  min-height: 0;
+  padding: 8px; /* M3E-visual: 16 px icon in GTK 3: 8 + 16 + 8 = 32 dp (XSmallIconButton.ContainerHeight) */
+}
+headerbar button.image-button image {
+  -gtk-icon-transform: scale(1.25); /* M3E-visual: 16 px x 1.25 = 20 dp (XSmallIconButton.IconSize) */
+}
+headerbar button:active {
+  border-radius: 8px; /* ButtonXSmall.PressedContainerShape */
+}
+headerbar button:checked:not(.suggested-action):not(.destructive-action) {
+  border-radius: 12px; /* ButtonXSmall.ContainerShapeSquare */
+  background-color: @secondary;
+  color: @on_secondary;
+}
+
+/* Disabled (last: they come after the variants) */
+button:disabled,
+button:checked:disabled {
+  border-radius: 20px; /* M3E-visual: CornerFull (ButtonSmall.ContainerShapeRound) = height 40 / 2 in px: GTK interpolates the value, 9999px made the shape morph invisible */
+  background-color: alpha(@on_surface, 0.12); /* FilledTonalButton.DisabledContainerOpacity */
+  background-image: none;
+  color: alpha(@on_surface, 0.38); /* FilledTonalButton.DisabledLabelTextOpacity */
+  box-shadow: none;
+  opacity: 1;
+}
+button:disabled label,
+button:disabled image,
+button label:disabled {
+  color: inherit;
+}
+button.suggested-action:disabled,
+button.destructive-action:disabled {
+  background-color: alpha(@on_surface, 0.1); /* FilledButton.DisabledContainerOpacity */
+  color: alpha(@on_surface_variant, 0.38); /* FilledButton.DisabledLabelTextOpacity */
+}
+button.flat:disabled {
+  background-color: alpha(@on_surface, 0.1); /* TextButton.DisabledContainerOpacity */
+  color: alpha(@on_surface_variant, 0.38); /* TextButton.DisabledLabelOpacity */
+}
+button.image-button.flat:disabled,
+button.circular.flat:disabled {
+  background-color: transparent;
+  color: alpha(@on_surface, 0.38); /* IconButton.DisabledOpacity */
+}
+
+/* Window buttons: set by window-buttons-gtk3.css (imported afterwards, stronger selectors) */
+.titlebar button.titlebutton,
+.titlebar button.titlebutton:hover,
+.titlebar button.titlebutton:active {
+  box-shadow: none;
+}

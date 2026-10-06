@@ -1,0 +1,24 @@
+/* Material 3 Expressive stylesheet for GNOME Shell 50: matugen template (colours are Material 3 roles).
+   Do not edit the generated stylesheet; edit these templates. matugen renders every part (NN-*.css, in order) to
+   its own file and a post_hook concatenates them into the single theme stylesheet (see theme/matugen/config.toml).
+   Concatenation, not @import: St gives @import-ed sheets a lower priority than the main sheet.
+
+   Loaded as the user theme (User Themes extension) on top of the stock Shell stylesheet (gnome-shell-dark.css /
+   gnome-shell-light.css from the gresource). Selectors follow the stock 50.x sheet.
+
+   Conventions:
+   - Each numeric value carries its Material token in a trailing comment (Component.Key) or "M3E-visual: <reason>".
+   - No hardcoded colour: palette roles only (lock/login screens use the .dark roles on purpose, they are always dark).
+   - No font-weight above 400.
+   - No !important, except the no-bold rule, the "important-exception: <reason>" lines (a stock !important makes a
+     text or element unreadable otherwise) and the flat-surface borders.
+   Third-party extensions (Dash to Dock, GSConnect...) are styled by the separate extensions sheet. */
+
+/* == Base == */
+/* Default Shell text: Google Sans Flex at Body medium (same size as the GTK interface: 10.5 pt = 14 px), on_surface.
+   Larger sizes (Body large, Title, Headline) are set per component. No component rule here. */
+stage {
+  font-family: "Google Sans Flex", sans-serif;
+  font-size: 14px; /* TypeScale.BodyMediumSize */
+  color: {{colors.on_surface.default.hex}};
+}

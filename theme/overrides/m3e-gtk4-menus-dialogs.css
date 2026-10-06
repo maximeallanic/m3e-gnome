@@ -1,0 +1,106 @@
+/* == menus-tooltips-dialogs == */
+/* Expressive vertical menu: surface_container container with 16 dp corners, 2 dp at the top and bottom, 4 dp at the
+   sides; 48 dp items, 12 margins, 4 corners (12 for the first and the last); level 2 shadow. */
+popover:not(#m3e) > contents {
+  padding: 2px 4px 2px 4px; /* M3E-visual: "vertical menu marked with spacing and padding" image */
+  border: none;
+  border-radius: 16px; /* M3E-visual: Expressive vertical menu corners (MenuTokens.ContainerShape = 4: base menu) */
+  background-color: var(--surface_container);
+  color: var(--on_surface);
+  box-shadow: 0 1px 2px alpha(var(--shadow), 0.3), 0 2px 6px 2px alpha(var(--shadow), 0.15); /* M3E-visual: Elevation level 2 shadow (Menu.ContainerElevation = 3 dp) */
+}
+popover:not(#m3e) > arrow {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+popover.menu:not(#m3e) modelbutton:not(#m3e) {
+  min-height: 48px; /* M3E-visual: 48 dp menu item ("spacing and padding" image) */
+  padding: 0 12px 0 12px; /* M3E-visual: 12 dp margins */
+  border-radius: 4px; /* M3E-visual: item corners, 4 dp */
+  background: none;
+  color: var(--on_surface);
+  outline: none;
+}
+popover.menu:not(#m3e) box > modelbutton:not(#m3e):first-child {
+  border-top-left-radius: 12px; /* M3E-visual: first item, 12 dp corners */
+  border-top-right-radius: 12px; /* M3E-visual: first item, 12 dp corners */
+}
+popover.menu:not(#m3e) box > modelbutton:not(#m3e):last-child {
+  border-bottom-left-radius: 12px; /* M3E-visual: last item, 12 dp corners */
+  border-bottom-right-radius: 12px; /* M3E-visual: last item, 12 dp corners */
+}
+popover.menu:not(#m3e) modelbutton:not(#m3e):hover,
+popover.menu:not(#m3e) modelbutton:not(#m3e):selected {
+  background-color: alpha(var(--on_surface), 0.08); /* State.HoverStateLayerOpacity */
+  color: var(--on_surface);
+}
+popover.menu:not(#m3e) modelbutton:not(#m3e):active {
+  background-color: alpha(var(--on_surface), 0.1); /* State.PressedStateLayerOpacity */
+}
+popover.menu:not(#m3e) modelbutton:not(#m3e):disabled {
+  color: alpha(var(--on_surface), 0.38); /* FilledTextField.DisabledInputOpacity */
+}
+popover.menu:not(#m3e) modelbutton:not(#m3e) label,
+popover.menu:not(#m3e) modelbutton:not(#m3e) accelerator {
+  color: inherit;
+}
+popover.menu:not(#m3e) separator {
+  margin: 3px 0; /* M3E-visual: groups separated by 8 dp ("1 with a gap, creating groups" image) */
+  min-height: 2px; /* M3E-visual: see margin */
+  background: none;
+}
+
+/* Plain tooltip: 24 dp, 8 dp margins, 4 dp corners, inverse_surface */
+tooltip:not(#m3e),
+tooltip.background:not(#m3e) {
+  padding: 4px 8px 4px 8px; /* M3E-visual: (24 - 16) / 2 and 8 dp ("measurements of a plain tooltip" image) */
+  border: none;
+  border-radius: 4px; /* PlainTooltip.ContainerShape */
+  background-color: var(--inverse_surface);
+  color: var(--inverse_on_surface);
+  box-shadow: none;
+  font-size: 12px; /* PlainTooltip.SupportingTextFont.size */
+}
+tooltip:not(#m3e) label {
+  color: inherit;
+}
+
+/* Dialog: surface_container_high, 28 dp corners, 24 dp margins; title in HeadlineSmall, body in
+   BodyMedium on_surface_variant; actions as text buttons. libadwaita stretches the responses across the full width
+   (M3E right-aligns them): a layout that CSS cannot change (known limitation, see the project docs). */
+dialog.alert:not(#m3e) sheet,
+window.dialog.message:not(#m3e) {
+  border-radius: 28px; /* Dialog.ContainerShape */
+  background-color: var(--surface_container_high);
+  color: var(--on_surface);
+}
+dialog.alert:not(#m3e) .message-area {
+  padding: 24px 24px 0 24px; /* M3E-visual: 24 dp margins ("annotated diagram showing padding values" image) */
+  border-spacing: 16px; /* M3E-visual: 16 dp between title and text */
+}
+dialog.alert:not(#m3e) .message-area .title-2 {
+  font-size: 24px; /* Dialog.HeadlineFont.size */
+  color: var(--on_surface);
+}
+dialog.alert:not(#m3e) .message-area .body {
+  font-size: 14px; /* Dialog.SupportingTextFont.size */
+  color: var(--on_surface_variant);
+}
+dialog.alert:not(#m3e) .response-area {
+  padding: 24px; /* M3E-visual: 24 dp margins */
+  border-spacing: 8px; /* M3E-visual: 8 dp between actions */
+}
+dialog.alert:not(#m3e) .response-area > button:not(#m3e),
+dialog.alert:not(#m3e) .response-area > button:not(#m3e):hover,
+dialog.alert:not(#m3e) .response-area > button:not(#m3e):active,
+window.dialog.message:not(#m3e) .dialog-action-area > button:not(#m3e) {
+  border: none;
+  border-radius: 9999px; /* ButtonSmall.ContainerShapeRound */
+  background-color: transparent;
+  color: var(--primary);
+  box-shadow: none;
+}
+dialog.alert:not(#m3e) .response-area > button:not(#m3e).destructive {
+  color: var(--error);
+}

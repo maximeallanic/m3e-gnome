@@ -1,0 +1,16 @@
+{
+  "uuid": "m3e-bench-style@maximeallanic.github.io",
+  "name": "M3E Shell style bench",
+  "description": "Bench extension: puts a candidate stylesheet and captures the Shell surfaces in a nested Shell (never enabled in the real session).",
+  "shell-version": [
+    "50"
+  ],
+  "version": 1,
+  "m3e-bench-name": "io.github.maximeallanic.M3eBenchStyle",
+  "m3e-bench-path": "/io/github/maximeallanic/M3eBenchStyle",
+  "session-modes": [
+    "user",
+    "unlock-dialog",
+    "gdm"
+  ]
+}

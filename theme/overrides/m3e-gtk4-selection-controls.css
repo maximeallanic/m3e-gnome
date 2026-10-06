@@ -1,0 +1,203 @@
+/* == switch-checkbox-radio == */
+/* Switch: 52 x 32 dp track, 2 dp outline. GTK places the handle within half the content width;
+   content 40 + padding 2 x 4 + outline 2 x 2 = 52 puts the handle centres at 16 and 36 dp, as in M3E.
+   Icon handle, like the Pixel Settings app (SettingsLib expressive = MaterialSwitch with icons):
+   24 dp in both states, a cross when off and a check mark when on, 28 dp when pressed; a 16 dp icon is drawn as
+   the handle's background (-gtk-icontheme, recoloured through "color"). */
+switch:not(#m3e) {
+  min-width: 40px; /* M3E-visual: 52 dp (Switch.TrackWidth) - 2 x 2 (outline) - 2 x 4 (padding) */
+  min-height: 28px; /* M3E-visual: 32 dp (Switch.TrackHeight) - 2 x 2 (outline) */
+  padding: 0 4px; /* M3E-visual: handle centres at 16 and 36 dp (see min-width) */
+  border: 2px solid var(--outline); /* Switch.TrackOutlineWidth */
+  border-radius: 9999px; /* Switch.TrackShape */
+  background-color: var(--surface_container_highest);
+  background-image: none;
+  box-shadow: none;
+  outline: 0 solid transparent;
+  outline-offset: 2px; /* M3E-visual: focus ring offset by 2 dp ("states" images) */
+  opacity: 1;
+}
+switch:not(#m3e):checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+switch:not(#m3e):focus-visible {
+  outline: 3px solid var(--secondary); /* M3E-visual: 3 dp focus ring (Switch.FocusIndicatorColor) */
+}
+switch:not(#m3e) > slider {
+  min-width: 24px; /* Switch.IconHandleWidth */
+  min-height: 24px; /* Switch.IconHandleHeight */
+  margin: 2px -2px; /* M3E-visual: (28 - 24) / 2 and (20 - 24) / 2: handle centred in its half of the track */
+  border: none;
+  border-radius: 9999px; /* Switch.HandleShape */
+  outline: none;
+  background-color: var(--outline);
+  background-image: -gtk-icontheme("window-close-symbolic");
+  background-size: 16px 16px; /* Switch.UnselectedIconSize Switch.UnselectedIconSize */
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--surface_container_highest);
+  box-shadow: none;
+}
+switch:not(#m3e):checked > slider {
+  background-color: var(--on_primary);
+  background-image: -gtk-icontheme("object-select-symbolic");
+  color: var(--on_primary_container);
+}
+switch:not(#m3e):hover > slider {
+  background-color: var(--on_surface_variant);
+  box-shadow: 0 0 0 8px alpha(var(--on_surface), 0.08); /* M3E-visual: 40 dp layer (Switch.StateLayerSize) around a 24 dp handle: (40 - 24) / 2; State.HoverStateLayerOpacity */
+}
+switch:not(#m3e):checked:hover > slider {
+  background-color: var(--primary_container);
+  box-shadow: 0 0 0 8px alpha(var(--primary), 0.08); /* M3E-visual: (40 - 24) / 2; State.HoverStateLayerOpacity */
+}
+switch:not(#m3e):active > slider,
+switch:not(#m3e) > slider:active {
+  min-width: 28px; /* Switch.PressedHandleWidth */
+  min-height: 28px; /* Switch.PressedHandleHeight */
+  margin: 0 -4px; /* M3E-visual: (20 - 28) / 2 */
+  background-color: var(--on_surface_variant);
+  box-shadow: 0 0 0 6px alpha(var(--on_surface), 0.1); /* M3E-visual: (40 - 28) / 2; State.PressedStateLayerOpacity */
+}
+switch:not(#m3e):checked:active > slider {
+  background-color: var(--primary_container);
+  box-shadow: 0 0 0 6px alpha(var(--primary), 0.1); /* M3E-visual: (40 - 28) / 2; State.PressedStateLayerOpacity */
+}
+switch:not(#m3e):disabled,
+check:not(#m3e):disabled,
+radio:not(#m3e):disabled {
+  filter: none;
+}
+switch:not(#m3e):disabled {
+  border-color: alpha(var(--on_surface), 0.12); /* Switch.DisabledTrackOpacity */
+  background-color: alpha(var(--surface_container_highest), 0.12); /* Switch.DisabledTrackOpacity */
+}
+switch:not(#m3e):disabled > slider {
+  background-color: alpha(var(--on_surface), 0.38); /* Switch.DisabledUnselectedHandleOpacity */
+  color: alpha(var(--surface_container_highest), 0.38); /* Switch.DisabledUnselectedIconOpacity */
+  box-shadow: none;
+}
+switch:not(#m3e):checked:disabled {
+  border-color: transparent;
+  background-color: alpha(var(--on_surface), 0.12); /* Switch.DisabledTrackOpacity */
+}
+switch:not(#m3e):checked:disabled > slider {
+  background-color: var(--surface);
+  color: alpha(var(--on_surface), 0.38); /* Switch.DisabledSelectedIconOpacity */
+}
+
+/* Checkbox: 18 dp, 2 dp outline, 2 dp corners; 40 dp state area (11 margins) */
+check:not(#m3e) {
+  min-width: 14px; /* M3E-visual: 18 dp (Checkbox.ContainerSize) - 2 x 2 (outline) */
+  min-height: 14px; /* M3E-visual: 18 dp (Checkbox.ContainerSize) - 2 x 2 (outline) */
+  margin: 11px; /* M3E-visual: (40 dp of Checkbox.StateLayerSize - 18) / 2 */
+  padding: 0;
+  border: 2px solid var(--on_surface_variant); /* Checkbox.UnselectedOutlineWidth */
+  border-radius: 2px; /* Checkbox.ContainerShape */
+  background-color: transparent;
+  background-image: none;
+  color: transparent;
+  -gtk-icon-source: none;
+  -gtk-icon-size: 14px; /* M3E-visual: check mark within the inner 14 px (Checkbox.IconSize = 18 including the outline) */
+  box-shadow: none;
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+check:not(#m3e):hover {
+  border-color: var(--on_surface);
+}
+check:not(#m3e):active {
+  border-color: var(--on_surface);
+}
+check:not(#m3e):checked,
+check:not(#m3e):indeterminate {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--on_primary);
+  -gtk-icon-source: -gtk-icontheme("object-select-symbolic");
+}
+check:not(#m3e):indeterminate {
+  -gtk-icon-source: -gtk-icontheme("list-remove-symbolic");
+}
+check:not(#m3e):disabled {
+  border-color: alpha(var(--on_surface), 0.38); /* Checkbox.UnselectedDisabledContainerOpacity */
+  box-shadow: none;
+}
+check:not(#m3e):checked:disabled,
+check:not(#m3e):indeterminate:disabled {
+  border-color: transparent;
+  background-color: alpha(var(--on_surface), 0.38); /* Checkbox.SelectedDisabledContainerOpacity */
+  color: var(--surface);
+}
+
+/* Radio button: 20 dp, 2 dp outline, 10 dp dot; 40 dp state area (10 margins) */
+radio:not(#m3e) {
+  min-width: 16px; /* M3E-visual: 20 dp (RadioButton.IconSize) - 2 x 2 (outline) */
+  min-height: 16px; /* M3E-visual: 20 dp (RadioButton.IconSize) - 2 x 2 (outline) */
+  margin: 10px; /* M3E-visual: (40 dp of RadioButton.StateLayerSize - 20) / 2 */
+  padding: 0;
+  border: 2px solid var(--on_surface_variant); /* M3E-visual: 2 dp outline ("radio button" images) */
+  border-radius: 9999px; /* M3E-visual: circle */
+  background-color: transparent;
+  background-image: none;
+  color: transparent;
+  -gtk-icon-source: none;
+  -gtk-icon-size: 16px; /* M3E-visual: otherwise the theme's icon size (20) enlarges the circle */
+  box-shadow: none;
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+radio:not(#m3e):hover {
+  border-color: var(--on_surface);
+}
+radio:not(#m3e):active {
+  border-color: var(--on_surface);
+}
+radio:not(#m3e):checked {
+  border-color: var(--primary);
+  background-color: transparent;
+  background-image: radial-gradient(circle closest-side, var(--primary) 62%, transparent 63%); /* M3E-visual: 10 dp dot within the inner 16 px (5 / 8 = 62.5 %) */
+}
+radio:not(#m3e):disabled {
+  border-color: alpha(var(--on_surface), 0.38); /* RadioButton.DisabledUnselectedIconOpacity */
+  box-shadow: none;
+}
+radio:not(#m3e):checked:disabled {
+  background-image: radial-gradient(circle closest-side, alpha(var(--on_surface), 0.38) 62%, transparent 63%); /* M3E-visual: 10 dp dot; RadioButton.DisabledSelectedIconOpacity */
+}
+
+
+/* State layer and focus ring: 40 dp disc centred on the indicator (margin 11 + 9 = margin 10 + 10 =
+   20 dp from the edge), drawn on the parent, which also carries :checked. Since the background is clipped to the
+   widget's size, the focus ring stays within the 40 dp. */
+checkbutton:not(#m3e) {
+  background-repeat: no-repeat;
+}
+/* libadwaita also outlines the indicator on focus: the M3E ring is the parent's */
+checkbutton:not(#m3e) > check:not(#m3e),
+checkbutton:not(#m3e) > radio:not(#m3e),
+checkbutton:not(#m3e):focus-visible > check:not(#m3e),
+checkbutton:not(#m3e):focus-visible > radio:not(#m3e) {
+  outline: none;
+}
+checkbutton:not(#m3e):hover {
+  background-image: radial-gradient(circle 20px at 20px 50%, alpha(var(--on_surface), 0.08) 19.5px, alpha(var(--on_surface), 0) 20px); /* M3E-visual: 40 dp disc (Checkbox.StateLayerSize); State.HoverStateLayerOpacity */
+}
+checkbutton:not(#m3e):active {
+  background-image: radial-gradient(circle 20px at 20px 50%, alpha(var(--on_surface), 0.1) 19.5px, alpha(var(--on_surface), 0) 20px); /* M3E-visual: 40 dp disc; State.PressedStateLayerOpacity */
+}
+checkbutton:not(#m3e):checked:hover {
+  background-image: radial-gradient(circle 20px at 20px 50%, alpha(var(--primary), 0.08) 19.5px, alpha(var(--primary), 0) 20px); /* M3E-visual: 40 dp disc; State.HoverStateLayerOpacity */
+}
+checkbutton:not(#m3e):checked:active {
+  background-image: radial-gradient(circle 20px at 20px 50%, alpha(var(--primary), 0.1) 19.5px, alpha(var(--primary), 0) 20px); /* M3E-visual: 40 dp disc; State.PressedStateLayerOpacity */
+}
+checkbutton:not(#m3e):focus-visible {
+  background-image: radial-gradient(circle 20px at 20px 50%, alpha(var(--secondary), 0) 16.5px, var(--secondary) 17px, var(--secondary) 19.5px, alpha(var(--secondary), 0) 20px); /* M3E-visual: 3 dp focus ring (Checkbox.FocusIndicatorColor) within the 40 dp area */
+}
+checkbutton:not(#m3e):disabled {
+  background-image: none;
+}

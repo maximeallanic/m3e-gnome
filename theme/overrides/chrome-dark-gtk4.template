@@ -1,0 +1,13 @@
+/* Chrome: toolbar and active tab (a single block) in dark-mode colours, even with a light theme; the tab strip
+   stays on the surface colour of the current mode (theme). matugen template (entry chrome-dark in
+   matugen/config.toml) -> chrome-dark-gtk4.css, imported at the top of window-buttons-gtk4.css.
+   ".dark" values of the palette: identical to the rest of the theme in dark mode.
+
+   Chrome reads this background on a "window.background" node with no parent and no .csd class (real GTK 4
+   windows have .csd; mutter's X11 frames have .ssd-frame). Hardcoded values, no redefined variables: Chrome also
+   reads menus, text fields and tooltips below this node, and they keep the palette of the current mode.
+   "> label" = text and icons laid on it; a plain "label" (descendant) would also hit the menus.
+   Not "primary": Chrome paints the selected text of the omnibox with the normal text colour.
+   Dark background -> Chrome considers itself in a dark theme (omnibox, bubbles, dialogs, internal pages dark). */
+window.background:not(.csd):not(.ssd-frame) { background-color: {{colors.primary_container.dark.hex}}; }
+window.background:not(.csd):not(.ssd-frame) > label { color: {{colors.on_primary_container.dark.hex}}; }

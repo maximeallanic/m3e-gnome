@@ -1,0 +1,15 @@
+[Unit]
+Description=Material 3 palette from the wallpaper (matugen)
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStartPre=-%h/.local/bin/material-sync
+ExecStart=%h/.local/bin/material-sync-watch
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target

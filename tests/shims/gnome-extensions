@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+import ast
+import os
+import sys
+from pathlib import Path
+import _fake as f
+
+a = sys.argv[1:]
+f.log("gnome-extensions " + " ".join(a))
+home = Path(os.environ["HOME"])
+enabled = ast.literal_eval(f.load().get("/org/gnome/shell/enabled-extensions", "[]").removeprefix("@as "))
+if a[:1] == ["list"]:
+    d = home / ".local/share/gnome-shell/extensions"
+    print("\n".join(sorted(p.name for p in d.iterdir())) if d.is_dir() else "")
+elif a[:1] == ["info"] and len(a) == 2:
+    d = home / ".local/share/gnome-shell/extensions" / a[1]
+    if not d.is_dir():
+        f.fail(f"Extension “{a[1]}” does not exist")
+    print(f"{a[1]}\n  Name: {a[1]}\n  State: {'ACTIVE' if a[1] in enabled else 'INACTIVE'}")
+else:
+    f.fail("unsupported gnome-extensions call: " + " ".join(a))

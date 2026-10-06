@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/maximeallanic/m3e-gnome/security/advisories/new
+    about: Please report security issues privately (see SECURITY.md).
+  - name: Problem with a Shell extension (motion, status bar)
+    url: https://github.com/maximeallanic/m3e-gnome-extensions/issues
+    about: The extensions have their own repository.

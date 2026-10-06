@@ -1,0 +1,217 @@
+/* == buttons == */
+/* Default button = Filled tonal, Small size. State layer = label colour (currentColor) at 8 / 10 %.
+   GTK does not count :not() in specificity: the rules below beat the theme's rules at equal selector. */
+button:not(#m3e) {
+  min-height: 40px; /* ButtonSmall.ContainerHeight */
+  min-width: 0;
+  padding: 0 16px 0 16px; /* ButtonSmall.TrailingSpace ButtonSmall.LeadingSpace */
+  border: none;
+  border-radius: 20px; /* M3E-visual: CornerFull (ButtonSmall.ContainerShapeRound) = height 40 / 2 in px: GTK interpolates the value, 9999px made the shape morph invisible */
+  outline: 0 solid transparent;
+  outline-offset: 2px; /* M3E-visual: focus ring offset by 2 dp ("states" images) */
+  box-shadow: none;
+  background-image: none;
+  animation: none;
+  -gtk-icon-filter: none;
+}
+button:not(#m3e),
+button:not(#m3e):hover,
+button:not(#m3e):active,
+button:not(#m3e).keyboard-activating,
+button:not(#m3e):focus {
+  background-color: var(--secondary_container);
+  color: var(--on_secondary_container);
+}
+button:not(#m3e):hover {
+  border-radius: 20px; /* M3E-visual: CornerFull (ButtonSmall.ContainerShapeRound) = height 40 / 2 in px: GTK interpolates the value, 9999px made the shape morph invisible */
+  background-image: image(alpha(currentColor, 0.08)); /* State.HoverStateLayerOpacity */
+  box-shadow: 0 1px 2px alpha(var(--shadow), 0.3), 0 1px 3px 1px alpha(var(--shadow), 0.15); /* M3E-visual: Elevation level 1 shadow (FilledTonalButton.HoverContainerElevation = 1 dp) */
+}
+button:not(#m3e):active,
+button:not(#m3e).keyboard-activating {
+  border-radius: 8px; /* ButtonSmall.PressedContainerShape */
+  background-image: image(alpha(currentColor, 0.1)); /* State.PressedStateLayerOpacity */
+  box-shadow: none;
+  outline: 0 solid transparent;
+}
+button:not(#m3e):focus-visible {
+  outline: 3px solid var(--secondary); /* M3E-visual: 3 dp focus ring in the secondary colour (Switch.FocusIndicatorColor, "states" images) */
+}
+button:not(#m3e):checked,
+button:not(#m3e):checked:hover,
+button:not(#m3e):checked:active {
+  border-radius: 12px; /* ButtonSmall.ContainerShapeSquare */
+  background-color: var(--secondary);
+  color: var(--on_secondary);
+}
+button:not(#m3e):checked label,
+button:not(#m3e):checked image,
+button:not(#m3e):checked .icon {
+  color: inherit;
+}
+
+/* GNOME Settings accent swatches (.accent-button, painted with --accent-bg-color by the application's own sheet).
+   That sheet has application priority and the generic button rules above have user priority, so without this block
+   every swatch became an invisible tonal button. The size, ring and colour of the application are kept. */
+button:not(#m3e).accent-button,
+button:not(#m3e).accent-button:hover,
+button:not(#m3e).accent-button:active,
+button:not(#m3e).accent-button:checked,
+button:not(#m3e).accent-button:focus {
+  min-width: 24px; /* M3E-visual: swatch size of GNOME Settings, kept */
+  min-height: 24px; /* M3E-visual: see min-width */
+  padding: 3px; /* M3E-visual: gap of the swatch ring, kept from GNOME Settings */
+  border-radius: 15px; /* M3E-visual: full circle of the 30 px swatch (24 px content + 2 x 3 px padding) */
+  background-color: var(--accent-bg-color);
+  background-clip: content-box;
+  background-image: none;
+  box-shadow: none;
+}
+button:not(#m3e).accent-button:checked {
+  box-shadow: 0 0 0 3px var(--accent-bg-color); /* M3E-visual: selection ring of the swatch, kept from GNOME Settings */
+}
+
+/* Filled: suggested action */
+button:not(#m3e).suggested-action,
+button:not(#m3e).suggested-action:hover,
+button:not(#m3e).suggested-action:active,
+button:not(#m3e).suggested-action:focus {
+  background-color: var(--primary);
+  color: var(--on_primary);
+}
+/* Filled, error role: destructive action */
+button:not(#m3e).destructive-action,
+button:not(#m3e).destructive-action:hover,
+button:not(#m3e).destructive-action:active,
+button:not(#m3e).destructive-action:focus {
+  background-color: var(--error);
+  color: var(--on_error);
+  outline-color: transparent;
+}
+button:not(#m3e).destructive-action:focus-visible {
+  outline-color: var(--secondary);
+}
+
+/* Text button (flat): primary label ("default text button style states" image) */
+button:not(#m3e).flat,
+button:not(#m3e).flat:hover,
+button:not(#m3e).flat:active,
+button:not(#m3e).flat:focus {
+  background-color: transparent;
+  color: var(--primary);
+}
+button:not(#m3e).flat:hover {
+  box-shadow: none;
+}
+
+/* Icon buttons: an icon-only button = Filled tonal icon button, a flat one = Standard icon button */
+button:not(#m3e).image-button,
+button:not(#m3e).circular {
+  min-width: 24px; /* SmallIconButton.IconSize */
+  min-height: 24px; /* SmallIconButton.IconSize */
+  padding: 8px; /* SmallIconButton.DefaultLeadingSpace */
+  -gtk-icon-size: 24px; /* SmallIconButton.IconSize */
+}
+button:not(#m3e).image-button:active,
+button:not(#m3e).circular:active {
+  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+}
+button:not(#m3e).image-button.flat,
+button:not(#m3e).circular.flat,
+button:not(#m3e).image-button.flat:hover,
+button:not(#m3e).circular.flat:hover,
+button:not(#m3e).image-button.flat:active,
+button:not(#m3e).circular.flat:active {
+  color: var(--on_surface_variant);
+}
+
+/* Pill = Medium size */
+button:not(#m3e).pill {
+  min-height: 56px; /* ButtonMedium.ContainerHeight */
+  padding: 0 24px 0 24px; /* ButtonMedium.TrailingSpace ButtonMedium.LeadingSpace */
+  border-radius: 28px; /* M3E-visual: CornerFull (ButtonMedium.ContainerShapeRound) = height 56 / 2 in px, for the shape morph */
+}
+button:not(#m3e).pill:active {
+  border-radius: 12px; /* ButtonMedium.PressedContainerShape */
+}
+
+/* Header bar: XSmall size (the bar is 40 px tall), Text / Standard icon button styles. Content is on_surface,
+   like the title and the window buttons (single bar, see window-buttons-gtk4.css). */
+headerbar button:not(#m3e):not(.suggested-action):not(.destructive-action),
+headerbar button:not(#m3e):hover:not(.suggested-action):not(.destructive-action),
+headerbar button:not(#m3e):active:not(.suggested-action):not(.destructive-action) {
+  background-color: transparent;
+  color: var(--on_surface);
+  box-shadow: none;
+}
+headerbar button:not(#m3e),
+headerbar button:not(#m3e):hover {
+  border-radius: 16px; /* M3E-visual: CornerFull (ButtonXSmall.ContainerShapeRound) = height 32 / 2 in px, for the shape morph */
+}
+headerbar button:not(#m3e) {
+  min-height: 32px; /* ButtonXSmall.ContainerHeight */
+  padding: 0 16px 0 16px; /* ButtonXSmall.TrailingSpace ButtonXSmall.LeadingSpace */
+}
+headerbar button:not(#m3e).image-button {
+  min-width: 20px; /* XSmallIconButton.IconSize */
+  min-height: 20px; /* XSmallIconButton.IconSize */
+  padding: 6px; /* XSmallIconButton.DefaultLeadingSpace */
+  -gtk-icon-size: 20px; /* XSmallIconButton.IconSize */
+}
+headerbar button:not(#m3e):active {
+  border-radius: 8px; /* ButtonXSmall.PressedContainerShape */
+}
+headerbar button:not(#m3e):checked:not(.suggested-action):not(.destructive-action) {
+  border-radius: 12px; /* ButtonXSmall.ContainerShapeSquare */
+  background-color: var(--secondary);
+  color: var(--on_secondary);
+}
+/* Back button (AdwBackButton, class .back): surface_container_high circle like the back button of the Pixel Settings
+   app, at the bar's XSmall size. The bar's box gives buttons a height of 34 px: 1 px margins
+   for a 32 px circle. */
+headerbar button:not(#m3e).back:not(.suggested-action):not(.destructive-action),
+headerbar button:not(#m3e).back:hover:not(.suggested-action):not(.destructive-action),
+headerbar button:not(#m3e).back:active:not(.suggested-action):not(.destructive-action) {
+  margin-top: 1px; /* M3E-visual: (34 - 32) / 2: 32 dp circle (XSmallIconButton.ContainerHeight) */
+  margin-bottom: 1px; /* M3E-visual: see margin-top */
+  background-color: var(--surface_container_high);
+  color: var(--on_surface);
+}
+
+/* Disabled (last, so they come after the variants). libadwaita adds an opacity to disabled widgets. */
+button:not(#m3e):disabled,
+button:not(#m3e):checked:disabled {
+  border-radius: 20px; /* M3E-visual: CornerFull (ButtonSmall.ContainerShapeRound) = height 40 / 2 in px: GTK interpolates the value, 9999px made the shape morph invisible */
+  background-color: alpha(var(--on_surface), 0.12); /* FilledTonalButton.DisabledContainerOpacity */
+  background-image: none;
+  color: alpha(var(--on_surface), 0.38); /* FilledTonalButton.DisabledLabelTextOpacity */
+  box-shadow: none;
+  filter: none;
+  opacity: 1;
+}
+button:not(#m3e):disabled label,
+button:not(#m3e):disabled image {
+  color: inherit;
+}
+button:not(#m3e).suggested-action:disabled,
+button:not(#m3e).destructive-action:disabled {
+  background-color: alpha(var(--on_surface), 0.1); /* FilledButton.DisabledContainerOpacity */
+  color: alpha(var(--on_surface_variant), 0.38); /* FilledButton.DisabledLabelTextOpacity */
+}
+button:not(#m3e).flat:disabled {
+  background-color: alpha(var(--on_surface), 0.1); /* TextButton.DisabledContainerOpacity */
+  color: alpha(var(--on_surface_variant), 0.38); /* TextButton.DisabledLabelOpacity */
+}
+button:not(#m3e).image-button.flat:disabled,
+button:not(#m3e).circular.flat:disabled {
+  background-color: transparent;
+  color: alpha(var(--on_surface), 0.38); /* IconButton.DisabledOpacity */
+}
+
+/* Window buttons: styled by window-buttons-gtk4.css, no M3E layer or shadow */
+window windowcontrols > button:not(#m3e),
+window windowcontrols > button:not(#m3e):hover,
+window windowcontrols > button:not(#m3e):active {
+  background-image: none;
+  box-shadow: none;
+}

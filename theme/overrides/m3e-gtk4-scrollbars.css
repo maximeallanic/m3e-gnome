@@ -1,0 +1,59 @@
+/* Scrollbars (no M3E component: the Material-Gnome look is kept, 4 dp indicator, 8 dp bar, 12 dp handle
+   on hover, 10 dp when dragged). Geometry set for every state: libadwaita puts the handle at margin -8 px and
+   8 px outline, Material-Gnome only partly replaced the outline and the margin, and on the indicator -> bar
+   transition the total size of the handle went below zero ("reported min width/height" warnings).
+   Here: no outline, constant 2 dp handle margin, only the thickness changes; the trough compensates through its
+   transverse margin (4 dp for the indicator, 2 dp otherwise), animated on the same spring: constant total
+   thickness (16 dp).
+   Sidebars (Files, Settings): Material-Gnome's -8 px transverse margin (bar pulled to the edge) is
+   replaced by this one; the bar overlays the content, nothing moves in the layout. */
+scrollbar:not(#m3e) > range > trough > slider {
+  margin: 2px; /* M3E-visual: 2 dp around the handle, constant (no negative margin) */
+  border: none;
+}
+scrollbar:not(#m3e).vertical > range > trough {
+  margin-left: 2px; /* M3E-visual: (16 - 8 - 2 x 2) / 2: 16 dp bar */
+  margin-right: 2px; /* M3E-visual: see margin-left */
+}
+scrollbar:not(#m3e).horizontal > range > trough {
+  margin-top: 2px; /* M3E-visual: see the vertical bar */
+  margin-bottom: 2px; /* M3E-visual: see the vertical bar */
+}
+scrollbar:not(#m3e).vertical > range > trough > slider {
+  min-width: 8px; /* M3E-visual: 8 dp bar (Material-Gnome) */
+}
+scrollbar:not(#m3e).horizontal > range > trough > slider {
+  min-height: 8px; /* M3E-visual: 8 dp bar (Material-Gnome) */
+}
+scrollbar:not(#m3e).vertical > range > trough > slider:hover {
+  min-width: 12px; /* M3E-visual: 12 dp hovered handle (Material-Gnome) */
+}
+scrollbar:not(#m3e).horizontal > range > trough > slider:hover {
+  min-height: 12px; /* M3E-visual: 12 dp hovered handle (Material-Gnome) */
+}
+scrollbar:not(#m3e).vertical > range > trough > slider:active {
+  min-width: 10px; /* M3E-visual: 10 dp dragged handle (Material-Gnome) */
+}
+scrollbar:not(#m3e).horizontal > range > trough > slider:active {
+  min-height: 10px; /* M3E-visual: 10 dp dragged handle (Material-Gnome) */
+}
+scrollbar:not(#m3e).vertical > range.fine-tune > trough > slider {
+  min-width: 4px; /* M3E-visual: fine-tune, 4 dp handle (Material-Gnome) */
+}
+scrollbar:not(#m3e).horizontal > range.fine-tune > trough > slider {
+  min-height: 4px; /* M3E-visual: fine-tune, 4 dp handle (Material-Gnome) */
+}
+scrollbar.overlay-indicator:not(#m3e):not(.dragging):not(.hovering).vertical > range > trough {
+  margin-left: 4px; /* M3E-visual: (16 - 4 - 2 x 2) / 2: 4 dp indicator centred on the 16 dp bar */
+  margin-right: 4px; /* M3E-visual: see margin-left */
+}
+scrollbar.overlay-indicator:not(#m3e):not(.dragging):not(.hovering).horizontal > range > trough {
+  margin-top: 4px; /* M3E-visual: see the vertical indicator */
+  margin-bottom: 4px; /* M3E-visual: see the vertical indicator */
+}
+scrollbar.overlay-indicator:not(#m3e):not(.dragging):not(.hovering).vertical > range > trough > slider {
+  min-width: 4px; /* M3E-visual: 4 dp indicator (Material-Gnome) */
+}
+scrollbar.overlay-indicator:not(#m3e):not(.dragging):not(.hovering).horizontal > range > trough > slider {
+  min-height: 4px; /* M3E-visual: 4 dp indicator (Material-Gnome) */
+}

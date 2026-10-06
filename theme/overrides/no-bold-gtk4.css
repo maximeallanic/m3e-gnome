@@ -1,0 +1,10 @@
+/* No bold anywhere, GTK 4 / libadwaita / Chrome (GTK 3: no-bold-gtk3.css, which has no font-variation-settings).
+   Imported from ~/.config/gtk-4.0/gtk.css, like the theme: same priority, so the theme's .title-1, .heading...
+   rules would beat "*" (GTK counts no specificity for :not()/:is()). That is why the installer also strips bold
+   from the theme sources with sed. font-variation-settings pins the wght axis of Google Sans Flex (a variable
+   font): it wins even over bold hardcoded by an application (Pango <b>, e.g. the current folder in Nautilus'
+   path bar), and the theme never sets it anywhere. */
+* {
+  font-weight: normal;
+  font-variation-settings: "wght" 400;
+}

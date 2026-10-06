@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "GNOME Shell ${M3E_FAKE_GNOME_VERSION:-50.5}"

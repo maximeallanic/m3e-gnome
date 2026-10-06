@@ -1,0 +1,159 @@
+/* == Top bar == */
+/* Layout unchanged: full width, translucent, 36 px; the background and height of #panel live in the Extensions
+   block. Buttons = Standard icon button / Text button at size XSmall (32 dp, the only one that fits in 36 px):
+   no container at rest, pill on hover. Content uses on_surface (M3E-visual: design choice, white in dark and
+   near-black in light; IconButton.Color and TextButton.LabelColor say on_surface_variant, one tone greyer);
+   state layer = content colour at 8 / 10 / 10 % (StateTokens). Open menu (:checked) = selected button: Filled
+   toggle (primary background, on_primary content), 12 dp square shape for an icon button, round for the clock
+   (Text button). The stock state layers are inner shadows (box-shadow inset): reset to none in every state. */
+#panel .panel-button,
+#panel:overview .panel-button {
+  margin: 2px 1px; /* M3E-visual: (36 − 32) / 2 above and below (32 dp XSmall button in the 36 px bar), 1 px between two buttons as in stock */
+  -natural-hpadding: 6px; /* XSmallIconButton.DefaultLeadingSpace */
+  -minimum-hpadding: 6px; /* XSmallIconButton.DefaultLeadingSpace */
+  border-radius: 999px; /* XSmallIconButton.ContainerShapeRound */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+#panel .panel-button:hover,
+#panel:overview .panel-button:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  box-shadow: none;
+}
+#panel .panel-button:focus,
+#panel:overview .panel-button:focus {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  box-shadow: none;
+}
+/* Open-menu button: the Shell sets :active (PanelMenu.Button) rather than :checked (Activities in the overview);
+   both get the same selected button. A brief press on a menu-less button also takes this look (no separate
+   pressed layer). */
+#panel .panel-button:active,
+#panel .panel-button:active:focus,
+#panel .panel-button:checked,
+#panel .panel-button:checked:focus,
+#panel:overview .panel-button:active,
+#panel:overview .panel-button:active:focus,
+#panel:overview .panel-button:checked,
+#panel:overview .panel-button:checked:focus {
+  border-radius: 12px; /* XSmallIconButton.SelectedContainerShapeRound */
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_primary.default.hex}};
+}
+/* Selected and hovered: on_primary layer over the background (inner shadow, as in the stock sheet). */
+#panel .panel-button:active:hover,
+#panel .panel-button:checked:hover,
+#panel:overview .panel-button:active:hover,
+#panel:overview .panel-button:checked:hover {
+  border-radius: 12px; /* XSmallIconButton.SelectedContainerShapeRound */
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.08); /* M3E-visual: on_primary state layer at 8 % (State.HoverStateLayerOpacity) as a full inner shadow, since St has only one background */
+  color: {{colors.on_primary.default.hex}};
+}
+/* Status icons: XSmall size, spacing comes from the button's inner padding. */
+#panel .panel-button .system-status-icon {
+  icon-size: 20px; /* XSmallIconButton.IconSize */
+  padding: 0;
+  margin: 0;
+}
+/* Status bar like the Pixel's: icon ink at 72 % of its frame, each icon at its ink width (barre-etat extension),
+   and a constant gap equal to half the ink height (Pixel: 19 to 24 px for 41 px). */
+#panel .panel-button .panel-status-indicators-box {
+  spacing: 7px; /* M3E-visual: 20 px × 0.72 / 2 */
+}
+#panel .power-status.panel-status-indicators-box {
+  spacing: 0; /* M3E-visual: battery alone in its box (stock icon and label hidden) */
+}
+/* Android 16 battery (barre-etat extension, batterie.js): slightly taller than the icon ink (Pixel: 45 px for
+   41); low battery = error. Charged part when not charging = content colour, digits cut out of it. The charging
+   green, fixed on Android, lives in the extension's own stylesheet. */
+#panel .status-bar-battery {
+  -status-bar-height: 16px; /* M3E-visual: 14.4 px × 45 / 41 */
+  -status-bar-low: {{colors.error.default.hex}};
+}
+
+/* Clock = XSmall Text button in Title medium (weight 400: no bold). The stock sheet forces
+   "background: none; box-shadow: none" (!important) on the .clock-display button and draws the states on
+   .clock: the pill is therefore set on .clock, and the button has no inner padding. */
+#panel .panel-button.clock-display,
+#panel:overview .panel-button.clock-display {
+  -natural-hpadding: 0;
+  -minimum-hpadding: 0;
+}
+/* Button contents outside the pill (message indicator): on_surface in every state. The stock sheet hardcodes
+   a colour on .clock-display, and the selected button's on_primary (calendar open) applies only to the .clock
+   pill. */
+#panel .panel-button.clock-display,
+#panel .panel-button.clock-display:hover,
+#panel .panel-button.clock-display:focus,
+#panel .panel-button.clock-display:active,
+#panel .panel-button.clock-display:checked,
+#panel .panel-button.clock-display:checked:hover,
+#panel .panel-button.clock-display:checked:focus,
+#panel:overview .panel-button.clock-display,
+#panel:overview .panel-button.clock-display:hover,
+#panel:overview .panel-button.clock-display:focus,
+#panel:overview .panel-button.clock-display:active,
+#panel:overview .panel-button.clock-display:checked,
+#panel:overview .panel-button.clock-display:checked:hover,
+#panel:overview .panel-button.clock-display:checked:focus {
+  color: {{colors.on_surface.default.hex}};
+}
+#panel .panel-button.clock-display .clock,
+#panel:overview .panel-button.clock-display .clock {
+  font-size: 16px; /* TypeScale.TitleMediumSize */
+  padding: 0 16px; /* ButtonXSmall.LeadingSpace */
+  border-radius: 999px; /* ButtonXSmall.ContainerShapeRound */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+#panel .panel-button.clock-display:hover .clock,
+#panel:overview .panel-button.clock-display:hover .clock {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  box-shadow: none;
+}
+#panel .panel-button.clock-display:focus .clock,
+#panel:overview .panel-button.clock-display:focus .clock {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  box-shadow: none;
+}
+#panel .panel-button.clock-display:active .clock,
+#panel .panel-button.clock-display:active .clock:hover,
+#panel .panel-button.clock-display:active:focus .clock,
+#panel:overview .panel-button.clock-display:active .clock,
+#panel:overview .panel-button.clock-display:active .clock:hover,
+#panel:overview .panel-button.clock-display:active:focus .clock,
+#panel .panel-button.clock-display:checked .clock,
+#panel .panel-button.clock-display:checked .clock:hover,
+#panel .panel-button.clock-display:checked:focus .clock,
+#panel:overview .panel-button.clock-display:checked .clock,
+#panel:overview .panel-button.clock-display:checked .clock:hover,
+#panel:overview .panel-button.clock-display:checked:focus .clock {
+  border-radius: 999px; /* ButtonXSmall.SelectedContainerShapeRound */
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_primary.default.hex}};
+}
+
+/* Workspace indicator: on_surface dots, the active workspace's dot stretches into a pill (width and opacity of
+   the other dots are set by Shell code). */
+#panel .panel-button#panelActivities .workspace-dot,
+#panel:overview .panel-button#panelActivities .workspace-dot {
+  background-color: {{colors.on_surface.default.hex}};
+}
+#panel .panel-button#panelActivities:active .workspace-dot,
+#panel:overview .panel-button#panelActivities:active .workspace-dot,
+#panel .panel-button#panelActivities:checked .workspace-dot,
+#panel:overview .panel-button#panelActivities:checked .workspace-dot {
+  background-color: {{colors.on_primary.default.hex}};
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or the children's icons). */
+#panel .panel-button {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

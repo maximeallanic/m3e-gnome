@@ -1,0 +1,111 @@
+/* == App grid and folders == */
+/* Tiles of the grid, folders and grid results (.icon-grid .overview-tile, .grid-search-results
+   .grid-search-result, .grid-search-results .overview-tile: found apps are AppIcons; selectors are limited to these
+   containers so the native dash, replaced by Dash to Dock, is untouched): no container at rest, on_surface label,
+   on_surface layer at 8 / 10 / 10% and Large corners.
+   Selected tile (:selected, :highlighted, :checked) = secondary_container, like a chosen list item.
+   Focus: stock !important ring (limitation). Closed folder (.app-folder): tile with a surface_container_high
+   container (preview of its icons), same layer as an inset shadow. Open folder (.app-folder-dialog) = dialog
+   surface (Dialog: surface_container_high, 28 dp corners, level 3 shadow, Headline small on_surface title); rename
+   button = Standard icon button Small; page arrows = Tonal icon buttons; page dots on_surface (white in the stock
+   sheet, invisible in light mode). */
+.icon-grid .overview-tile,
+.grid-search-results .grid-search-result,
+.grid-search-results .overview-tile {
+  border-radius: 16px; /* Shape.CornerLarge */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.icon-grid .overview-tile:hover,
+.grid-search-results .grid-search-result:hover,
+.grid-search-results .overview-tile:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.icon-grid .overview-tile:focus,
+.grid-search-results .grid-search-result:focus,
+.grid-search-results .overview-tile:focus,
+.icon-grid .overview-tile:focus:hover,
+.grid-search-results .grid-search-result:focus:hover,
+.grid-search-results .overview-tile:focus:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.icon-grid .overview-tile:active,
+.grid-search-results .grid-search-result:active,
+.grid-search-results .overview-tile:active,
+.icon-grid .overview-tile:active:hover,
+.grid-search-results .grid-search-result:active:hover,
+.grid-search-results .overview-tile:active:hover,
+.icon-grid .overview-tile:active:focus,
+.grid-search-results .grid-search-result:active:focus,
+.grid-search-results .overview-tile:active:focus {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.icon-grid .overview-tile:highlighted,
+.grid-search-results .grid-search-result:highlighted,
+.grid-search-results .overview-tile:highlighted,
+.icon-grid .overview-tile:selected,
+.grid-search-results .grid-search-result:selected,
+.grid-search-results .overview-tile:selected,
+.icon-grid .overview-tile:checked,
+.grid-search-results .grid-search-result:checked,
+.grid-search-results .overview-tile:checked,
+.icon-grid .overview-tile:selected:hover,
+.grid-search-results .grid-search-result:selected:hover,
+.grid-search-results .overview-tile:selected:hover,
+.icon-grid .overview-tile:selected:active,
+.grid-search-results .grid-search-result:selected:active,
+.grid-search-results .overview-tile:selected:active {
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.icon-grid .overview-tile:insensitive,
+.grid-search-results .grid-search-result:insensitive,
+.grid-search-results .overview-tile:insensitive {
+  background-color: transparent;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* M3E-visual: disabled label at 38% (List.ItemDisabledLabelTextOpacity) */
+}
+.icon-grid .overview-tile.app-folder,
+.icon-grid .overview-tile.app-folder:hover,
+.icon-grid .overview-tile.app-folder:focus,
+.icon-grid .overview-tile.app-folder:active,
+.icon-grid .overview-tile.app-folder:selected,
+.icon-grid .overview-tile.app-folder:highlighted,
+.icon-grid .overview-tile.app-folder:checked {
+  background-color: {{colors.surface_container_high.default.hex}};
+  color: {{colors.on_surface.default.hex}};
+}
+.icon-grid .overview-tile.app-folder:focus,
+.icon-grid .overview-tile.app-folder:focus:hover {
+  background-color: st-mix({{colors.on_surface.default.hex}}, {{colors.surface_container_high.default.hex}}, 10%); /* M3E-visual: on_surface state layer at 10% (State.FocusStateLayerOpacity) blended into the background: on focus, the stock !important ring replaces the inset shadow that carries the layer elsewhere */
+}
+.icon-grid .overview-tile.app-folder:hover {
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: on_surface state layer at 8% (State.HoverStateLayerOpacity) as a full inset shadow, since St only has one background */
+}
+.icon-grid .overview-tile.app-folder:active,
+.icon-grid .overview-tile.app-folder:active:hover,
+.icon-grid .overview-tile.app-folder:selected,
+.icon-grid .overview-tile.app-folder:highlighted,
+.icon-grid .overview-tile.app-folder:checked {
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* M3E-visual: on_surface state layer at 10% (State.PressedStateLayerOpacity) as a full inset shadow, since St only has one background */
+}
+.icon-grid .app-grid-running-dot {
+  background-color: {{colors.primary.default.hex}};
+}
+/* Page dots (app grid, open folder) = Pixel PagerDots (SystemUI PagerDots.kt: 6 dp dot, current page as a 12 dp
+   pill, 4 dp apart, onSurfaceVariant, inactive at 0.5), lengths × 56/72. St cannot stretch the current dot:
+   pageIndicators.js sets no class on the current page, it scales the other pages to 2/3 and sets their opacity to
+   128/255 (about 0.5, the Pixel value). The dot is therefore 7 px (current page, round instead of a 9 × 5 pill) and
+   4.7 px on other pages (6 dp × 56/72 = 4.7: the Pixel size). */
+.page-indicator {
+  padding: 6px 1px 0; /* M3E-visual: 1 px on each side: 3 px between the current page and its neighbour (4 dp × 56/72), 4.3 px between two non-current pages; 6 px on top as in the stock sheet */
+}
+.page-indicator .page-indicator-icon {
+  width: 7px; /* M3E-visual: PagerDots 6 dp × 56/72 = 4.7 px at the 2/3 scale of non-current pages (pageIndicators.js) */
+  height: 7px; /* M3E-visual: see width */
+  border-radius: 999px; /* M3E-visual: round dot (PagerDots: CircleShape) */
+  background-color: {{colors.on_surface_variant.default.hex}}; /* M3E-visual: PagerDots: onSurfaceVariant (0.5 on non-current pages, opacity set by pageIndicators.js) */
+}

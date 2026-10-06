@@ -1,0 +1,53 @@
+/* == motion == */
+/* GTK 3 has no variables: base springs copied from theme/motion/gtk/m3e-gtk3-motion.css (DefaultEffects
+   159 ms, FastSpatial 271 ms). Same choices as the motion section of m3e-gtk4.css. */
+
+/* State transitions (normal, hover, press, focus, selection): colours, state layers, shadows and outlines on
+   DefaultEffects; radius on FastSpatial (shape morph on press: full radius in px, see the buttons block). The GTK 3
+   theme used a different curve and duration depending on the state. */
+button,
+modelbutton,
+menuitem,
+row,
+notebook > header > tabs > tab,
+entry,
+spinbutton,
+calendar,
+stackswitcher > button {
+  transition: background-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), background-image 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), box-shadow 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), border-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), outline-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), border-radius 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757); /* M3E-visual: base springs M3E.Spring.DefaultEffects M3E.Spring.FastSpatial (m3e-gtk3-motion.css) */
+}
+
+/* Slider: handle thinned on press, width and margin on the same spring (centre kept); colours cross-fade. */
+scale trough > slider {
+  transition: min-width 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757), min-height 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757), margin 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757), background-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), box-shadow 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454); /* M3E-visual: base springs M3E.Spring.FastSpatial M3E.Spring.DefaultEffects */
+}
+scale trough,
+scale trough > highlight {
+  transition: background-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454); /* M3E-visual: base spring M3E.Spring.DefaultEffects */
+}
+
+/* Scrollbars: handle thickness on FastSpatial, colour cross-fades (the theme: 0.2 s ease and 75 ms). */
+scrollbar slider {
+  transition: min-width 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757), min-height 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757), background-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454); /* M3E-visual: base springs M3E.Spring.FastSpatial M3E.Spring.DefaultEffects */
+}
+
+/* Switch: handle that changes size AND margin on the same spring (the margin used to jump: "zoom" when
+   toggling); track cross-fades. */
+switch {
+  transition: background-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), border-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454); /* M3E-visual: base spring M3E.Spring.DefaultEffects (m3e-gtk3-motion.css) */
+}
+switch slider {
+  transition: min-width 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757), min-height 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757), margin 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757), background-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), box-shadow 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454); /* M3E-visual: base springs M3E.Spring.FastSpatial (sizes) M3E.Spring.DefaultEffects (colours) */
+}
+
+/* Check box and radio: outline and background cross-fade; the radio dot grows from the centre (icon from 0 to its size). */
+check,
+radio {
+  transition: background-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), border-color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), color 159ms cubic-bezier(0.2295, 0.1781, 0.2051, 0.9454), -gtk-icon-transform 271ms cubic-bezier(0.3897, 0.6966, 0.0182, 1.2757); /* M3E-visual: base springs M3E.Spring.DefaultEffects (colours) M3E.Spring.FastSpatial (dot) */
+}
+radio {
+  -gtk-icon-transform: scale(0); /* M3E-visual: zero-size dot when not selected, start of the spring */
+}
+radio:checked {
+  -gtk-icon-transform: none;
+}

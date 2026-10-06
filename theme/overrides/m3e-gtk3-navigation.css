@@ -1,0 +1,165 @@
+/* == tabs-navigation == */
+/* Primary tabs: 48 dp, active label primary and a 3 dp indicator under the content, inactive
+   on_surface_variant, 1 dp divider at the bottom (outline_variant). Same style for GtkStackSwitcher and
+   HdyViewSwitcher (view switchers). The indicator is a solid gradient as wide as the content. */
+notebook,
+notebook.frame {
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  background-color: @surface;
+}
+stackswitcher,
+viewswitcher {
+  padding: 0;
+  border: none;
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  background: none;
+  box-shadow: inset 0 -1px @outline_variant; /* M3E-visual: 1 dp divider under the tabs */
+}
+notebook > header {
+  margin: 0;
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  padding: 0;
+  border: none;
+  background-color: @surface;
+  box-shadow: inset 0 -1px @outline_variant; /* M3E-visual: 1 dp divider (spec image "6 elements of primary tabs") */
+}
+notebook > header > tabs > tab,
+stackswitcher > button,
+viewswitcher > button {
+  min-height: 48px; /* PrimaryNavigationTab.ContainerHeight */
+  padding: 0 16px 0 16px; /* M3E-visual: 16 dp margins (spec image "measurements for four and two tabs") */
+  margin: 0;
+  border: none;
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  outline: none;
+  background-color: transparent;
+  background-image: none;
+  color: @on_surface_variant;
+  box-shadow: none;
+  animation: none;
+}
+notebook > header > tabs > tab:hover,
+stackswitcher > button:hover,
+viewswitcher > button:hover {
+  background-color: alpha(@on_surface, 0.08); /* State.HoverStateLayerOpacity */
+  color: @on_surface;
+}
+notebook > header > tabs > tab:active,
+stackswitcher > button:active,
+viewswitcher > button:active {
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  background-color: alpha(@on_surface, 0.1); /* State.PressedStateLayerOpacity */
+  color: @on_surface;
+}
+notebook > header > tabs > tab:checked,
+notebook > header > tabs > tab:selected,
+stackswitcher > button:checked,
+viewswitcher > button:checked {
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  background-color: transparent;
+  background-image: linear-gradient(@primary, @primary);
+  background-size: calc(100% - 32px) 3px; /* M3E-visual: 3 dp indicator (PrimaryNavigationTab.ActiveIndicatorHeight) under the content (16 margins) */
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  color: @primary;
+}
+notebook > header > tabs > tab:checked:hover,
+stackswitcher > button:checked:hover,
+viewswitcher > button:checked:hover {
+  background-color: alpha(@primary, 0.08); /* State.HoverStateLayerOpacity */
+}
+notebook > header > tabs > tab label,
+stackswitcher > button label,
+stackswitcher > button image,
+viewswitcher > button label,
+viewswitcher > button image {
+  color: inherit;
+}
+notebook > header > tabs > tab:disabled,
+stackswitcher > button:disabled {
+  background-color: transparent;
+  color: alpha(@on_surface, 0.38); /* FilledTextField.DisabledInputOpacity */
+}
+/* GTK 3: the generic "button:checked:..." rules (more specific) must not take over the active tab */
+stackswitcher > button:checked:hover,
+stackswitcher > button:checked:active,
+stackswitcher > button:checked:disabled,
+stackswitcher > button:disabled {
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  box-shadow: none;
+}
+stackswitcher > button:checked:active {
+  background-color: alpha(@primary, 0.1); /* State.PressedStateLayerOpacity */
+  color: @primary;
+}
+stackswitcher > button:checked:hover {
+  color: @primary;
+}
+stackswitcher > button:checked:disabled {
+  background-color: transparent;
+  color: alpha(@on_surface, 0.38); /* FilledTextField.DisabledInputOpacity */
+}
+/* Inside a header bar (40 px, see the project docs): 32 dp */
+headerbar stackswitcher > button,
+headerbar viewswitcher > button {
+  min-height: 32px; /* ButtonXSmall.ContainerHeight */
+}
+
+/* Navigation drawer (sidebars): 56 dp items, active indicator as a secondary_container pill,
+   12 dp margins around, 16 dp before the label. */
+stacksidebar list > row,
+list.navigation-sidebar > row {
+  min-height: 56px; /* NavigationDrawer.ActiveIndicatorHeight */
+  margin: 0 12px 0 12px; /* M3E-visual: 12 dp margins (spec image "standard navigation drawer ... padding and margins") */
+  padding: 0 16px 0 16px; /* M3E-visual: 16 dp before the label */
+  border-radius: 9999px; /* NavigationDrawer.ActiveIndicatorShape */
+  background-color: transparent;
+  background-image: none;
+  color: @on_surface_variant;
+  box-shadow: none;
+  outline: none;
+}
+stacksidebar list > row:hover,
+list.navigation-sidebar > row:hover {
+  background-color: alpha(@on_surface, 0.08); /* State.HoverStateLayerOpacity */
+  color: @on_surface;
+}
+stacksidebar list > row:active,
+list.navigation-sidebar > row:active {
+  background-color: alpha(@on_surface, 0.1); /* State.PressedStateLayerOpacity */
+}
+stacksidebar list > row:selected,
+list.navigation-sidebar > row:selected {
+  border-radius: 9999px; /* NavigationDrawer.ActiveIndicatorShape */
+  background-color: @secondary_container;
+  color: @on_secondary_container;
+}
+stacksidebar list > row:selected:hover,
+list.navigation-sidebar > row:selected:hover {
+  background-image: image(alpha(@on_secondary_container, 0.08)); /* State.HoverStateLayerOpacity */
+}
+stacksidebar list > row label,
+list.navigation-sidebar > row label,
+list.navigation-sidebar > row image {
+  color: inherit;
+}
+stacksidebar,
+stacksidebar scrolledwindow,
+stacksidebar viewport,
+stacksidebar list,
+stacksidebar .sidebar,
+stacksidebar.sidebar {
+  border: none;
+  box-shadow: none;
+}
+stacksidebar list,
+.navigation-sidebar {
+  background-color: @surface;
+}
+
+
+
+/* A tab icon takes the colour of its label. */
+notebook > header > tabs > tab image {
+  color: inherit;
+}

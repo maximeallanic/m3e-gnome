@@ -1,0 +1,219 @@
+/* Dark colours of Chrome's toolbar and active tab (template chrome-dark-gtk4.template) */
+@import url("chrome-dark-gtk4.css");
+
+/* Unified title bars and window buttons (GTK 4, libadwaita, Chrome, mutter's X11 frames).
+   Same geometry everywhere, matched to Chrome (whose bar height and button gap,
+   6 px, are fixed in its code):
+     bar 40 px · buttons 30 × 30 · glyph 16 px · gap 6 px · 10 px at the edge.
+   Single bar (Material 3 top app bar): title, bar icons and window buttons in
+   on_surface; inactive window: all three dimmed to 50 % by the same filter. Hover on window buttons = 30 px
+   circle (Material 3 state layer: on_surface at 8 %, 12 % on press), no animation, like Chrome's
+   own buttons. */
+
+/* ---- Bar height ---- */
+headerbar,
+headerbar:backdrop,
+headerbar.titlebar,
+headerbar.default-decoration,
+window headerbar.titlebar,
+window.maximized headerbar.titlebar {
+  min-height: 40px;
+  padding: 0 10px;
+}
+/* Chrome only (the "header-bar" class does not exist in GTK 4): its bar is 39 px tall and it centres the 30 px buttons
+   by removing this bottom margin (rounding up). Measured on a nested session (2026-10-04, normal and maximized
+   windows, active and inactive): 0 or 1 px → glyph centres 20 px from the top of the frame and the close glyph 25 px from
+   the right edge, pixel-exact like Files and Ptyxis (libadwaita); 2 or 3 px → 1 px too high; 4 px → 2 px too high.
+   1 px = exact value (no rounding). */
+window.background.csd headerbar.header-bar.titlebar { padding-bottom: 1px; }
+/* content: 3 px above and below the 34 px buttons (libadwaita uses 6/7 px) */
+headerbar > windowhandle > box,
+window headerbar.titlebar > windowhandle > box {
+  padding: 3px 0;
+}
+headerbar.default-decoration > windowhandle > box,
+window headerbar.titlebar.default-decoration > windowhandle > box {
+  padding: 5px 0;
+}
+/* Ptyxis with the tab bar: its internal stylesheet adds 3 px above and below the visual-bell area
+   ("window.has-tab-bar .visual-bell-area"), which contains the title bar: buttons, title and icons
+   were shifted down by 3 px (measured on a nested session: centre at 23 px from the top instead of 20). Nothing above; the bottom padding stays
+   (gap between title bar and tabs). */
+window.has-tab-bar .visual-bell-area {
+  padding-top: 0;
+}
+/* Material-Gnome adds 2 px of vertical margin to every bar button: that would enlarge the bar */
+headerbar button {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* ---- Bar colours: a single content colour ----
+   Material-Gnome sets headerbar and windowtitle to primary (and leaves the title in primary when the window is inactive);
+   the bar buttons use on_surface (m3e-gtk4.css). Ptyxis (the "material" palette, see the project docs) paints its
+   bar with TitlebarForeground = on_surface: same rendering.
+   Inactive window: libadwaita already dims all the bar content ("headerbar:backdrop > windowhandle",
+   filter: opacity(0.5)); the same rule here covers GTK 4 bars without libadwaita. No other dimming
+   (translucent colour or opacity): they multiplied with this filter (icons at 29 %, title at 50 %). */
+headerbar,
+headerbar:backdrop,
+windowtitle:not(#m3e),
+windowtitle:not(#m3e) > label.title,
+headerbar button:not(#m3e):backdrop:not(.suggested-action):not(.destructive-action):not(:checked) {
+  color: var(--on_surface);
+}
+headerbar:backdrop > windowhandle {
+  filter: opacity(0.5);
+}
+/* In that case libadwaita dims the AdwToolbarView top bar and not the headerbar it contains: same exception,
+   otherwise the two filters multiply (25 %). */
+toolbarview > .top-bar headerbar:backdrop > windowhandle,
+toolbarview > .bottom-bar headerbar:backdrop > windowhandle {
+  filter: none;
+}
+
+/* ---- Window buttons ----
+   ":not(#m3e)": same ID specificity as m3e-gtk4.css (imported before), to keep priority. */
+window windowcontrols { border-spacing: 6px; margin: 0; }
+/* Material-Gnome adds 6 px on each side: the close button would end up farther from the edge than in Chrome */
+window windowcontrols:not(.empty).start:dir(ltr),
+window windowcontrols:not(.empty).end:dir(rtl),
+window windowcontrols:not(.empty).start:dir(rtl),
+window windowcontrols:not(.empty).end:dir(ltr) {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+window windowcontrols > button:not(#m3e):not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).minimize:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).maximize:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).close:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).minimize:hover:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).maximize:hover:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).close:hover:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).minimize:active:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).maximize:active:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).close:active:not(.suggested-action):not(.destructive-action),
+window headerbar.default-decoration windowcontrols > button:not(#m3e):not(.suggested-action):not(.destructive-action) {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  color: var(--on_surface);
+  transform: none;
+  transition: none;
+}
+window windowcontrols > button:not(#m3e):not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).minimize:not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).maximize:not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).close:not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).minimize:hover:not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).maximize:hover:not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).close:hover:not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).minimize:active:not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).maximize:active:not(.suggested-action):not(.destructive-action) > image,
+window windowcontrols > button:not(#m3e).close:active:not(.suggested-action):not(.destructive-action) > image,
+window headerbar.default-decoration windowcontrols > button:not(#m3e):not(.suggested-action):not(.destructive-action) > image {
+  -gtk-icon-size: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  padding: 7px;
+  margin: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  transform: none;
+  transition: none;
+}
+window windowcontrols > button:not(#m3e).minimize:hover:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).maximize:hover:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).close:hover:not(.suggested-action):not(.destructive-action) {
+  background-image: radial-gradient(circle 15px at center, color-mix(in srgb, var(--on_surface) 8%, transparent) 94%, transparent 100%);
+}
+window windowcontrols > button:not(#m3e).minimize:active:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).maximize:active:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).close:active:not(.suggested-action):not(.destructive-action) {
+  background-image: radial-gradient(circle 15px at center, color-mix(in srgb, var(--on_surface) 12%, transparent) 94%, transparent 100%);
+}
+window windowcontrols > button:not(#m3e).minimize:backdrop:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).maximize:backdrop:not(.suggested-action):not(.destructive-action),
+window windowcontrols > button:not(#m3e).close:backdrop:not(.suggested-action):not(.destructive-action) {
+  color: var(--on_surface);
+  opacity: 1; /* Material-Gnome: 0.65; the dimming comes from the bar filter (above), like for the title */
+}
+/* Chrome draws its own buttons (no bar filter): it keeps an opacity of 0.5 when the window is inactive. */
+window.background.csd > headerbar.header-bar.titlebar > windowcontrols > button.titlebutton:backdrop {
+  opacity: 0.5;
+}
+
+/* ---- Chrome: toolbar and active tab → chrome-dark-gtk4.css (generated by matugen, imported at the top) ---- */
+
+/* ---- Text selection: Material-Gnome defines none (transparent background). Chrome (GTK 4) reads this background
+   for the selection in the omnibox and form fields, and background + text for the selection in web pages.
+   Opaque (mixed with surface): Chrome reads a single colour. The theme gives selected text on_primary:
+   unreadable on this background (dark text on dark teal) → on_surface.
+   Chrome reads the background on "textview.view:focus text:focus selection:focus": the theme sets primary there through
+   "textview text selection:focus", which is more specific → the :focus variants are required. In GTK 4, Chrome takes
+   the selected-text colour from the "text" node (on_surface), not from "selection". ---- */
+text > selection,
+text > selection:focus,
+textview text selection,
+textview text selection:focus,
+entry > text > selection,
+entry > text > selection:focus,
+label > selection,
+label > selection:focus {
+  background-color: color-mix(in srgb, var(--primary) 40%, var(--surface));
+  color: var(--on_surface);
+}
+/* The text of a focused textview comes out in primary (= the old selection background): Chrome GTK 4 uses it
+   as the selected-text colour → invisible text. */
+textview.view:focus text,
+textview.view:focus text:focus {
+  color: var(--on_surface);
+}
+
+/* ---- Chrome: menu icons ----
+   Chrome takes the colour of its menu icons (the ⋮ menu, context menus, drop-down lists) from a
+   "menu > menuitem > radio" node that it builds itself (it does not exist in real GTK 4 apps). m3e-gtk4.css sets
+   radio to color: transparent (dot drawn as a gradient): icons invisible unless hovered. Leading icon of an
+   M3 menu item = on_surface_variant. */
+menu > menuitem > radio:not(#m3e),
+menu > menuitem > radio:not(#m3e):hover,
+menu > menuitem > radio:not(#m3e):checked {
+  color: var(--on_surface_variant); /* Menu.ListItem.LeadingIconColor */
+}
+
+/* ---- Window shadow extents: identical when focused and in backdrop ----
+   Material-Gnome's backdrop shadow is much smaller than the focused one, so the CSD shadow margin (and with it
+   the surface origin) moved by about 18 px left / 12 px top on every focus change. A click that focuses a window
+   then got a GTK-synthesized motion offset by that amount, and VTE (Ptyxis) turned it into a text selection
+   (measured on a nested session, 2026-10-05). The two transparent shadows below pin the extents to the focused ones in both states;
+   they come first so the backdrop transition pairs them with themselves and the extents never change. The visible
+   shadows are the theme's own values. */
+window.csd {
+  box-shadow: 0 16px 15px 2px transparent,
+              0 6px 18px 5px transparent,
+              0 8px 6px -5px rgba(0, 0, 0, 0.2),
+              0 16px 15px 2px rgba(0, 0, 0, 0.14),
+              0 6px 18px 5px rgba(0, 0, 0, 0.12),
+              inset 0 1px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+window.csd:backdrop {
+  box-shadow: 0 16px 15px 2px transparent,
+              0 6px 18px 5px transparent,
+              0 2px 3px -1px rgba(0, 0, 0, 0.15),
+              0 4px 3px 0 rgba(0, 0, 0, 0.18),
+              0 1px 6px 0 rgba(0, 0, 0, 0.12),
+              inset 0 1px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+/* window.csd:backdrop above ties with the theme's maximized/fullscreen rule and comes later: restore it. */
+window.csd.maximized,
+window.csd.fullscreen {
+  box-shadow: none;
+}

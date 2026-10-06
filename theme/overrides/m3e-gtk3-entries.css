@@ -1,0 +1,151 @@
+/* == text-fields == */
+/* Filled text field: 56 dp, 16 margins, 4 dp top corners, 1 dp bottom indicator → 2 dp on focus (inset shadow:
+   the text does not move). GTK has no floating label: the typed text is centred. Same field for drop-down
+   lists (dropdown, combobox: "exposed dropdown menu") and the numeric field. */
+entry,
+spinbutton,
+dropdown > button,
+combobox > box > button,
+row.entry {
+  min-height: 56px; /* M3E-visual: Filled text field height (spec image "layout values and paddings") */
+  padding: 0 16px 0 16px; /* M3E-visual: 16 dp margins (spec image "layout values and paddings") */
+  border: none;
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: @surface_container_highest;
+  background-image: none;
+  color: @on_surface;
+  caret-color: @primary;
+  box-shadow: inset 0 -1px @on_surface_variant; /* M3E-visual: 1 dp indicator (FilledTextField.ActiveIndicatorHeight) as an inset shadow */
+  outline: none;
+  font-size: 16px; /* FilledTextField.InputFont.size */
+  animation: none;
+  opacity: 1;
+}
+entry:hover,
+spinbutton:hover,
+dropdown > button:hover,
+combobox > box > button:hover,
+row.entry:hover {
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: @surface_container_highest;
+  background-image: image(alpha(@on_surface, 0.08)); /* State.HoverStateLayerOpacity */
+  color: @on_surface;
+  box-shadow: inset 0 -1px @on_surface; /* M3E-visual: 1 dp indicator (FilledTextField.HoverActiveIndicatorHeight) */
+}
+dropdown > button:active,
+dropdown > button:checked,
+combobox > box > button:active,
+combobox > box > button:checked {
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: @surface_container_highest;
+  background-image: none;
+  color: @on_surface;
+}
+entry:focus,
+spinbutton:focus,
+dropdown > button:focus,
+dropdown > button:checked,
+combobox > box > button:focus,
+combobox > box > button:checked,
+row.entry:focus {
+  box-shadow: inset 0 -2px @primary; /* M3E-visual: 2 dp indicator (FilledTextField.FocusActiveIndicatorHeight) */
+  outline: none;
+}
+entry.error,
+spinbutton.error {
+  caret-color: @error;
+  box-shadow: inset 0 -1px @error; /* M3E-visual: 1 dp indicator (FilledTextField.ErrorActiveIndicatorColor) */
+}
+entry.error:focus,
+spinbutton.error:focus {
+  box-shadow: inset 0 -2px @error; /* M3E-visual: 2 dp indicator (FilledTextField.FocusActiveIndicatorHeight) */
+}
+entry:disabled,
+spinbutton:disabled,
+dropdown > button:disabled,
+combobox > box > button:disabled,
+row.entry:disabled {
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: alpha(@on_surface, 0.04); /* FilledTextField.DisabledContainerOpacity */
+  background-image: none;
+  color: alpha(@on_surface, 0.38); /* FilledTextField.DisabledInputOpacity */
+  box-shadow: inset 0 -1px alpha(@on_surface, 0.38); /* M3E-visual: 1 dp indicator at 38 % (FilledTextField.DisabledActiveIndicatorOpacity) */
+}
+dropdown > button label,
+dropdown > button row,
+dropdown > button row label,
+dropdown > button cellview,
+combobox > box > button label,
+combobox > box > button cellview {
+  color: inherit;
+}
+/* Leading and trailing icons: 24 dp, on_surface_variant (also on focus) */
+/* (GTK 3: the list arrow does not rotate, there is no transform property) */
+entry image,
+entry:focus image {
+  -gtk-icon-transform: scale(1.5); /* M3E-visual: 16 px icon x 1.5 = 24 dp (FilledTextField.LeadingIconSize); GTK 3 cannot change the size through CSS */
+  color: @on_surface_variant;
+}
+entry image:disabled {
+  color: alpha(@on_surface, 0.38); /* FilledTextField.DisabledLeadingIconOpacity */
+}
+dropdown > button arrow,
+combobox > box > button arrow {
+  min-width: 24px; /* FilledTextField.TrailingIconSize */
+  min-height: 24px; /* FilledTextField.TrailingIconSize */
+  color: @on_surface_variant;
+}
+/* Numeric field: text on the left, +/− buttons as 40 dp Standard icon buttons centred in the 56 */
+spinbutton {
+  padding: 0 8px 0 16px; /* M3E-visual: 16 dp before the text, 8 dp after the last button ("trailing icon" layout) */
+}
+spinbutton > entry,
+spinbutton:not(.vertical) > entry,
+spinbutton > entry:focus {
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+spinbutton > button,
+spinbutton > button:hover,
+spinbutton > button:active,
+spinbutton:not(.vertical) > button {
+  margin: 8px 0; /* M3E-visual: (56 − 40) / 2 */
+  background-color: transparent;
+  color: @on_surface_variant;
+  box-shadow: none;
+}
+spinbutton > button,
+spinbutton > button image {
+  -gtk-icon-transform: scale(1.5); /* M3E-visual: 16 px icon x 1.5 = 24 dp (SmallIconButton.IconSize) */
+}
+spinbutton:disabled > button,
+spinbutton > button:disabled {
+  background-color: transparent;
+  color: alpha(@on_surface, 0.38); /* IconButton.DisabledOpacity */
+}
+/* Header bar (40 px, see the project docs): fields reduced to 32 dp, like the XSmall buttons */
+headerbar entry,
+headerbar spinbutton,
+headerbar dropdown > button,
+headerbar combobox > box > button {
+  min-height: 32px; /* ButtonXSmall.ContainerHeight */
+  font-size: 14px; /* FilledTonalButton.LabelTextFont.size */
+}
+headerbar spinbutton > button {
+  margin: 0;
+}
+/* M3E search bar: surface_container_high pill, no indicator */
+entry.search,
+searchentry {
+  border-radius: 9999px; /* M3E-visual: pill-shaped search bar ("search bar" component) */
+  background-color: @surface_container_high;
+  box-shadow: none;
+}
+entry.search:focus,
+searchentry:focus {
+  box-shadow: none;
+}

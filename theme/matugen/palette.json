@@ -1,0 +1,15 @@
+{
+  "scheme": "scheme-tonal-spot",
+  "spec": "2025",
+  "platform": "phone",
+  "contrast": 0.0,
+  "fallback_color": "#b7966a",
+  "custom_colors": {
+    "ansi_red": { "color": "#f44336", "blend": true },
+    "ansi_green": { "color": "#4caf50", "blend": true },
+    "ansi_yellow": { "color": "#ffc107", "blend": true },
+    "ansi_blue": { "color": "#2196f3", "blend": true },
+    "ansi_magenta": { "color": "#9c27b0", "blend": true },
+    "ansi_cyan": { "color": "#00bcd4", "blend": true }
+  }
+}

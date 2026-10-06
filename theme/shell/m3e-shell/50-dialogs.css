@@ -1,0 +1,188 @@
+/* == Dialogues == */
+/* Pixel SystemUI dialogs (Android 17, Theme.SystemUI.Dialog: materialColorSurfaceBright background,
+   Widget.Dialog.Button buttons: 28 dp radius pills, positive = filled primary / onPrimary, negative and neutral = 1 dp
+   primary outline with onSurface text; dialog_button_horizontal_padding 16 dp, vertical 8 dp around a 20 sp line = 36 dp
+   tall; dialog_button_side_margin 8 dp; dialog_top/side/bottom_padding 24/24/18 dp). GNOME layout kept (full-width
+   buttons, centered title and text).
+   Measurements: SystemUI-specific lengths (buttons, bottom margin) follow the density rule (x 56/72); the container
+   radius keeps the M3 token Dialog.ContainerShape (28 dp), already at desktop scale like every Compose token in this
+   theme (quick settings panel, Alt+Tab, GTK dialogs: 28); 28 x 56/72 = 22 would break that parity without looking
+   closer to the Pixel (which itself uses 28 dp), and the 24 dp margins are also the token's. State layers are full
+   inset shadows (St only has a background); on focus, the stock !important ring (GNOME accent) replaces the shadow, so
+   the focus layer is set as the background (known limitation). No shape change on press (SystemUI buttons have none). */
+.modal-dialog {
+  border: none;
+  border-radius: 28px; /* Dialog.ContainerShape */
+  padding: 24px 24px 18px; /* M3E-visual: dialog_top_padding 24 dp, dialog_side_padding 24 dp, dialog_bottom_padding 18 dp (same scale as the radius, see the header) */
+  spacing: 24px; /* M3E-visual: 24 dp between the text and the actions */
+  background-color: {{colors.surface_bright.default.hex}}; /* M3E-visual: Theme.SystemUI.Dialog: colorBackground = materialColorSurfaceBright */
+  color: {{colors.on_surface.default.hex}};
+  box-shadow: 0 4px 8px 3px rgba({{colors.shadow.default.red}}, {{colors.shadow.default.green}}, {{colors.shadow.default.blue}}, 0.15); /* M3E-visual: level 3 elevation shadow (Dialog.ContainerElevation = 6 dp); St draws a single shadow, so the wider of the two shadows of this level */
+}
+.modal-dialog .modal-dialog-content-box {
+  padding-top: 0;
+  spacing: 16px; /* M3E-visual: 16 dp between title and text, same as GTK */
+}
+.modal-dialog .modal-dialog-button-box {
+  padding-top: 0;
+  spacing: 6px; /* M3E-visual: dialog_button_side_margin 8 dp x 56/72 between the actions */
+}
+.message-dialog-content {
+  spacing: 16px; /* M3E-visual: 16 dp between title and text */
+}
+.message-dialog-content .message-dialog-title {
+  font-size: 24px; /* Dialog.HeadlineFont.size */
+  color: {{colors.on_surface.default.hex}};
+}
+.message-dialog-content .message-dialog-title.lightweight {
+  font-size: 22px; /* TypeScale.TitleLargeSize */
+}
+.message-dialog-content .message-dialog-description,
+.dialog-list .dialog-list-box .dialog-list-item .dialog-list-item-description {
+  font-size: 14px; /* Dialog.SupportingTextFont.size */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.dialog-list .dialog-list-title,
+.dialog-list .dialog-list-box .dialog-list-item .dialog-list-item-title {
+  color: {{colors.on_surface.default.hex}};
+}
+/* Warnings in the end-session dialog (low battery, update / application list): M3 error roles (warning colors)
+   instead of the stock amber; stock margins and corners kept. */
+.end-session-dialog .end-session-dialog-battery-warning,
+.end-session-dialog .dialog-list-title {
+  background-color: {{colors.error_container.default.hex}};
+  color: {{colors.on_error_container.default.hex}};
+}
+/* Other actions = Widget.Dialog.Button.BorderButton: 28 px tall pill, 1 px primary outline, onSurface label,
+   on_surface state layer. St height = content box: 28 - 2 x 1 of outline. */
+.modal-dialog .modal-dialog-button-box .modal-dialog-button,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:active,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:active:hover,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:active:focus {
+  min-height: 26px; /* M3E-visual: Widget.Dialog.Button 36 dp x 56/72 = 28, minus the 1 px outline top and bottom */
+  padding: 0 12px; /* M3E-visual: dialog_button_horizontal_padding 16 dp x 56/72 */
+  border: 1px solid {{colors.primary.default.hex}}; /* M3E-visual: qs_dialog_btn_outline: 1 dp materialColorPrimary outline */
+  border-radius: 999px; /* M3E-visual: buttonCornerRadius 28 dp: pill */
+  font-size: 14px; /* TypeScale.LabelLargeSize */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}}; /* M3E-visual: qs_dialog_btn_outline_text: materialColorOnSurface */
+}
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:focus,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:focus:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:active,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:active:hover,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:active:focus {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:insensitive {
+  border-color: rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.3); /* M3E-visual: qs_dialog_btn_outline disabled: primary at 0.30 */
+  background-color: transparent;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.3); /* M3E-visual: qs_dialog_btn_outline_text disabled: onSurface at 0.30 */
+}
+/* Default action = Widget.Dialog.Button: filled primary / onPrimary pill, on_primary state layer. Outline in the
+   background color so the height matches the other actions. */
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:default {
+  border-color: {{colors.primary.default.hex}};
+  background-color: {{colors.primary.default.hex}}; /* M3E-visual: qs_dialog_btn_filled_background: materialColorPrimary */
+  color: {{colors.on_primary.default.hex}}; /* M3E-visual: qs_dialog_btn_filled_text_color: materialColorOnPrimary */
+}
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:default:hover {
+  border-color: {{colors.primary.default.hex}};
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.08); /* M3E-visual: on_primary state layer at 8% (State.HoverStateLayerOpacity) as a full inset shadow, since St only has a background */
+  color: {{colors.on_primary.default.hex}};
+}
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:default:focus,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:default:focus:hover {
+  border-color: {{colors.primary.default.hex}};
+  background-color: st-mix({{colors.on_primary.default.hex}}, {{colors.primary.default.hex}}, 10%); /* M3E-visual: on_primary state layer at 10% (State.FocusStateLayerOpacity) mixed into the background: on focus, the stock !important ring replaces the inset shadow */
+  color: {{colors.on_primary.default.hex}};
+}
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:default:active,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:default:active:hover,
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:default:active:focus {
+  border-color: {{colors.primary.default.hex}};
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.1); /* M3E-visual: on_primary state layer at 10% (State.PressedStateLayerOpacity) as a full inset shadow, since St only has a background */
+  color: {{colors.on_primary.default.hex}};
+}
+.modal-dialog .modal-dialog-button-box .modal-dialog-button:default:insensitive {
+  border-color: transparent; /* M3E-visual: the background runs under the border: a translucent border colour would lay a second 0.30 layer on the outline and draw a lighter ring */
+  background-color: rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.3); /* M3E-visual: qs_dialog_btn_filled_background disabled: primary at 0.30 */
+  box-shadow: none;
+  color: rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.3); /* M3E-visual: qs_dialog_btn_filled_text_color disabled: onPrimary at 0.30 */
+}
+/* Dialog fields (Run, polkit and network passwords) = filled text field, same values as the GTK theme: 56 dp, 16 dp
+   margins, 4 dp top corners, surface_container_highest, Body large on_surface text, 1 dp on_surface_variant bottom
+   indicator (on_surface on hover, 2 dp primary on focus). The indicator is the bottom border (border-bottom-width;
+   St ignores the border-bottom shorthand, and draws 2 px for a 1 px inner shadow): it stays drawn on focus, under
+   the stock !important ring (known limitation); total height kept at 56 dp (St min-height = content box, border
+   added on top). Hover layer mixed into the background. */
+.modal-dialog StEntry,
+.modal-dialog StEntry:hover,
+.modal-dialog StEntry:focus,
+.modal-dialog StEntry:insensitive {
+  min-height: 55px; /* M3E-visual: 56 dp of the filled text field (same as GTK) minus the 1 dp indicator */
+  padding: 0 16px; /* M3E-visual: 16 dp margins, same as GTK */
+  border: 0 solid {{colors.on_surface_variant.default.hex}};
+  border-bottom-width: 1px; /* FilledTextField.ActiveIndicatorHeight */
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: {{colors.surface_container_highest.default.hex}};
+  color: {{colors.on_surface.default.hex}};
+  box-shadow: none;
+  font-size: 16px; /* FilledTextField.InputFont.size */
+  caret-color: {{colors.primary.default.hex}};
+  selection-background-color: {{colors.primary.default.hex}};
+  selected-color: {{colors.on_primary.default.hex}};
+}
+.modal-dialog StEntry:hover {
+  border-color: {{colors.on_surface.default.hex}};
+  background-color: st-mix({{colors.on_surface.default.hex}}, {{colors.surface_container_highest.default.hex}}, 8%); /* M3E-visual: on_surface state layer at 8% (State.HoverStateLayerOpacity) mixed into the background */
+}
+.modal-dialog StEntry:focus,
+.modal-dialog StEntry:focus:hover {
+  min-height: 54px; /* M3E-visual: 56 dp minus the 2 dp indicator */
+  border-color: {{colors.primary.default.hex}};
+  border-bottom-width: 2px; /* FilledTextField.FocusActiveIndicatorHeight */
+  background-color: {{colors.surface_container_highest.default.hex}};
+}
+.modal-dialog StEntry:insensitive {
+  border-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* FilledTextField.DisabledActiveIndicatorOpacity */
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.04); /* FilledTextField.DisabledContainerOpacity */
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* FilledTextField.DisabledInputOpacity */
+}
+.modal-dialog StEntry StLabel.hint-text {
+  color: {{colors.on_surface_variant.default.hex}};
+}
+/* Run dialog: description = field helper text (Body small on_surface_variant). */
+.run-dialog .run-dialog-entry {
+  padding: 0 16px; /* M3E-visual: 16 dp margins, like the other fields (stock uses 12 x 9) */
+}
+.run-dialog .run-dialog-description {
+  font-size: 12px; /* TypeScale.BodySmallSize */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.prompt-dialog .prompt-dialog-password-entry {
+  padding: 0 16px; /* M3E-visual: 16 dp margins, like the other fields (stock uses 12 x 9) */
+}
+/* Caps Lock icon of a password field: M3 warning color = error (stock is amber). */
+StEntry StIcon.capslock-warning {
+  warning-color: {{colors.error.default.hex}};
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or the children's icons). */
+.modal-dialog .modal-dialog-button-box .modal-dialog-button,
+.modal-dialog StEntry {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

@@ -1,0 +1,14 @@
+{
+  "uuid": "m3e-shots@maximeallanic.github.io",
+  "name": "M3E screenshot driver",
+  "description": "Capture driver of dev/screenshots: stages the theme into the private directories of a nested Shell, opens Shell surfaces, places windows, drives the virtual pointer and keyboard and takes screenshots. Never enable it in a real session.",
+  "shell-version": [
+    "50"
+  ],
+  "version": 1,
+  "m3e-bench-name": "io.github.maximeallanic.M3eShots",
+  "m3e-bench-path": "/io/github/maximeallanic/M3eShots",
+  "session-modes": [
+    "user"
+  ]
+}

@@ -1,0 +1,10 @@
+/* == Panel surface == */
+/* Full-width top bar glued to the top/left/right edges, translucent fill. No blur: a tinted M3 surface (same role and
+   opacity as the dock in the extensions sheet), opaque enough to stay readable over animated or busy wallpapers. */
+#panel {
+  background-color: rgba({{colors.surface_container.default.red}}, {{colors.surface_container.default.green}}, {{colors.surface_container.default.blue}}, 0.85); /* M3E-visual: translucent surface_container without blur */
+  height: 36px; /* M3E-visual: full 36 px top bar (desktop density, docs/design-notes.md; stock is 2.2em), tall enough for the 32 dp XSmall buttons, Small 40 dp does not fit */
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}

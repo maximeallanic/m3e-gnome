@@ -1,0 +1,60 @@
+# Ptyxis "Material" palette - matugen template (the ptyxis entry of matugen/config.toml); see the project docs.
+# Ptyxis 50 keyfile format (ptyxis-palette.c): [Palette] Name, then one section per mode, [Light] and [Dark].
+# Ptyxis reads the section of the current mode (AdwStyleManager) without waiting for matugen: both are rendered here
+# with the roles of their own mode (.light / .dark). Background = surface, text = on_surface, cursor = primary; title
+# bar (header bar + tabs) = surface_container / on_surface: the active tab, in the terminal colour
+# (surface), stands out from it as in Chrome (m3e-gtk4.css, tab bar). ANSI colours 1 to 6: matugen custom
+# colours (config.custom_colors, harmonized toward the source colour); 0, 7, 8 and 15: neutral roles.
+# Accent: the system one (UseSystemAccent), like other apps.
+[Palette]
+Name=Material
+Primary=true
+UseSystemAccent=true
+
+[Light]
+Foreground={{colors.on_surface.light.hex}}
+Background={{colors.surface.light.hex}}
+Cursor={{colors.primary.light.hex}}
+CursorForeground={{colors.on_primary.light.hex}}
+TitlebarForeground={{colors.on_surface.light.hex}}
+TitlebarBackground={{colors.surface_container.light.hex}}
+Color0={{colors.inverse_surface.light.hex}}
+Color1={{colors.ansi_red.light.hex}}
+Color2={{colors.ansi_green.light.hex}}
+Color3={{colors.ansi_yellow.light.hex}}
+Color4={{colors.ansi_blue.light.hex}}
+Color5={{colors.ansi_magenta.light.hex}}
+Color6={{colors.ansi_cyan.light.hex}}
+Color7={{colors.surface_container_highest.light.hex}}
+Color8={{colors.outline.light.hex}}
+Color9={{colors.ansi_red.light.hex}}
+Color10={{colors.ansi_green.light.hex}}
+Color11={{colors.ansi_yellow.light.hex}}
+Color12={{colors.ansi_blue.light.hex}}
+Color13={{colors.ansi_magenta.light.hex}}
+Color14={{colors.ansi_cyan.light.hex}}
+Color15={{colors.surface_container_lowest.light.hex}}
+
+[Dark]
+Foreground={{colors.on_surface.dark.hex}}
+Background={{colors.surface.dark.hex}}
+Cursor={{colors.primary.dark.hex}}
+CursorForeground={{colors.on_primary.dark.hex}}
+TitlebarForeground={{colors.on_surface.dark.hex}}
+TitlebarBackground={{colors.surface_container.dark.hex}}
+Color0={{colors.surface_container_highest.dark.hex}}
+Color1={{colors.ansi_red.dark.hex}}
+Color2={{colors.ansi_green.dark.hex}}
+Color3={{colors.ansi_yellow.dark.hex}}
+Color4={{colors.ansi_blue.dark.hex}}
+Color5={{colors.ansi_magenta.dark.hex}}
+Color6={{colors.ansi_cyan.dark.hex}}
+Color7={{colors.on_surface_variant.dark.hex}}
+Color8={{colors.outline.dark.hex}}
+Color9={{colors.on_ansi_red_container.dark.hex}}
+Color10={{colors.on_ansi_green_container.dark.hex}}
+Color11={{colors.on_ansi_yellow_container.dark.hex}}
+Color12={{colors.on_ansi_blue_container.dark.hex}}
+Color13={{colors.on_ansi_magenta_container.dark.hex}}
+Color14={{colors.on_ansi_cyan_container.dark.hex}}
+Color15={{colors.on_surface.dark.hex}}

@@ -1,0 +1,19 @@
+/* Material 3 Expressive for GTK 3 (see the project docs).
+ * GTK 3: colours are @role names (@define-color from Material-Gnome), no var().
+ * Imported by the user's gtk-3.0/gtk.css (first: the user gtk.css already ranks above the theme).
+ * Every numeric value cites its token (dev/reference/m3e-tokens.json) or "M3E-visual: <reason>".
+ * Check: dev/m3e-bench/verify_tokens.py (run by dev/verify-theme-material.sh).
+ *
+ * This file is only an index. The rules live in the m3e-gtk3-<concern>.css files below, imported
+ * in the original cascade order: do not reorder them. GTK 3 resolves each @import url() relative
+ * to this file, and @import statements must come first.
+ */
+@import url("m3e-gtk3-buttons.css");
+@import url("m3e-gtk3-selection-controls.css");
+@import url("m3e-gtk3-entries.css");
+@import url("m3e-gtk3-sliders-progress.css");
+@import url("m3e-gtk3-popovers-dialogs.css");
+@import url("m3e-gtk3-navigation.css");
+@import url("m3e-gtk3-lists.css");
+@import url("m3e-gtk3-motion.css");
+@import url("m3e-gtk3-misc.css");

@@ -1,0 +1,119 @@
+/* == Menus == */
+/* Expressive vertical menu, same values as the GTK theme: surface_container container with 16 dp corners,
+   2 dp padding top and bottom, 4 dp on the sides; 48 dp items, 12 margins, 4 corners (12 for the first and
+   last); on_surface state layer; separator = 8 dp gap between two groups. Also the base of the calendar and
+   quick settings menus (redefined in their own blocks). */
+.popup-menu {
+  color: {{colors.on_surface.default.hex}};
+}
+.popup-menu-content {
+  padding: 2px 4px 2px 4px; /* M3E-visual: Material "vertical menu" spacing and padding spec */
+  border: none;
+  border-radius: 16px; /* M3E-visual: Expressive vertical menu corners (MenuTokens.ContainerShape = 4: baseline menu) */
+  background-color: {{colors.surface_container.default.hex}};
+  color: {{colors.on_surface.default.hex}};
+  box-shadow: 0 2px 6px 2px rgba({{colors.shadow.default.red}}, {{colors.shadow.default.green}}, {{colors.shadow.default.blue}}, 0.15); /* M3E-visual: Elevation level 2 shadow (Menu.ContainerElevation = 3 dp); St draws a single shadow: the second, wider one of the two GTK shadows */
+}
+.popup-menu-item,
+.popup-sub-menu .popup-menu-item {
+  min-height: 48px; /* M3E-visual: 48 dp menu item */
+  padding: 0 12px 0 12px; /* M3E-visual: 12 dp margins */
+  border-radius: 4px; /* M3E-visual: item corners, 4 dp */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.popup-menu-item:first-child {
+  border-radius: 12px 12px 4px 4px; /* M3E-visual: first item, 12 dp corners at the top */
+}
+.popup-menu-item:last-child {
+  border-radius: 4px 4px 12px 12px; /* M3E-visual: last item, 12 dp corners at the bottom */
+}
+.popup-menu-item:hover,
+.popup-menu-item:selected,
+.popup-sub-menu .popup-menu-item:hover,
+.popup-sub-menu .popup-menu-item:selected {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.popup-menu-item:focus,
+.popup-sub-menu .popup-menu-item:focus {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.popup-menu-item:active,
+.popup-menu-item:active:hover,
+.popup-menu-item:active:focus,
+.popup-sub-menu .popup-menu-item:active,
+.popup-sub-menu .popup-menu-item:active:hover,
+.popup-sub-menu .popup-menu-item:active:focus {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+/* Disabled: on_surface label at 38 %, no background (the stock sheet sets a grey). */
+.popup-menu-item:insensitive,
+.popup-sub-menu .popup-menu-item:insensitive {
+  background-color: transparent;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* List.ItemDisabledLabelTextOpacity */
+}
+.popup-inactive-menu-item {
+  color: {{colors.on_surface.default.hex}};
+}
+.popup-inactive-menu-item:insensitive {
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* List.ItemDisabledLabelTextOpacity */
+}
+/* Ornamented item (check, dot): leading icon 12 dp from the edge, like the label of other items. */
+.popup-ornamented-menu-item:ltr {
+  padding-left: 12px; /* M3E-visual: 12 dp margins */
+}
+.popup-ornamented-menu-item:rtl {
+  padding-right: 12px; /* M3E-visual: 12 dp margins */
+}
+/* Separator: no line, an 8 dp gap (Material "1 with a gap, creating groups" spec). */
+.popup-menu-item.popup-separator-menu-item,
+.popup-sub-menu .popup-menu-item.popup-separator-menu-item {
+  min-height: 0;
+  padding: 0;
+  background-color: transparent;
+}
+.popup-separator-menu-item .popup-separator-menu-item-separator,
+.popup-sub-menu .popup-separator-menu-item .popup-separator-menu-item-separator {
+  height: 2px; /* M3E-visual: see margin */
+  margin: 3px 0; /* M3E-visual: groups separated by 8 dp (2 + 3 + 3) */
+  background-color: transparent;
+}
+
+/* Submenu: the Shell expands it in place under its item (the Expressive vertical menu opens it to the side,
+   which CSS cannot do). Open item + submenu = one surface_container_high group (same role as a tile's expanded
+   menu), 12 dp corners at the top of the item (set !important by the stock sheet) and at the bottom of the
+   submenu. */
+.popup-sub-menu {
+  margin-bottom: 0;
+  border: none;
+  border-radius: 0 0 12px 12px; /* M3E-visual: 12 dp group corners, like the first and last item */
+  background-color: {{colors.surface_container_high.default.hex}};
+}
+.popup-menu-item.popup-submenu-menu-item:checked {
+  background-color: {{colors.surface_container_high.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.popup-menu-item.popup-submenu-menu-item:checked:hover,
+.popup-menu-item.popup-submenu-menu-item:checked:focus {
+  background-color: {{colors.surface_container_high.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: on_surface state layer at 8 % (State.HoverStateLayerOpacity) as a full inner shadow, since St has only one background */
+}
+.popup-sub-menu .popup-menu-item:first-child {
+  border-radius: 4px; /* M3E-visual: item corners, 4 dp (the top of the group is the open item) */
+}
+.popup-sub-menu .popup-menu-item:last-child {
+  border-radius: 4px 4px 12px 12px; /* M3E-visual: last item of the group, 12 dp corners at the bottom */
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or the children's icons). */
+.popup-menu-item,
+.popup-sub-menu .popup-menu-item {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

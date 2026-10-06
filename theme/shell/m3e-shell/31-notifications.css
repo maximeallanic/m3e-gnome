@@ -1,0 +1,294 @@
+/* == Notifications == */
+/* Pixel notifications (Android 17 SystemUI: res/values/dimens.xml, notification_corner_radius /
+   notification_corner_radius_small / notification_divider_height; frameworks/base Notification.java).
+   Lengths are scaled by 56/72 (desktop density). GNOME layout is kept (calendar list, stacked groups).
+   - The list is a column of joined cards: surfaceEffect1 (translucent) laid over the calendar background
+     (surface_container) and made opaque with st-mix (same colour on screen; a translucent card would show the
+     stacked cards beneath it and the banner would show the windows behind), radius 28 dp (22 px) at the ends of
+     the list, 4 dp (3 px) at the joins, 2 dp (2 px) between neighbouring cards.
+     The ends are set by the m3e-motion extension as pseudo-classes on each visible .message (stack head or
+     expanded group): :m3e-first (first item of the list) and :m3e-last (last); a lone message has both.
+     Without m3e-motion, all cards keep the join corners.
+   - 2 px gap: the stock sheet sets a 12 px bottom margin with !important on ".message-view .message"; only a
+     higher-ranked !important beats it, and this theme only allows !important exceptions on values without numbers.
+     The gap is therefore set by the extensions stylesheet (block "Shell: notifications", extension rank +
+     important).
+   - Content sits 12 px from the card edge (card padding 6 + header/body padding 6, stock) = 16 dp margins
+     x 56/72 (notification_2025_margin).
+   - Actions = text buttons in primary without background (NotificationAction: textColor materialColorPrimary),
+     48 dp row (37 px); expand button = surfaceEffect3 pill of 26 x 18 dp (20 x 14 px) around a 16 dp (12 px)
+     onSurface chevron (notification_2025_expand_button_*, Notification.bindExpandButton). Close, collapse group,
+     "Clear all" and media buttons: desktop M3E components (no equivalent in the Pixel card).
+   - Isolated banner: radius 22 everywhere, same opaque background as the list cards, level 3 shadow. */
+.message-list {
+  border-color: {{colors.outline_variant.default.hex}};
+}
+.message-list .message-list-placeholder {
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message,
+.message:focus,
+.message-view .message {
+  border-radius: 3px; /* M3E-visual: notification_corner_radius_small 4 dp × 56/72 (join between stacked cards) */
+  background-color: st-mix({{colors.surface_effect_1.default.hex}}, {{colors.surface_container.default.hex}}, {{colors.surface_effect_1.default.opacity}}); /* M3E-visual: SystemUI: notification background = surfaceEffect1 (CustomDynamicColors) at its opacity, over the calendar background (surface_container) */
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.message:m3e-first,
+.message-view .message:m3e-first {
+  border-radius: 22px 22px 3px 3px; /* M3E-visual: notification_corner_radius 28 dp × 56/72 at the top of the list, 4 dp × 56/72 join at the bottom */
+}
+.message:m3e-last,
+.message-view .message:m3e-last {
+  border-radius: 3px 3px 22px 22px; /* M3E-visual: 4 dp × 56/72 join at the top, notification_corner_radius 28 dp × 56/72 at the bottom of the list */
+}
+.message:m3e-first:m3e-last,
+.message-view .message:m3e-first:m3e-last {
+  border-radius: 22px; /* M3E-visual: notification_corner_radius 28 dp × 56/72 (lone message: both first and last) */
+}
+.message:hover {
+  background-color: st-mix({{colors.surface_effect_1.default.hex}}, {{colors.surface_container.default.hex}}, {{colors.surface_effect_1.default.opacity}});
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: on_surface state layer at 8% (State.HoverStateLayerOpacity) as a full inset shadow, since St only has one background */
+  color: {{colors.on_surface.default.hex}};
+}
+.message:active,
+.message:active:hover {
+  background-color: st-mix({{colors.surface_effect_1.default.hex}}, {{colors.surface_container.default.hex}}, {{colors.surface_effect_1.default.opacity}});
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* M3E-visual: on_surface state layer at 10% (State.PressedStateLayerOpacity) as a full inset shadow, since St only has one background */
+  color: {{colors.on_surface.default.hex}};
+}
+/* Stacked cards of a collapsed group: same card, peeking out under the top card (the stock sheet darkens them in
+   steps; the Pixel has no stack, it uses joined cards). */
+.message:second-in-stack,
+.message:lower-in-stack {
+  background-color: st-mix({{colors.surface_effect_1.default.hex}}, {{colors.surface_container.default.hex}}, {{colors.surface_effect_1.default.opacity}}); /* M3E-visual: see .message */
+  box-shadow: none;
+}
+.message .message-header,
+.message .message-header .message-header-content .event-time {
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message .message-box .message-content .message-title {
+  color: {{colors.on_surface.default.hex}};
+}
+.message .message-box .message-content .message-body {
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message .message-box .message-icon.message-themed-icon {
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+/* Close = Standard icon button XSmall. Minimum height = icon: the list sometimes allocates messages less than
+   their natural height, and the header buttons shrank to 29 px. */
+.message .message-header .message-close-button {
+  min-height: 20px; /* XSmallIconButton.IconSize */
+  margin: 0;
+  padding: 6px; /* XSmallIconButton.DefaultLeadingSpace */
+  border-radius: 999px; /* XSmallIconButton.ContainerShapeRound */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message .message-header .message-close-button StIcon {
+  icon-size: 20px; /* XSmallIconButton.IconSize */
+}
+.message .message-header .message-close-button:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message .message-header .message-close-button:focus {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message .message-header .message-close-button:active,
+.message .message-header .message-close-button:active:hover {
+  border-radius: 8px; /* XSmallIconButton.PressedContainerShape */
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+/* Expand button (Pixel NotificationExpandButton): the pill is drawn on the icon; the button itself stays a
+   transparent 32 px target (desktop XSmall, like Close), with no shape change on press (the Pixel has none).
+   State layers go on the pill, since St only has one background per actor. */
+.message .message-header .message-expand-button,
+.message .message-header .message-expand-button:hover,
+.message .message-header .message-expand-button:focus,
+.message .message-header .message-expand-button:active,
+.message .message-header .message-expand-button:active:hover {
+  min-height: 14px; /* M3E-visual: pill height (notification_2025_expand_button_pill_height 18 dp × 56/72) */
+  margin: 0;
+  padding: 9px 6px; /* M3E-visual: 20 × 14 pill centred in the 32 px target (XSmallIconButton.ContainerHeight): (32 − 14) / 2 and (32 − 20) / 2 */
+  border-radius: 999px; /* XSmallIconButton.ContainerShapeRound */
+  background-color: transparent;
+  color: {{colors.on_surface.default.hex}}; /* M3E-visual: Notification.bindExpandButton: chevron = text colour (onSurface) */
+}
+.message .message-header .message-expand-button StIcon {
+  icon-size: 12px; /* M3E-visual: notification_2025_expand_button_icon_size 16 dp × 56/72 */
+  padding: 1px 4px; /* M3E-visual: notification_2025_expand_button_vertical_icon_padding 1 dp and horizontal_icon_padding 5 dp × 56/72: 20 × 14 pill (26 × 18 dp × 56/72) */
+  border-radius: 999px; /* M3E-visual: pill (expand_button_pill_bg) */
+  background-color: st-mix({{colors.surface_effect_3.default.hex}}, st-mix({{colors.surface_effect_1.default.hex}}, {{colors.surface_container.default.hex}}, {{colors.surface_effect_1.default.opacity}}), {{colors.surface_effect_3.default.opacity}}); /* M3E-visual: Notification.bindExpandButton: pill = surfaceEffect3 (getProtectionColor) at its opacity over the card */
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.message .message-header .message-expand-button:hover StIcon {
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: on_surface state layer at 8% (State.HoverStateLayerOpacity) as a full inset shadow on the pill */
+}
+.message .message-header .message-expand-button:focus StIcon,
+.message .message-header .message-expand-button:active StIcon {
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* M3E-visual: on_surface state layer at 10% (State.PressedStateLayerOpacity, State.FocusStateLayerOpacity) as a full inset shadow on the pill */
+}
+/* Collapse group: the stock sheet sets "padding: 4px !important" and a 4 px transparent border (the background
+   stops at the border, shrinking the inner corners); without a border, 24 px of content gives the 32 dp container
+   around the 20 icon. */
+.message-notification-group .message-collapse-button {
+  min-width: 24px; /* M3E-visual: 32 dp (XSmallIconButton.ContainerHeight) − 2 × 4 (forced padding, stock !important) */
+  min-height: 24px; /* M3E-visual: see min-width */
+  border-width: 0;
+  border-radius: 999px; /* XSmallIconButton.ContainerShapeRound */
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.message-notification-group .message-collapse-button StIcon {
+  icon-size: 20px; /* XSmallIconButton.IconSize */
+}
+.message-notification-group .message-collapse-button:hover {
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.08); /* M3E-visual: on_secondary_container state layer at 8% (State.HoverStateLayerOpacity) as a full inset shadow, since St only has one background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.message-notification-group .message-collapse-button:active,
+.message-notification-group .message-collapse-button:active:hover {
+  border-radius: 8px; /* XSmallIconButton.PressedContainerShape */
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.1); /* M3E-visual: on_secondary_container state layer at 10% (State.PressedStateLayerOpacity) as a full inset shadow, since St only has one background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.message-notification-group .message-group-header .message-group-title {
+  font-size: 22px; /* TypeScale.TitleLargeSize */
+  color: {{colors.on_surface.default.hex}};
+}
+/* Notification actions = Pixel text buttons (NotificationAction: Borderless.Small, textColor
+   materialColorPrimary; notification_material_action: 48 dp high, 4 dp apart). No background; primary state
+   layers as a pill (8 / 10%), no shape change on press (the Pixel has none). */
+.notification-buttons-bin {
+  spacing: 3px; /* M3E-visual: android:layout_marginStart 4 dp × 56/72 between two actions */
+}
+.notification-button {
+  margin: 0; /* M3E-visual: gap is carried by .notification-buttons-bin (stock adds 4 px on each side) */
+  min-height: 37px; /* M3E-visual: notification_2025_action_list_height 48 dp × 56/72 */
+  padding: 0 9px; /* M3E-visual: Borderless.Small margins (8 dp + 4 dp inset) × 56/72 */
+  border-radius: 999px; /* M3E-visual: pill-shaped state layer */
+  font-size: 14px; /* TypeScale.LabelLargeSize */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.primary.default.hex}}; /* M3E-visual: NotificationAction: textColor materialColorPrimary */
+}
+.notification-button:hover {
+  background-color: rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.primary.default.hex}};
+}
+.notification-button:focus,
+.notification-button:focus:hover {
+  background-color: rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.primary.default.hex}};
+}
+.notification-button:active,
+.notification-button:active:hover,
+.notification-button:active:focus {
+  background-color: rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.primary.default.hex}};
+}
+.notification-button:insensitive {
+  background-color: transparent;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* TextButton.DisabledLabelOpacity */
+}
+/* "Clear all": Tonal button Small. */
+.message-list-controls .message-list-clear-button {
+  min-height: 40px; /* ButtonSmall.ContainerHeight */
+  padding: 0 16px; /* ButtonSmall.LeadingSpace */
+  border-radius: 999px; /* ButtonSmall.ContainerShapeRound */
+  font-size: 14px; /* TypeScale.LabelLargeSize */
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: none;
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.message-list-controls .message-list-clear-button:hover {
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.08); /* M3E-visual: on_secondary_container state layer at 8% (State.HoverStateLayerOpacity) as a full inset shadow, since St only has one background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.message-list-controls .message-list-clear-button:focus {
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.message-list-controls .message-list-clear-button:active,
+.message-list-controls .message-list-clear-button:active:hover {
+  border-radius: 8px; /* ButtonSmall.PressedContainerShape */
+  background-color: {{colors.secondary_container.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_secondary_container.default.red}}, {{colors.on_secondary_container.default.green}}, {{colors.on_secondary_container.default.blue}}, 0.1); /* M3E-visual: on_secondary_container state layer at 10% (State.PressedStateLayerOpacity) as a full inset shadow, since St only has one background */
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.message-list-controls .message-list-clear-button:insensitive {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.12); /* FilledTonalButton.DisabledContainerOpacity */
+  box-shadow: none;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* FilledTonalButton.DisabledLabelTextOpacity */
+}
+/* Media message buttons: Standard icon buttons Small (40 dp, 24 icon). */
+.message-media-control {
+  margin: 4px 0; /* M3E-visual: the message row is 48 dp (48 icon) and stretches the button: (48 − 40) / 2 */
+  padding: 8px; /* SmallIconButton.DefaultLeadingSpace */
+  border: none;
+  border-radius: 999px; /* SmallIconButton.ContainerShapeRound */
+  background-color: transparent;
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message-media-control StIcon {
+  icon-size: 24px; /* SmallIconButton.IconSize */
+}
+.message-media-control:hover {
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message-media-control:active,
+.message-media-control:active:hover {
+  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+  background-color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.message-media-control:insensitive {
+  background-color: transparent;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* IconButton.DisabledOpacity */
+}
+/* Banner: isolated card (radius 22 everywhere, whatever the position pseudo-classes), same opaque background as
+   the list cards, floating over the windows (level 3 shadow, like the level 2 menu in the Menus block). St only
+   draws one shadow: on hover the banner keeps its shadow and gets no state layer (limitation). The
+   .message.notification-banner selectors are more specific than .message:m3e-first / :m3e-last. */
+.message.notification-banner,
+.message.notification-banner:hover,
+.message.notification-banner:focus,
+.message.notification-banner:m3e-first,
+.message.notification-banner:m3e-last {
+  border-radius: 22px; /* M3E-visual: notification_corner_radius 28 dp × 56/72 (isolated card) */
+  background-color: st-mix({{colors.surface_effect_1.default.hex}}, {{colors.surface_container.default.hex}}, {{colors.surface_effect_1.default.opacity}}); /* M3E-visual: see .message */
+  box-shadow: 0 4px 8px 3px rgba({{colors.shadow.default.red}}, {{colors.shadow.default.green}}, {{colors.shadow.default.blue}}, 0.15); /* M3E-visual: Elevation level 3 shadow (Elevation.Level3 = 6 dp); St only draws one shadow: the wider of the two shadows of this level */
+  color: {{colors.on_surface.default.hex}};
+}
+.message.notification-banner:active,
+.message.notification-banner:active:hover {
+  border-radius: 22px; /* M3E-visual: see .message.notification-banner */
+  background-color: st-mix({{colors.surface_effect_1.default.hex}}, {{colors.surface_container.default.hex}}, {{colors.surface_effect_1.default.opacity}});
+  box-shadow: 0 4px 8px 3px rgba({{colors.shadow.default.red}}, {{colors.shadow.default.green}}, {{colors.shadow.default.blue}}, 0.15); /* M3E-visual: Elevation level 3 shadow (Elevation.Level3), see .message.notification-banner */
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or children's icons). */
+.message,
+.message .message-header .message-close-button,
+.message .message-header .message-expand-button,
+.message-list-controls .message-list-clear-button,
+.message-media-control,
+.message-notification-group .message-collapse-button,
+.notification-button {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

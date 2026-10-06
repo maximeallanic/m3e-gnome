@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck every shell script
+        run: |
+          shellcheck -x install.sh uninstall.sh verify.sh lib/*.sh tests/*.sh \
+            tests/shims/fc-cache tests/shims/fc-list tests/shims/gnome-shell tests/shims/gtk-update-icon-cache
+
+  installer:
+    name: Installer tests (temporary HOME, fake GNOME tools)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends git rsync curl python3 ffmpeg librsvg2-bin meson ninja-build
+      # No matugen on the runner: the round trip downloads the pinned release, verifies its sha256, installs it into
+      # the temporary home and renders the real templates with it (the template render smoke test).
+      - name: Round trip and guard tests
+        run: tests/run.sh
+      - name: Same, with the cursor built from AOSP
+        run: M3E_TEST_NETWORK=1 tests/roundtrip.sh
+
+  tools:
+    name: Tool unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tools/material-palette/package-lock.json
+      - name: Python tests
+        run: |
+          for d in theme/bin tools tools/googlebook-cursors tools/material-symbols; do
+            (cd "$d" && python3 -m unittest discover -s tests -v)
+          done
+      - name: material-palette tests
+        working-directory: tools/material-palette
+        run: |
+          npm ci
+          npm test
+
+  links:
+    name: Markdown links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --no-progress --include-fragments './*.md' './.github/**/*.md'
+          fail: true

@@ -1,0 +1,109 @@
+/* == Switches and checkboxes == */
+/* Switch (.toggle-switch, PopupMenu.Switch): same values as the GTK theme: 52 x 32 dp track, 2 dp outline
+   border, 16 dp handle (24 dp when on), 40 dp hover layer around the handle. The handle is positioned by code
+   (AlignConstraint to the track edge, height bound to the track's): its margin brings it back to its M3E
+   centers (16 and 36 dp). */
+.toggle-switch,
+.toggle-switch:hover {
+  width: 48px; /* M3E-visual: 52 dp (Switch.TrackWidth) - 2 x 2 (border) */
+  height: 28px; /* M3E-visual: 32 dp (Switch.TrackHeight) - 2 x 2 (border) */
+  border: 2px solid {{colors.outline.default.hex}}; /* Switch.TrackOutlineWidth */
+  border-radius: 999px; /* Switch.TrackShape */
+  background-color: {{colors.surface_container_highest.default.hex}};
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.toggle-switch:checked,
+.toggle-switch:checked:hover {
+  border-color: {{colors.primary.default.hex}};
+  background-color: {{colors.primary.default.hex}};
+  color: {{colors.on_primary_container.default.hex}};
+}
+.toggle-switch .handle {
+  width: 16px; /* Switch.UnselectedHandleWidth */
+  height: 16px; /* Switch.UnselectedHandleHeight */
+  margin: 8px; /* M3E-visual: (32 - 16) / 2: handle centered 16 dp from the edge (the code aligns it to the track edge) */
+  border-radius: 999px; /* Switch.HandleShape */
+  background-color: {{colors.outline.default.hex}};
+  box-shadow: none;
+}
+.toggle-switch:hover .handle {
+  background-color: {{colors.on_surface_variant.default.hex}};
+  box-shadow: 0 0 0 12px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: 40 dp layer (Switch.StateLayerSize) around a 16 dp handle: (40 - 16) / 2; State.HoverStateLayerOpacity */
+}
+.toggle-switch:checked .handle {
+  width: 24px; /* Switch.SelectedHandleWidth */
+  height: 24px; /* Switch.SelectedHandleHeight */
+  margin: 4px; /* M3E-visual: (32 - 24) / 2: handle centered 36 dp from the left edge (52 - 16) */
+  background-color: {{colors.on_primary.default.hex}};
+  box-shadow: none;
+}
+.toggle-switch:checked:hover .handle {
+  background-color: {{colors.primary_container.default.hex}};
+  box-shadow: 0 0 0 8px rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.08); /* M3E-visual: (40 - 24) / 2; State.HoverStateLayerOpacity */
+}
+.toggle-switch:insensitive {
+  border-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.12); /* Switch.DisabledTrackOpacity */
+  background-color: rgba({{colors.surface_container_highest.default.red}}, {{colors.surface_container_highest.default.green}}, {{colors.surface_container_highest.default.blue}}, 0.12); /* Switch.DisabledTrackOpacity */
+}
+.toggle-switch:insensitive .handle {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* Switch.DisabledUnselectedHandleOpacity */
+}
+.toggle-switch:checked:insensitive {
+  border-color: transparent;
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.12); /* Switch.DisabledTrackOpacity */
+}
+.toggle-switch:checked:insensitive .handle {
+  background-color: {{colors.surface.default.hex}};
+}
+
+/* Checkbox (.check-box, the Shell's CheckBox: the box is the StIcon): same values as the GTK theme:
+   18 dp, 2 dp on_surface_variant border, 2 dp corners; checked = primary background, on_primary tick; disabled =
+   border (empty) or background (checked) on_surface at 38%, surface tick. 3 dp secondary focus ring on the
+   container (StBin), 2 px away from the box. */
+.check-box StIcon {
+  icon-size: 14px; /* M3E-visual: 18 dp (Checkbox.ContainerSize) - 2 x 2 (border) */
+  padding: 0;
+  border: 2px solid {{colors.on_surface_variant.default.hex}}; /* Checkbox.UnselectedOutlineWidth */
+  border-radius: 2px; /* Checkbox.ContainerShape */
+  background-color: transparent;
+  color: transparent;
+}
+.check-box:hover StIcon,
+.check-box:active StIcon {
+  border-color: {{colors.on_surface.default.hex}};
+}
+.check-box:checked StIcon,
+.check-box:checked:hover StIcon,
+.check-box:checked:active StIcon {
+  border-color: {{colors.primary.default.hex}};
+  background-color: {{colors.primary.default.hex}};
+  color: {{colors.on_primary.default.hex}};
+}
+.check-box:insensitive StIcon {
+  border-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* Checkbox.UnselectedDisabledContainerOpacity */
+}
+.check-box:insensitive:checked StIcon {
+  border-color: transparent;
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* Checkbox.SelectedDisabledContainerOpacity */
+  color: {{colors.surface.default.hex}};
+}
+.check-box StBin {
+  padding: 5px; /* M3E-visual: 3 dp focus ring (as in the GTK theme) offset 2 dp from the box (outline-offset) */
+  border-radius: 7px; /* M3E-visual: box corners (Checkbox.ContainerShape, 2 dp) + 5 px padding */
+}
+.check-box:focus StBin {
+  background-color: rgba({{colors.secondary.default.red}}, {{colors.secondary.default.green}}, {{colors.secondary.default.blue}}, 0.01); /* M3E-visual: nearly transparent background: St only draws the inner shadow over a non-transparent background (as in the stock sheet) */
+  box-shadow: inset 0 0 0 3px {{colors.secondary.default.hex}}; /* M3E-visual: 3 dp secondary focus ring (Checkbox.FocusIndicatorColor), as in the GTK theme */
+}
+.check-box StLabel {
+  color: {{colors.on_surface.default.hex}};
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or the icons of children). */
+.toggle-switch,
+.toggle-switch .handle,
+.check-box StIcon {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

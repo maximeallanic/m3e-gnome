@@ -1,0 +1,240 @@
+#!/usr/bin/env python3
+"""material-sync: regenerate the Material 3 palette from the wallpaper and apply it.
+
+Image source, in order:
+  1. Optional, the Hanabi live wallpaper extension (https://github.com/jeffshee/gnome-ext-hanabi), only when it is
+     enabled and has a video: the image sibling of the video (same name, or the closest name in the same folder),
+     otherwise one frame of the video extracted with ffmpeg. Nothing is read from anywhere else; when the extension,
+     dconf or ffmpeg is missing this step is skipped silently and the next source is used. Set
+     MATERIAL_SYNC_HANABI=0 to never look at it;
+  2. otherwise the GNOME wallpaper (picture-uri-dark or picture-uri depending on the mode), including
+     .xml / .svg / .jxl wallpapers converted to an image;
+  3. otherwise nothing is rendered here (the installer then seeds the palette from the fallback colour of
+     palette.json).
+Dark or light mode follows org.gnome.desktop.interface color-scheme.
+Palette: material-palette (2025 colour spec, like Android 16+), templates rendered by matugen.
+
+Usage: material-sync [--force]   (--force: regenerate even if nothing changed)
+
+Environment: XDG_CACHE_HOME, XDG_CONFIG_HOME are honoured. Only one instance runs at a time (flock).
+Files: $XDG_CONFIG_HOME/m3e-gnome/matugen/{config.toml,palette.json}.
+"""
+import ast
+import fcntl
+import hashlib
+import os
+import subprocess
+import sys
+import time
+import unicodedata
+import urllib.parse
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+CACHE = Path(os.environ.get('XDG_CACHE_HOME') or Path.home() / '.cache') / 'material-sync'
+CONFIG_HOME = Path(os.environ.get('XDG_CONFIG_HOME') or Path.home() / '.config')
+STATE = CACHE / 'last'
+LOCK = CACHE / 'lock'
+LOG = CACHE / 'material-sync.log'
+HANABI = 'hanabi-extension@jeffshee.github.io'
+# Our own directory: a user's ~/.config/matugen/ (for other uses of matugen) is never read nor replaced.
+MATUGEN_DIR = CONFIG_HOME / 'm3e-gnome' / 'matugen'
+MATUGEN_CONFIG = MATUGEN_DIR / 'config.toml'
+# Palette settings (scheme, 2025 spec, contrast): changing them must regenerate too.
+PALETTE_CONFIG = MATUGEN_DIR / 'palette.json'
+# Shell theme reloaded after every palette, and the GTK theme name toggled to make GTK 3 re-read its theme.
+SHELL_THEME = 'M3E-Shell'
+GTK_THEME = 'Material-Gnome'
+# material-palette is installed next to this script; fall back to PATH.
+PALETTE_BIN = Path(__file__).resolve().parent / 'material-palette'
+# Parsing of gsettings/dconf output must not depend on the user's locale.
+ENV = {**os.environ, 'LC_ALL': 'C'}
+IMAGE_SUFFIXES = ('.jpg', '.jpeg', '.png', '.webp')
+# A neighbouring image matches a video when their names share at least this fraction of the video's name.
+MIN_PREFIX_RATIO = 0.6
+
+
+def log(msg):
+    line = time.strftime('%Y-%m-%d %H:%M:%S ') + msg
+    print(line, flush=True)
+    with LOG.open('a', encoding='utf-8') as f:
+        f.write(line + '\n')
+
+
+def run(cmd, **kwargs):
+    """Run a tool; a tool that is not installed is a failed run (returncode 127), not a crash."""
+    try:
+        return subprocess.run(cmd, env=ENV, capture_output=True, text=True, **kwargs)
+    except FileNotFoundError:
+        return subprocess.CompletedProcess(cmd, 127, '', f'{cmd[0]}: command not found')
+
+
+def gvariant(text):
+    """Python value of a GVariant text (string, list of strings); '' when the key is unset."""
+    text = text.strip()
+    if text.startswith('@'):               # type annotation, e.g. "@as []"
+        text = text.split(' ', 1)[1] if ' ' in text else ''
+    if not text:
+        return ''
+    try:
+        return ast.literal_eval(text)
+    except (ValueError, SyntaxError):
+        return text
+
+
+def gget(schema, key):
+    r = run(['gsettings', 'get', schema, key])
+    return gvariant(r.stdout) if r.returncode == 0 else ''
+
+
+def gset(schema, key, value):
+    r = run(['gsettings', 'set', schema, key, value])
+    if r.returncode != 0:
+        log(f'gsettings set {schema} {key} failed: {r.stderr.strip()[:200]}')
+
+
+def dread(path):
+    r = run(['dconf', 'read', path])
+    return gvariant(r.stdout) if r.returncode == 0 else ''
+
+
+def uri_to_path(uri):
+    parsed = urllib.parse.urlparse(uri)
+    return Path(urllib.parse.unquote(parsed.path if parsed.scheme == 'file' else uri))
+
+
+def common_prefix(a, b):
+    n = 0
+    while n < min(len(a), len(b)) and a[n] == b[n]:
+        n += 1
+    return n
+
+
+def norm(name):
+    return unicodedata.normalize('NFC', name).casefold()
+
+
+def closest_image(video, candidates):
+    """Image of the same folder that goes with the video: same name, else the longest shared name prefix."""
+    stem = norm(video.stem)
+    for p in candidates:
+        if norm(p.stem) == stem:
+            return p
+    best = max(candidates, key=lambda p: common_prefix(norm(p.stem), stem), default=None)
+    if best and common_prefix(norm(best.stem), stem) >= len(stem) * MIN_PREFIX_RATIO:
+        return best
+    return None
+
+
+def converted(src, tool_cmd):
+    """Cached conversion of src (keyed by path, size and mtime); None when the tool failed."""
+    st = src.stat()
+    key = hashlib.sha256(f'{src}|{st.st_size}|{int(st.st_mtime)}'.encode()).hexdigest()[:12]
+    out = CACHE / f'conv-{key}.png'
+    if out.exists():
+        return out
+    r = run(tool_cmd(out))
+    if r.returncode != 0 or not out.exists():
+        log(f'conversion of {src} failed: {r.stderr.strip()[:300]}')
+        return None
+    return out
+
+
+def hanabi_image():
+    if os.environ.get('MATERIAL_SYNC_HANABI', '1').lower() in ('0', 'no', 'false', 'off'):
+        return None
+    if HANABI not in (gget('org.gnome.shell', 'enabled-extensions') or []):
+        return None
+    video_path = dread('/io/github/jeffshee/hanabi-extension/video-path')
+    if not video_path:
+        return None
+    video = Path(video_path)
+    if not video.is_file():
+        return None
+    candidates = [p for p in video.parent.iterdir() if p.suffix.lower() in IMAGE_SUFFIXES]
+    found = closest_image(video, candidates)
+    if found:
+        return found
+    # No neighbouring image: one frame of the video (cached per video).
+    return converted(video, lambda out: ['ffmpeg', '-loglevel', 'error', '-y', '-ss', '5', '-i', str(video),
+                                         '-frames:v', '1', '-vf', 'scale=1920:-2', str(out)])
+
+
+def gnome_wallpaper(mode):
+    key = 'picture-uri-dark' if mode == 'dark' else 'picture-uri'
+    uri = gget('org.gnome.desktop.background', key)
+    if not uri:
+        return None
+    path = uri_to_path(uri)
+    if path.suffix.lower() == '.xml' and path.is_file():
+        # GNOME "dynamic" wallpaper: take the last (largest) image it declares
+        files = [e.text.strip() for e in ET.parse(path).iter() if e.tag in ('size', 'file') and e.text and e.text.strip()]
+        path = Path(files[-1]) if files else path
+    if not path.is_file():
+        return None
+    suffix = path.suffix.lower()
+    if suffix == '.svg':
+        return converted(path, lambda out: ['rsvg-convert', '-w', '1920', str(path), '-o', str(out)])
+    if suffix == '.jxl':
+        return converted(path, lambda out: ['ffmpeg', '-loglevel', 'error', '-y', '-i', str(path),
+                                            '-vf', 'scale=1920:-2', str(out)])
+    return path
+
+
+def reload_shell_theme():
+    # Go through the default (empty) theme: the Material-Gnome shell theme holds a calc() that St rejects
+    # (a warning at each reload), and St only reloads when the name changes.
+    gset('org.gnome.shell.extensions.user-theme', 'name', '')
+    time.sleep(0.6)
+    gset('org.gnome.shell.extensions.user-theme', 'name', SHELL_THEME)
+
+
+def reload_gtk():
+    # GTK 3 re-reads its theme when the name changes; GTK 4 re-reads ~/.config/gtk-4.0 when an app starts.
+    gset('org.gnome.desktop.interface', 'gtk-theme', 'Adwaita')
+    time.sleep(0.4)
+    gset('org.gnome.desktop.interface', 'gtk-theme', GTK_THEME)
+
+
+def palette_command():
+    return str(PALETTE_BIN) if PALETTE_BIN.is_file() else 'material-palette'
+
+
+def sync(force):
+    mode = 'dark' if gget('org.gnome.desktop.interface', 'color-scheme') == 'prefer-dark' else 'light'
+    img = hanabi_image() or gnome_wallpaper(mode)
+    if not img:
+        log('no source image found, nothing to do')
+        return 0
+    if not PALETTE_CONFIG.is_file():
+        log(f'palette settings missing: {PALETTE_CONFIG}')
+        return 1
+    st = img.stat()
+    key = f'{img}|{st.st_size}|{int(st.st_mtime)}|{mode}|{hashlib.sha256(PALETTE_CONFIG.read_bytes()).hexdigest()[:10]}'
+    if not force and STATE.exists() and STATE.read_text(encoding='utf-8') == key:
+        return 0
+    log(f'palette from {img} (mode {mode})')
+    r = run([palette_command(), '--image', str(img), '--mode', mode, '--json', str(CACHE / 'palette.json'),
+             '--matugen-config', str(MATUGEN_CONFIG)])
+    if r.returncode != 0:
+        log('material-palette failed: ' + (r.stderr or r.stdout).strip()[:400])
+        return 1
+    reload_shell_theme()
+    reload_gtk()
+    tmp = STATE.with_suffix('.tmp')
+    tmp.write_text(key, encoding='utf-8')
+    tmp.replace(STATE)
+    log('applied')
+    return 0
+
+
+def main():
+    CACHE.mkdir(parents=True, exist_ok=True)
+    # One run at a time: the watcher and the service start-up can both fire, and a run toggles shared settings.
+    with LOCK.open('w') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return sync('--force' in sys.argv)
+
+
+if __name__ == '__main__':
+    sys.exit(main())

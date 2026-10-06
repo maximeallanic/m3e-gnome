@@ -1,0 +1,15 @@
+{
+  "name": "material-palette",
+  "private": true,
+  "description": "Material 3 palette (2025 color spec) for matugen templates, computed with the official material-color-utilities",
+  "type": "module",
+  "scripts": {
+    "test": "esbuild tests/palette.test.mjs --bundle --platform=node --format=esm --log-level=warning --outfile=.test/palette.test.mjs && node --test .test/palette.test.mjs"
+  },
+  "dependencies": {
+    "@material/material-color-utilities": "0.4.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}

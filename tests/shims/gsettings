@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+import sys
+import _fake as f
+
+a = sys.argv[1:]
+f.log("gsettings " + " ".join(a))
+if not a:
+    f.fail("usage")
+cmd = a[0]
+if cmd == "get" and len(a) == 3:
+    p = f.path_of(a[1], a[2])
+    store = f.load()
+    if p in store:
+        print(store[p])
+    elif p in f.DEFAULTS:
+        print(f.DEFAULTS[p])
+    else:
+        f.fail(f"No such key '{a[2]}'")
+elif cmd == "set" and len(a) == 4:
+    store = f.load()
+    v = a[3]
+    # Like gsettings: a bare word is a string; the stored text is the GVariant form.
+    if v == "" or not (v[0] in "'\"[(@-" or v[0].isdigit() or v in ("true", "false")):
+        v = "'" + v + "'"
+    store[f.path_of(a[1], a[2])] = v
+    f.save(store)
+elif cmd == "reset" and len(a) == 3:
+    store = f.load()
+    store.pop(f.path_of(a[1], a[2]), None)
+    f.save(store)
+elif cmd == "list-schemas":
+    print("\n".join(s for s in f.schemas() if ":" not in s and not s.endswith(".Profile")))
+elif cmd == "list-relocatable-schemas":
+    print("\n".join(s for s in f.schemas() if s.endswith(".Profile")))
+elif cmd == "list-keys" and len(a) == 2:
+    base = a[1].split(":")[0]
+    if base not in f.schemas():
+        f.fail(f"No such schema '{base}'")
+    print("\n".join(sorted(k.rsplit("/", 1)[1] for k in f.DEFAULTS if k.startswith("/" + base.replace(".", "/") + "/"))))
+else:
+    f.fail("unsupported gsettings call: " + " ".join(a))

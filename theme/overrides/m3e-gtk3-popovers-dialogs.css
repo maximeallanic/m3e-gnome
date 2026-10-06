@@ -1,0 +1,114 @@
+/* == menus-tooltips-dialogs == */
+/* Expressive vertical menu (GTK 3 popovers and menus): surface_container, 16 dp corners, 48 dp items. */
+popover.background {
+  padding: 2px 4px 2px 4px; /* M3E-visual: spec image "vertical menu marked with spacing and padding" */
+  border: none;
+  border-radius: 16px; /* M3E-visual: Expressive vertical menu corners (MenuTokens.ContainerShape = 4: basic menu) */
+  background-color: @surface_container;
+  color: @on_surface;
+  box-shadow: 0 1px 2px alpha(@shadow, 0.3), 0 2px 6px 2px alpha(@shadow, 0.15); /* M3E-visual: Elevation level 2 shadow (Menu.ContainerElevation = 3 dp) */
+}
+/* GTK 3 menus are popup windows: their decoration carries the shape and the shadow */
+window.popup.csd > decoration,
+.csd.popup decoration {
+  border-radius: 16px; /* M3E-visual: Expressive vertical menu corners */
+  box-shadow: 0 1px 2px alpha(@shadow, 0.3), 0 2px 6px 2px alpha(@shadow, 0.15); /* M3E-visual: Elevation level 2 shadow (Menu.ContainerElevation = 3 dp) */
+}
+menu,
+.menu {
+  padding: 2px 4px 2px 4px; /* M3E-visual: spec image "vertical menu marked with spacing and padding" */
+  border: none;
+  border-radius: 16px; /* M3E-visual: Expressive vertical menu corners */
+  background-color: @surface_container;
+  color: @on_surface;
+}
+popover.background modelbutton,
+menu menuitem {
+  min-height: 48px; /* M3E-visual: 48 dp menu item (spec image "spacing and padding") */
+  padding: 0 12px 0 12px; /* M3E-visual: 12 dp margins */
+  border-radius: 4px; /* M3E-visual: item corners, 4 dp */
+  background: none;
+  color: @on_surface;
+  outline: none;
+}
+popover.background modelbutton:hover,
+popover.background modelbutton:selected,
+menu menuitem:hover {
+  background-color: alpha(@on_surface, 0.08); /* State.HoverStateLayerOpacity */
+  color: @on_surface;
+}
+popover.background modelbutton:active,
+menu menuitem:active {
+  background-color: alpha(@on_surface, 0.1); /* State.PressedStateLayerOpacity */
+}
+popover.background modelbutton:disabled,
+menu menuitem:disabled {
+  color: alpha(@on_surface, 0.38); /* FilledTextField.DisabledInputOpacity */
+}
+popover.background modelbutton label,
+popover.background modelbutton accelerator,
+menu menuitem label,
+menu menuitem accelerator {
+  color: inherit;
+}
+popover.background separator,
+menu separator {
+  margin: 3px 0; /* M3E-visual: groups separated by 8 dp (spec image "1 with a gap, creating groups") */
+  min-height: 2px; /* M3E-visual: see margin */
+  background: none;
+}
+
+/* Plain tooltip: 24 dp, 8 dp margins, 4 dp corners, inverse_surface */
+tooltip,
+tooltip.background {
+  padding: 4px 8px 4px 8px; /* M3E-visual: (24 − 16) / 2 and 8 dp (spec image "measurements of a plain tooltip") */
+  border: none;
+  border-radius: 4px; /* PlainTooltip.ContainerShape */
+  background-color: @inverse_surface;
+  color: @inverse_on_surface;
+  box-shadow: none;
+  font-size: 12px; /* PlainTooltip.SupportingTextFont.size */
+}
+tooltip label,
+tooltip box {
+  padding: 0;
+  color: inherit;
+}
+
+/* Dialog: surface_container_high, 28 dp corners, 24 dp margins, actions as text buttons.
+   ".background.csd": more specific than window-buttons-gtk3.css (12 px), which is imported afterwards. */
+messagedialog.background.csd > decoration {
+  border-radius: 28px; /* Dialog.ContainerShape */
+}
+/* GTK 3 paints the (empty) title bar above the window background: rounded at the top for the bar, rounded
+   at the bottom for the background, as the theme does. The bar serves as the top margin. */
+messagedialog.background,
+messagedialog.background.csd {
+  border-radius: 0 0 28px 28px; /* M3E-visual: bottom corners of the dialog (Dialog.ContainerShape = 28) */
+  background-color: @surface_container_high;
+  color: @on_surface;
+}
+messagedialog.background .titlebar,
+messagedialog.background .titlebar:backdrop,
+messagedialog.background.csd .titlebar {
+  min-height: 28px; /* M3E-visual: at least the 28 dp radius (GTK caps the radius at the height); the spec's top margin is 24 dp */
+  padding: 0;
+  border: none;
+  border-radius: 28px 28px 0 0; /* M3E-visual: top corners of the dialog (Dialog.ContainerShape = 28) */
+  background-color: @surface_container_high;
+  background-image: none;
+  box-shadow: none;
+}
+messagedialog .dialog-action-box {
+  padding: 0 24px 24px 24px; /* M3E-visual: 24 dp margins (spec image "annotated diagram showing padding values") */
+}
+messagedialog .dialog-action-box button,
+messagedialog .dialog-action-box button:hover,
+messagedialog .dialog-action-box button:active,
+messagedialog .dialog-action-box button:focus {
+  border: none;
+  border-radius: 9999px; /* ButtonSmall.ContainerShapeRound */
+  background-color: transparent;
+  color: @primary;
+  box-shadow: none;
+}

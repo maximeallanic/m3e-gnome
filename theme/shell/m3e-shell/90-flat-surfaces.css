@@ -1,0 +1,41 @@
+/* == Flat surfaces == */
+/* The stock sheet gives the panel buttons a 3px transparent border (and the clock pill another one), and floating
+   surfaces a 1px near-invisible one. Surfaces here are drawn by their fill and elevation alone, so borders go.
+   The panel buttons are matched in every state and on the lock/login screens; !important is needed because the stock
+   sheet sets the border per state with more specific selectors. */
+#panel .panel-button,
+#panel .panel-button:hover,
+#panel .panel-button:active,
+#panel .panel-button:checked,
+#panel .panel-button:focus,
+#panel .panel-button:overview,
+#panel:overview .panel-button,
+#panel.unlock-screen .panel-button,
+#panel.login-screen .panel-button {
+  border: none !important;
+}
+#panel .panel-button.clock-display .clock,
+#panel .panel-button.clock-display:hover .clock,
+#panel .panel-button.clock-display:active .clock,
+#panel .panel-button.clock-display:checked .clock,
+#panel .panel-button.clock-display:focus .clock,
+#panel .panel-button.clock-display:overview .clock {
+  border: none !important;
+}
+
+/* OSD (volume, brightness...) and floating windows of the same style */
+.osd-window,
+.switcher-list,
+.workspace-switcher-container,
+.resize-popup {
+  border: none;
+}
+
+/* Notifications: banners and calendar list */
+.notification-banner,
+.popup-menu .message,
+.popup-menu .message:hover,
+.popup-menu .message:focus,
+.message:second-in-stack {
+  border: none !important;
+}

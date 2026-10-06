@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# material-palette: Material 3 palette computed as on a Pixel (2025 colour spec, official
+# material-color-utilities), then rendered by matugen into the templates.
+#
+# matugen 4.2 only knows the 2021 spec; it keeps its role of template engine here: `matugen json` renders the
+# templates from the JSON produced by tools/material-palette/palette.mjs (same shape as its own output).
+#
+# Usage: material-palette (--image FILE | --color HEX) --mode light|dark [--json OUTPUT] [--matugen-config TOML]
+#   --json            keep the palette JSON (otherwise a temporary file)
+#   --matugen-config  render the templates of this matugen config (without it: JSON only)
+# Settings (scheme, spec, contrast, custom colours): $XDG_CONFIG_HOME/m3e-gnome/matugen/palette.json, or $MATERIAL_PALETTE_CONFIG.
+# Bundle: $MATERIAL_PALETTE_BUNDLE, default ~/.local/lib/material-palette/palette.mjs (tools/material-palette/build.sh).
+set -euo pipefail
+
+usage() { sed -n '/^# Usage:/,/^# Bundle:/p' "$0" | sed 's/^# \{0,1\}//' >&2; }
+die() { echo "material-palette: $*" >&2; exit 1; }
+
+BUNDLE="${MATERIAL_PALETTE_BUNDLE:-$HOME/.local/lib/material-palette/palette.mjs}"
+CONFIG="${MATERIAL_PALETTE_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/m3e-gnome/matugen/palette.json}"
+MATUGEN="$(command -v matugen || echo "$HOME/.local/bin/matugen")"
+
+source_args=() mode='' json='' toml=''
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --image|--color|--mode|--json|--matugen-config)
+            [[ $# -ge 2 ]] || { echo "material-palette: $1 needs a value" >&2; exit 2; }
+            case "$1" in
+                --image|--color) source_args=("$1" "$2") ;;
+                --mode) mode="$2" ;;
+                --json) json="$2" ;;
+                --matugen-config) toml="$2" ;;
+            esac
+            shift 2 ;;
+        -h|--help) usage; exit 0 ;;
+        *) echo "material-palette: unknown option: $1" >&2; exit 2 ;;
+    esac
+done
+[[ ${#source_args[@]} -eq 2 && -n "$mode" ]] || { usage; exit 2; }
+[[ -f "$BUNDLE" ]] || die "$BUNDLE is missing (run tools/material-palette/build.sh)"
+[[ -f "$CONFIG" ]] || die "settings file $CONFIG is missing"
+
+tmp=''
+if [[ -z "$json" ]]; then
+    tmp="$(mktemp --suffix=.json)"
+    trap 'rm -f "$tmp"' EXIT
+    json="$tmp"
+fi
+node "$BUNDLE" --config "$CONFIG" "${source_args[@]}" --mode "$mode" --output "$json"
+if [[ -n "$toml" ]]; then
+    # Always an explicit --config: matugen's default (~/.config/matugen/config.toml) is the user's own, not ours.
+    NO_COLOR=1 "$MATUGEN" --config "$toml" --quiet json "$json"
+fi

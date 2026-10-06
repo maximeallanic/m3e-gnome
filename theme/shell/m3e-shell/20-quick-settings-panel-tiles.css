@@ -1,0 +1,217 @@
+/* == Quick settings: panel == */
+/* Panel = surface_container (background, shadow and text colour: base of the Menus block), Extra large corners.
+   GNOME's grid is kept (two columns, 12em tiles, 12 px spacing from the stock sheet). */
+.popup-menu-content.quick-settings {
+  padding: 16px; /* M3E-visual: panel inner padding (GNOME: 18 px; the menu base sets 2/4), 16 dp like tile and list margins */
+  border-radius: 28px; /* Shape.CornerExtraLarge */
+}
+
+/* == Quick settings tiles == */
+/* Pixel tiles (Android 17 SystemUI qs/panels/ui/compose/infinitegrid/Tile.kt and CommonTile.kt, dimensions from
+   res/values/shade_dimens.xml), scaled to desktop density: height 56 px instead of 72 dp, every length × 56/72
+   (design choice). GNOME layout kept (two columns).
+   - Simple tile (.quick-toggle outside a menu tile) = single-target tile: inactive surfaceEffect1 pill, 24 dp
+     radius (19 px) and primary when active; content onSurface / onPrimary.
+   - Menu tile (.quick-toggle-has-menu) = dual-target tile: surfaceEffect1 background in both states, the icon
+     carries the 56 dp (44 px) badge: round in surfaceEffect2 when inactive, 16 dp radius (12 px) in primary when
+     active.
+   No shape change on press (the Pixel bounces the width, done by m3e-motion); desktop state layers (hover 8 %,
+   press 10 %, StateTokens) as a full inner shadow, since St has only one background. Focus: !important ring from
+   the stock sheet. */
+.quick-toggle,
+.quick-toggle-has-menu {
+  min-height: 56px; /* M3E-visual: common_tile_default_tile_height 72 dp × 56/72 (desktop density) */
+}
+.quick-toggle {
+  border-radius: 999px; /* M3E-visual: common_tile_default_inactive_tile_corner_radius (50 dp: pill) */
+  background-color: rgba({{colors.surface_effect_1.default.red}}, {{colors.surface_effect_1.default.green}}, {{colors.surface_effect_1.default.blue}}, {{colors.surface_effect_1.default.opacity}}); /* M3E-visual: Tile.kt: inactive tile = surfaceEffect1 (CustomDynamicColors) */
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}}; /* M3E-visual: Tile.kt: inactive content onSurface */
+}
+.quick-toggle > StBoxLayout,
+.quick-toggle:ltr > StBoxLayout,
+.quick-toggle:rtl > StBoxLayout {
+  padding: 0 9px 0 6px; /* M3E-visual: CommonTile.kt, start margin 8 dp / end 12 dp × 56/72 */
+  spacing: 5px; /* M3E-visual: icon / text gap 6 dp × 56/72 */
+}
+.quick-toggle .quick-toggle-icon {
+  icon-size: 22px; /* M3E-visual: common_tile_default_large_tile_icon_size 28 dp × 56/72 */
+  padding: 11px; /* M3E-visual: icon centred in the 56 dp × 56/72 = 44 px target (common_tile_default_toggle_target_size) */
+  border-radius: 999px; /* M3E-visual: pill (full radius) */
+}
+/* Tile width: 12em in GNOME (168 px here); fixed like the stock sheet, sized so the default tile titles fit. Longer
+   titles (any language) are ellipsized by the tile label, as with the stock width. */
+.quick-settings-grid > .quick-toggle,
+.quick-settings-grid > .quick-toggle-has-menu {
+  min-width: 198px; /* M3E-visual: 91 px title + 6 + 44 + 5 + 9 + 40 px menu button + 3 px rounding (title width measured on the default tile titles) */
+  max-width: 198px; /* M3E-visual: see min-width */
+}
+.quick-toggle .quick-toggle-title {
+  font-size: 14px; /* TypeScale.TitleSmallSize */
+}
+.quick-toggle .quick-toggle-subtitle {
+  font-size: 12px; /* TypeScale.LabelMediumSize */
+}
+.quick-toggle:hover,
+.quick-toggle:focus:hover {
+  background-color: rgba({{colors.surface_effect_1.default.red}}, {{colors.surface_effect_1.default.green}}, {{colors.surface_effect_1.default.blue}}, {{colors.surface_effect_1.default.opacity}});
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: 8 % state layer (State.HoverStateLayerOpacity) as a full inner shadow, since St has only one background */
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle:focus {
+  background-color: rgba({{colors.surface_effect_1.default.red}}, {{colors.surface_effect_1.default.green}}, {{colors.surface_effect_1.default.blue}}, {{colors.surface_effect_1.default.opacity}});
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle:active,
+.quick-toggle:active:hover,
+.quick-toggle:active:focus {
+  background-color: rgba({{colors.surface_effect_1.default.red}}, {{colors.surface_effect_1.default.green}}, {{colors.surface_effect_1.default.blue}}, {{colors.surface_effect_1.default.opacity}});
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* M3E-visual: 10 % state layer (State.PressedStateLayerOpacity) as a full inner shadow, since St has only one background */
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle:checked,
+.quick-toggle:checked:focus,
+.quick-toggle:focus:checked {
+  border-radius: 19px; /* M3E-visual: common_tile_default_active_tile_corner_radius 24 dp × 56/72 */
+  background-color: {{colors.primary.default.hex}}; /* M3E-visual: Tile.kt: active tile = primary */
+  box-shadow: none;
+  color: {{colors.on_primary.default.hex}};
+}
+.quick-toggle:checked:hover,
+.quick-toggle:hover:checked,
+.quick-toggle:focus:hover:checked {
+  border-radius: 19px; /* M3E-visual: see :checked */
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.08); /* M3E-visual: 8 % state layer (State.HoverStateLayerOpacity) as a full inner shadow, since St has only one background */
+  color: {{colors.on_primary.default.hex}};
+}
+.quick-toggle:checked:active,
+.quick-toggle:active:checked,
+.quick-toggle:active:hover:checked,
+.quick-toggle:active:focus:checked {
+  border-radius: 19px; /* M3E-visual: see :checked */
+  background-color: {{colors.primary.default.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.1); /* M3E-visual: 10 % state layer (State.PressedStateLayerOpacity) as a full inner shadow, since St has only one background */
+  color: {{colors.on_primary.default.hex}};
+}
+.quick-toggle:insensitive,
+.quick-toggle:insensitive:checked {
+  border-radius: 999px; /* M3E-visual: pill (full radius) */
+  background-color: rgba({{colors.surface.default.red}}, {{colors.surface.default.green}}, {{colors.surface.default.blue}}, 0.18); /* M3E-visual: Tile.kt: unavailable tile = surface at 0.18 */
+  box-shadow: none;
+  color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.38); /* M3E-visual: Tile.kt: unavailable content = onSurfaceVariant at 0.38 */
+}
+
+/* Menu tile = dual-target tile. The background is carried by the container; the main half and the menu button
+   are transparent and draw only their state layers. The Pixel has no menu button (the whole tile outside the
+   badge opens the detail view): the Shell's chevron is kept, without background, in onSurfaceVariant. */
+.quick-toggle-has-menu {
+  border-radius: 999px; /* M3E-visual: common_tile_default_inactive_tile_corner_radius: the tile stays a pill */
+  background-color: rgba({{colors.surface_effect_1.default.red}}, {{colors.surface_effect_1.default.green}}, {{colors.surface_effect_1.default.blue}}, {{colors.surface_effect_1.default.opacity}}); /* M3E-visual: Tile.kt: dual target, surfaceEffect1 background both active and inactive */
+}
+.quick-toggle-has-menu .quick-toggle-separator,
+.quick-toggle-has-menu:checked .quick-toggle-separator {
+  width: 0; /* M3E-visual: no gap, the tile is one piece */
+  background-color: transparent;
+}
+.quick-toggle-has-menu .quick-toggle,
+.quick-toggle-has-menu .quick-toggle:focus,
+.quick-toggle-has-menu .quick-toggle:checked,
+.quick-toggle-has-menu .quick-toggle:checked:focus {
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}}; /* M3E-visual: Tile.kt: dual-target text onSurface in both states */
+}
+.quick-toggle-has-menu .quick-toggle:hover,
+.quick-toggle-has-menu .quick-toggle:checked:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: the layer is the half's own background over the container's fill (St draws no inset shadow over a transparent background); State.HoverStateLayerOpacity@0.08 */
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-has-menu .quick-toggle:active,
+.quick-toggle-has-menu .quick-toggle:checked:active {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* M3E-visual: the layer is the half's own background over the container's fill (St draws no inset shadow over a transparent background); State.PressedStateLayerOpacity@0.1 */
+  box-shadow: none;
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-has-menu .quick-toggle:ltr,
+.quick-toggle-has-menu .quick-toggle:ltr:hover,
+.quick-toggle-has-menu .quick-toggle:ltr:active,
+.quick-toggle-has-menu .quick-toggle:ltr:checked,
+.quick-toggle-has-menu .quick-toggle:ltr:checked:hover,
+.quick-toggle-has-menu .quick-toggle:ltr:checked:active {
+  border-radius: 28px 0 0 28px; /* M3E-visual: left half of the pill (state layer only) */
+}
+.quick-toggle-has-menu .quick-toggle:rtl,
+.quick-toggle-has-menu .quick-toggle:rtl:hover,
+.quick-toggle-has-menu .quick-toggle:rtl:active,
+.quick-toggle-has-menu .quick-toggle:rtl:checked,
+.quick-toggle-has-menu .quick-toggle:rtl:checked:hover,
+.quick-toggle-has-menu .quick-toggle:rtl:checked:active {
+  border-radius: 0 28px 28px 0; /* M3E-visual: right half of the pill (state layer only) */
+}
+/* Menu button hidden (menu disabled): the main half covers the whole pill. */
+.quick-toggle-has-menu .quick-toggle:ltr:last-child,
+.quick-toggle-has-menu .quick-toggle:rtl:last-child {
+  border-radius: 999px; /* M3E-visual: pill (full radius) */
+}
+/* Icon badge: target of the dual tile. */
+.quick-toggle-has-menu .quick-toggle .quick-toggle-icon {
+  border-radius: 999px; /* M3E-visual: common_tile_default_inactive_icon_corner_radius (50 dp: circle) */
+  background-color: rgba({{colors.surface_effect_2.default.red}}, {{colors.surface_effect_2.default.green}}, {{colors.surface_effect_2.default.blue}}, {{colors.surface_effect_2.default.opacity}}); /* M3E-visual: Tile.kt: inactive badge = surfaceEffect2 */
+  color: {{colors.on_surface.default.hex}};
+}
+.quick-toggle-has-menu .quick-toggle:checked .quick-toggle-icon {
+  border-radius: 12px; /* M3E-visual: common_tile_default_active_icon_corner_radius 16 dp × 56/72 */
+  background-color: {{colors.primary.default.hex}}; /* M3E-visual: Tile.kt: active badge = primary */
+  color: {{colors.on_primary.default.hex}}; /* M3E-visual: Tile.kt: active badge icon = onPrimary */
+}
+.quick-toggle-has-menu .quick-toggle:insensitive .quick-toggle-icon {
+  background-color: transparent;
+}
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button,
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:focus,
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:checked,
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:checked:focus {
+  padding: 0 11px 0 9px; /* M3E-visual: 20 px chevron in 40 px, tile end at 12 dp × 56/72 */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface_variant.default.hex}}; /* M3E-visual: chevron onSurfaceVariant */
+}
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button StIcon {
+  icon-size: 20px; /* M3E-visual: 20 px chevron (Pixel tile expand icon, 18 dp + margin) */
+}
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:ltr {
+  border-radius: 0 28px 28px 0; /* M3E-visual: right half of the pill (state layer only) */
+}
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:rtl {
+  border-radius: 28px 0 0 28px; /* M3E-visual: left half of the pill (state layer only) */
+}
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:hover,
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:checked:hover {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: the layer is the button's own background over the container's fill; State.HoverStateLayerOpacity@0.08 */
+  box-shadow: none;
+  color: {{colors.on_surface_variant.default.hex}}; /* M3E-visual: chevron onSurfaceVariant */
+}
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:active,
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:active:hover,
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:checked:active {
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* M3E-visual: the layer is the button's own background over the container's fill; State.PressedStateLayerOpacity@0.1 */
+  box-shadow: none;
+  color: {{colors.on_surface_variant.default.hex}}; /* M3E-visual: chevron onSurfaceVariant */
+}
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:insensitive {
+  background-color: transparent;
+  box-shadow: none;
+  color: rgba({{colors.on_surface_variant.default.red}}, {{colors.on_surface_variant.default.green}}, {{colors.on_surface_variant.default.blue}}, 0.38); /* M3E-visual: unavailable chevron, onSurfaceVariant at 0.38 like the unavailable tile content (Tile.kt) */
+}
+
+/* State transitions: St cross-fades the old rendering into the new one (background, corners, shadow). Tile
+   shape and colour are animated by m3e-motion (Compose default spring); these 150 ms cover only the state
+   layers. */
+.quick-toggle,
+.quick-toggle .quick-toggle-icon,
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

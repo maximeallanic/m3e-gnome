@@ -1,0 +1,48 @@
+name: Bug report
+description: Something does not install, look or behave as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `./install.sh --version` (or the commit)
+    validations:
+      required: true
+  - type: input
+    id: gnome
+    attributes:
+      label: GNOME Shell version
+      description: Output of `gnome-shell --version`. The theme targets GNOME 50.
+    validations:
+      required: true
+  - type: input
+    id: distro
+    attributes:
+      label: Distribution and session
+      description: For example "Fedora 44, Wayland". Content of `PRETTY_NAME` in /etc/os-release.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where does it go wrong?
+      options: [install.sh, uninstall.sh, verify.sh, GTK 3/4 applications, GNOME Shell, icons or cursor, palette or wallpaper colours, other]
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Output of the failing command, and of `./verify.sh` if the install completed.
+      render: shell
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce

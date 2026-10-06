@@ -1,0 +1,122 @@
+/* == motion == */
+/* M3E springs from the base layer (theme/motion/gtk/m3e-gtk4-motion.css, imported by gtk.css before this file):
+   variables --m3e-spring-<name>-duration / -curve (cubic-bezier fitted to the spring). Colours, state layers and shadows
+   use DefaultEffects; shapes and sizes use FastSpatial (slight bounce of the Expressive components). */
+
+/* Material-Gnome animations replaced: pill-pop, pill-pop-tab, pill-pop-row, icon-squash, check-pop and
+   entry-focus-pop swell then bounce buttons, tabs, rows, checkboxes and fields on every press or selection
+   (zoom to 108 %; no M3E component does that). Keyframes emptied: the theme rules that start them stay
+   without effect. */
+@keyframes pill-pop { to { transform: none; } }
+@keyframes pill-pop-tab { to { transform: none; } }
+@keyframes pill-pop-row { to { transform: none; } }
+@keyframes icon-squash { to { transform: none; } }
+@keyframes check-pop { to { -gtk-icon-transform: none; } }
+@keyframes entry-focus-pop { to { transform: none; } }
+/* Appearance of menus, popovers and toasts (Material-Gnome's expressive-pop-in: bounce to 103 % and slide):
+   M3E menu (Compose DropdownMenu: scale from 0.8, fade). */
+@keyframes expressive-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8); /* M3E-visual: Compose Menu.kt, ClosedScaleTarget = 0.8 */
+  }
+}
+/* Drop-down menus and popovers: scale on FastSpatial from the top (the menu comes out of its button). */
+popover:not(#m3e) > contents,
+popover:not(#m3e) > arrow {
+  transform-origin: top;
+  animation: expressive-pop-in var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve);
+}
+
+/* State transitions (normal, hover, press, focus, selection) of interactive components. ID-level
+   specificity: the theme changes the transition depending on the state (0.1 s on press, 0.3 to 0.5 s otherwise), which made
+   some changes instantaneous and others sluggish. */
+button:not(#m3e),
+modelbutton:not(#m3e),
+row:not(#m3e),
+tab:not(#m3e),
+toggle:not(#m3e),
+checkbutton:not(#m3e),
+entry:not(#m3e),
+spinbutton:not(#m3e),
+calendar:not(#m3e) > grid > label.day-number,
+notebook:not(#m3e) > header > tabs > tab,
+stackswitcher:not(#m3e) > button:not(#m3e),
+viewswitcher:not(#m3e) > button:not(#m3e) {
+  transition: background-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    background-image var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    box-shadow var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    border-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    outline-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    border-radius var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve);
+}
+
+/* Switch: track fades; the handle changes size AND margin on the same spring. The theme only animated
+   min-width / min-height: the margin (which recentres the 16, 24 or 28 dp handle) jumped at once and the handle
+   started off-centre (the "zoom" when toggling). The position is animated by GTK itself. */
+switch:not(#m3e) {
+  transition: background-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    border-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    outline-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve);
+}
+switch:not(#m3e) > slider {
+  transition: min-width var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    min-height var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    margin var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    background-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    box-shadow var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve);
+}
+
+/* Checkbox and radio: outline and background fade. Radio: the dot grows from the centre (Compose RadioButton: dot
+   radius animated from 0 to 5 dp); unchecked = same gradient with a zero-radius dot, so that GTK interpolates the stops
+   instead of cross-fading. */
+check:not(#m3e),
+radio:not(#m3e) {
+  transition: background-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    border-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    background-image var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve);
+}
+radio:not(#m3e) {
+  background-image: radial-gradient(circle closest-side, alpha(var(--primary), 0) 0%, alpha(var(--primary), 0) 1%); /* M3E-visual: zero-radius dot (see radio:checked), start of the interpolation */
+}
+
+/* Scrollbars: handle thickness and trough margin on FastSpatial (same spring: constant total thickness, no
+   negative size even on overshoot), colours on DefaultEffects. Replaces Material-Gnome's 0.4 s with bounce
+   and 0.1 s and libadwaita's "all 200ms linear". */
+scrollbar:not(#m3e) > range > trough {
+  transition: margin var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    background-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve);
+}
+scrollbar:not(#m3e) > range > trough > slider {
+  transition: min-width var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    min-height var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    background-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    outline-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve);
+}
+
+/* Slider: the handle thins on press (4 -> 2 dp) while keeping its centre: width and margin on the same
+   FastSpatial spring (Compose Slider: animated handle width). Background-coloured gap and colours on DefaultEffects. */
+scale:not(#m3e) > trough > slider {
+  transition: min-width var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    min-height var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    margin var(--m3e-spring-fast-spatial-duration) var(--m3e-spring-fast-spatial-curve),
+    background-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    box-shadow var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve),
+    outline-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve);
+}
+scale:not(#m3e) > trough,
+scale:not(#m3e) > trough > highlight {
+  transition: background-color var(--m3e-spring-default-effects-duration) var(--m3e-spring-default-effects-curve);
+}
+
+/* Scroll overshoot: no glow (the glow appeared and disappeared from one frame to the next, flashing
+   while scrolling; GTK exposes no state to delay). Android 12+ / M3 stretch the content instead of a glow. */
+scrolledwindow:not(#m3e) > overshoot.top,
+scrolledwindow:not(#m3e) > overshoot.bottom,
+scrolledwindow:not(#m3e) > overshoot.left,
+scrolledwindow:not(#m3e) > overshoot.right {
+  background: none;
+  box-shadow: none;
+}

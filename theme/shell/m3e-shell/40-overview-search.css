@@ -1,0 +1,152 @@
+/* == Overview: search == */
+/* Overview background: surface in dark mode, primary in light mode (design choice: surface was too light; content
+   placed on this background uses on_primary, see the "Light overview" block at the end of the App grid section).
+   The stock sheet uses the same dark grey #222226 in dark AND light mode, so on_surface text would be unreadable
+   in light mode.
+   Search bar (.search-entry) = M3E Search bar: 56 dp surface_container_high pill, no shadow (flat "contained"
+   bar; the level 3 SearchBar.ContainerElevation token is not drawn), 24 dp leading icon 16 dp from the edge, text
+   at 56 dp (4 + 48 + 4), typed text Body large on_surface, hint on_surface_variant. Hover: on_surface layer at 8%.
+   Focus: stock !important ring (GNOME accent, limitation). The clear icon shares the leading icon's class
+   (.search-entry-icon): on_surface rather than TrailingIconColor (limitation). */
+#overviewGroup {
+  background-color: <* if {{ is_dark_mode }} *>{{colors.surface.default.hex}}<* else *>{{colors.primary.default.hex}}<* endif *>; /* M3E-visual: primary in light mode only (design choice) */
+}
+.search-entry,
+.search-entry:hover,
+.search-entry:focus,
+.search-entry:insensitive {
+  min-height: 56px; /* SearchBar.ContainerHeight */
+  width: 24em; /* M3E-visual: GNOME width kept (24em), within the 360 to 720 dp range of the M3E bar */
+  padding: 0 16px; /* M3E-visual: leading icon centred in its 48 dp target, itself 4 dp from the edge (4 + (48 − 24) / 2) */
+  spacing: 16px; /* M3E-visual: text at 56 dp from the edge (4 + 48 + 4), i.e. 16 + 24 + 16 */
+  border: none;
+  border-radius: 999px; /* SearchBar.ContainerShape */
+  background-color: {{colors.surface_container_high.default.hex}};
+  color: {{colors.on_surface.default.hex}};
+  box-shadow: none;
+  font-size: 16px; /* SearchBar.InputTextFont.size */
+  caret-color: {{colors.primary.default.hex}};
+  selection-background-color: {{colors.primary.default.hex}};
+  selected-color: {{colors.on_primary.default.hex}};
+}
+.search-entry:hover {
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* M3E-visual: on_surface state layer at 8% (State.HoverStateLayerOpacity) as a full inset shadow, since St only has one background */
+}
+.search-entry:insensitive {
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* M3E-visual: disabled text at 38% (List.ItemDisabledLabelTextOpacity, same value as the M3E fields) */
+}
+.search-entry .search-entry-icon {
+  icon-size: 24px; /* M3E-visual: 24 dp icons */
+  margin-top: 0;
+  padding: 0;
+  color: {{colors.on_surface.default.hex}};
+}
+.search-entry StLabel.hint-text {
+  color: {{colors.on_surface_variant.default.hex}};
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or children's icons). */
+.search-entry {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+
+/* == Search results == */
+/* List sections (.search-section-content): surface_container_high container with Large corners ("docked" view).
+   List results (.list-search-result) and provider (.search-provider-icon): M3E list items, same values as the
+   tile menu: 56 dp, 16 dp margins, Body large on_surface, description on_surface_variant; Expressive corners 4 dp,
+   12 on hover, 16 on press and focus; on_surface layer. Default result (:selected, :highlighted) and :checked =
+   selected item (secondary_container, 16 corners). Grid results: see the App grid block (same tiles). */
+.search-section-content {
+  padding: 12px; /* M3E-visual: GNOME inner margin kept (12 dp), the items carry their own 16 dp margins */
+  border: none;
+  border-radius: 16px; /* Shape.CornerLarge */
+  background-color: {{colors.surface_container_high.default.hex}};
+  color: {{colors.on_surface.default.hex}};
+}
+.search-statustext {
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.list-search-result,
+.search-provider-icon {
+  min-height: 56px; /* List.ItemOneLineContainerHeight */
+  padding: 0 16px; /* List.ItemLeadingSpace */
+  border: none;
+  border-radius: 4px; /* List.ItemContainerExpressiveShape */
+  background-color: transparent;
+  box-shadow: none;
+  font-size: 16px; /* List.ItemLabelTextFont.size */
+  color: {{colors.on_surface.default.hex}};
+}
+.list-search-result:hover,
+.search-provider-icon:hover {
+  border-radius: 12px; /* List.ItemHoveredContainerExpressiveShape */
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.list-search-result:focus,
+.search-provider-icon:focus,
+.list-search-result:focus:hover,
+.search-provider-icon:focus:hover {
+  border-radius: 16px; /* List.ItemFocusedContainerExpressiveShape */
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.list-search-result:active,
+.search-provider-icon:active,
+.list-search-result:active:hover,
+.search-provider-icon:active:hover,
+.list-search-result:active:focus,
+.search-provider-icon:active:focus {
+  border-radius: 16px; /* List.ItemPressedContainerExpressiveShape */
+  background-color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface.default.hex}};
+}
+.list-search-result:highlighted,
+.search-provider-icon:highlighted,
+.list-search-result:selected,
+.search-provider-icon:selected,
+.list-search-result:checked,
+.search-provider-icon:checked,
+.list-search-result:selected:hover,
+.search-provider-icon:selected:hover,
+.list-search-result:selected:active,
+.search-provider-icon:selected:active {
+  border-radius: 16px; /* List.ItemSelectedContainerExpressiveShape */
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+.list-search-result:insensitive,
+.search-provider-icon:insensitive {
+  background-color: transparent;
+  color: rgba({{colors.on_surface.default.red}}, {{colors.on_surface.default.green}}, {{colors.on_surface.default.blue}}, 0.38); /* List.ItemDisabledLabelTextOpacity */
+}
+.list-search-result .list-search-result-description {
+  font-size: 14px; /* List.ItemSupportingTextFont.size */
+  color: {{colors.on_surface_variant.default.hex}};
+}
+.list-search-result:selected .list-search-result-description,
+.list-search-result:highlighted .list-search-result-description,
+.list-search-result:checked .list-search-result-description {
+  color: {{colors.on_secondary_container.default.hex}};
+}
+/* Provider name: section header in Title small (14); at 16 (the items' Body large), the stock fixed width of
+   120 px truncated it earlier than in the initial state ("Documents d..." instead of "Documents de ..."). */
+.search-provider-icon .list-search-provider-content .list-search-provider-details {
+  font-size: 14px; /* TypeScale.TitleSmallSize */
+  color: {{colors.on_surface.default.hex}};
+}
+/* System actions (power off, lock... in results): tonal chip (Tonal icon button) instead of the stock 10% white,
+   which is invisible in light mode. */
+.system-action-icon {
+  background-color: {{colors.secondary_container.default.hex}};
+  color: {{colors.on_secondary_container.default.hex}};
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one
+   (background, corners, shadow; not the text or children's icons). */
+.list-search-result,
+.search-provider-icon {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

@@ -1,0 +1,6 @@
+/* == No bold == */
+/* No bold anywhere in the Shell (clock, quick settings titles, notifications...). St has no "user" priority level, so
+   !important is the only way to beat the more specific selectors of the stock sheet. */
+* {
+  font-weight: normal !important;
+}

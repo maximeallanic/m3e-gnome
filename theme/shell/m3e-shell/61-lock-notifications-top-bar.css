@@ -1,0 +1,196 @@
+/* Lock screen notifications = Filled cards (like the session notifications), in the dark palette;
+   critical = error_container; counter = secondary_container badge. */
+.unlock-dialog-notifications-container .message,
+.unlock-dialog-notifications-container .unlock-dialog-notification-source {
+  border-radius: 12px; /* FilledCard.ContainerShape */
+  background-color: {{colors.surface_container_highest.dark.hex}};
+  color: {{colors.on_surface.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-header,
+.unlock-dialog-notifications-container .unlock-dialog-notification-source .message-header {
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message.critical,
+.unlock-dialog-notifications-container .unlock-dialog-notification-source.critical {
+  background-color: {{colors.error_container.dark.hex}};
+  color: {{colors.on_error_container.dark.hex}};
+}
+.unlock-dialog-notifications-container .message:active,
+.unlock-dialog-notifications-container .unlock-dialog-notification-source:active {
+  background-color: st-mix({{colors.on_surface.dark.hex}}, {{colors.surface_container_highest.dark.hex}}, 10%); /* M3E-visual: on_surface state layer at 10% (State.PressedStateLayerOpacity) blended into the background */
+}
+/* Lock screen media message (MediaMessage): the rules of the Notifications block (mode palette, selectors more
+   specific than the card above) are repeated here in the dark palette, otherwise light mode gives dark text on a dark card. */
+.unlock-dialog-notifications-container .message:hover {
+  background-color: {{colors.surface_container_highest.dark.hex}};
+  box-shadow: inset 0 0 0 100px rgba({{colors.on_surface.dark.red}}, {{colors.on_surface.dark.green}}, {{colors.on_surface.dark.blue}}, 0.08); /* M3E-visual: on_surface state layer at 8% (State.HoverStateLayerOpacity) as a full inset shadow, since St only has a background */
+  color: {{colors.on_surface.dark.hex}};
+}
+.unlock-dialog-notifications-container .message:active,
+.unlock-dialog-notifications-container .message:active:hover {
+  box-shadow: none;
+  color: {{colors.on_surface.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-header,
+.unlock-dialog-notifications-container .message .message-header .message-header-content .event-time {
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-box .message-content .message-title {
+  color: {{colors.on_surface.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-box .message-content .message-body {
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-box .message-icon.message-themed-icon {
+  background-color: {{colors.secondary_container.dark.hex}};
+  color: {{colors.on_secondary_container.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-header .message-expand-button,
+.unlock-dialog-notifications-container .message .message-header .message-close-button {
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-header .message-expand-button:hover,
+.unlock-dialog-notifications-container .message .message-header .message-close-button:hover {
+  background-color: rgba({{colors.on_surface_variant.dark.red}}, {{colors.on_surface_variant.dark.green}}, {{colors.on_surface_variant.dark.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-header .message-expand-button:focus,
+.unlock-dialog-notifications-container .message .message-header .message-close-button:focus {
+  background-color: rgba({{colors.on_surface_variant.dark.red}}, {{colors.on_surface_variant.dark.green}}, {{colors.on_surface_variant.dark.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-header .message-expand-button:active,
+.unlock-dialog-notifications-container .message .message-header .message-close-button:active,
+.unlock-dialog-notifications-container .message .message-header .message-expand-button:active:hover,
+.unlock-dialog-notifications-container .message .message-header .message-close-button:active:hover {
+  background-color: rgba({{colors.on_surface_variant.dark.red}}, {{colors.on_surface_variant.dark.green}}, {{colors.on_surface_variant.dark.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-media-control {
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-media-control:hover {
+  background-color: rgba({{colors.on_surface_variant.dark.red}}, {{colors.on_surface_variant.dark.green}}, {{colors.on_surface_variant.dark.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-media-control:active,
+.unlock-dialog-notifications-container .message .message-media-control:active:hover {
+  background-color: rgba({{colors.on_surface_variant.dark.red}}, {{colors.on_surface_variant.dark.green}}, {{colors.on_surface_variant.dark.blue}}, 0.1); /* State.PressedStateLayerOpacity */
+  color: {{colors.on_surface_variant.dark.hex}};
+}
+.unlock-dialog-notifications-container .message .message-media-control:insensitive {
+  color: rgba({{colors.on_surface.dark.red}}, {{colors.on_surface.dark.green}}, {{colors.on_surface.dark.blue}}, 0.38); /* IconButton.DisabledOpacity */
+}
+.unlock-dialog-notification-count-text {
+  background-color: {{colors.secondary_container.dark.hex}};
+  color: {{colors.on_secondary_container.dark.hex}};
+}
+
+/* Parental controls (locked session): button = Filled button (primary). */
+.parental-controls-shield .parental-controls-shield-button {
+  background-color: {{colors.primary.dark.hex}};
+  color: {{colors.on_primary.dark.hex}};
+}
+
+/* Warning of the "session already open" dialog (session modal dialog: mode palette): error_container
+   instead of the stock amber. */
+.conflicting-session-dialog-content .conflicting-session-dialog-desc-warning {
+  background-color: {{colors.error_container.default.hex}};
+  color: {{colors.on_error_container.default.hex}};
+}
+
+/* Lock and login top bar: no background (wallpaper below), session top bar buttons (Top bar block: XSmall,
+   on_surface content, pill on hover, 8 / 10 / 10% layers, selected = solid primary) in the dark palette.
+   GDM clock: pill on .clock, as in the session. */
+#panel.unlock-screen,
+#panel.login-screen {
+  background-color: transparent;
+}
+#panel.unlock-screen .panel-button,
+#panel.login-screen .panel-button {
+  margin: 2px 1px; /* M3E-visual: (36 - 32) / 2 above and below (32 dp XSmall button in the 36 px bar), 1 px between buttons, as in the session bar */
+  -natural-hpadding: 6px; /* XSmallIconButton.DefaultLeadingSpace */
+  -minimum-hpadding: 6px; /* XSmallIconButton.DefaultLeadingSpace */
+  border: none;
+  border-radius: 999px; /* XSmallIconButton.ContainerShapeRound */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.dark.hex}};
+}
+#panel.unlock-screen .panel-button:hover,
+#panel.login-screen .panel-button:hover {
+  background-color: rgba({{colors.on_surface.dark.red}}, {{colors.on_surface.dark.green}}, {{colors.on_surface.dark.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  box-shadow: none;
+}
+#panel.unlock-screen .panel-button:focus,
+#panel.login-screen .panel-button:focus {
+  background-color: rgba({{colors.on_surface.dark.red}}, {{colors.on_surface.dark.green}}, {{colors.on_surface.dark.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  box-shadow: none;
+}
+#panel.unlock-screen .panel-button:active,
+#panel.unlock-screen .panel-button:active:focus,
+#panel.unlock-screen .panel-button:checked,
+#panel.unlock-screen .panel-button:checked:focus,
+#panel.login-screen .panel-button:active,
+#panel.login-screen .panel-button:active:focus,
+#panel.login-screen .panel-button:checked,
+#panel.login-screen .panel-button:checked:focus {
+  border-radius: 12px; /* XSmallIconButton.SelectedContainerShapeRound */
+  background-color: {{colors.primary.dark.hex}};
+  box-shadow: none;
+  color: {{colors.on_primary.dark.hex}};
+}
+#panel.unlock-screen .panel-button:active:hover,
+#panel.unlock-screen .panel-button:checked:hover,
+#panel.login-screen .panel-button:active:hover,
+#panel.login-screen .panel-button:checked:hover {
+  border-radius: 12px; /* XSmallIconButton.SelectedContainerShapeRound */
+  background-color: st-mix({{colors.on_primary.dark.hex}}, {{colors.primary.dark.hex}}, 8%); /* M3E-visual: on_primary state layer at 8% (State.HoverStateLayerOpacity) blended into the background */
+  box-shadow: none;
+  color: {{colors.on_primary.dark.hex}};
+}
+#panel.unlock-screen .panel-button.clock-display,
+#panel.login-screen .panel-button.clock-display {
+  -natural-hpadding: 0;
+  -minimum-hpadding: 0;
+  color: {{colors.on_surface.dark.hex}};
+}
+#panel.unlock-screen .panel-button.clock-display .clock,
+#panel.login-screen .panel-button.clock-display .clock {
+  padding: 0 16px; /* ButtonXSmall.LeadingSpace */
+  border: none;
+  border-radius: 999px; /* ButtonXSmall.ContainerShapeRound */
+  background-color: transparent;
+  box-shadow: none;
+  color: {{colors.on_surface.dark.hex}};
+}
+#panel.unlock-screen .panel-button.clock-display:hover .clock,
+#panel.login-screen .panel-button.clock-display:hover .clock {
+  background-color: rgba({{colors.on_surface.dark.red}}, {{colors.on_surface.dark.green}}, {{colors.on_surface.dark.blue}}, 0.08); /* State.HoverStateLayerOpacity */
+  box-shadow: none;
+}
+#panel.unlock-screen .panel-button.clock-display:focus .clock,
+#panel.login-screen .panel-button.clock-display:focus .clock {
+  background-color: rgba({{colors.on_surface.dark.red}}, {{colors.on_surface.dark.green}}, {{colors.on_surface.dark.blue}}, 0.1); /* State.FocusStateLayerOpacity */
+  box-shadow: none;
+}
+#panel.unlock-screen .panel-button.clock-display:active .clock,
+#panel.login-screen .panel-button.clock-display:active .clock,
+#panel.unlock-screen .panel-button.clock-display:checked .clock,
+#panel.login-screen .panel-button.clock-display:checked .clock {
+  border-radius: 999px; /* ButtonXSmall.SelectedContainerShapeRound */
+  background-color: {{colors.primary.dark.hex}};
+  box-shadow: none;
+  color: {{colors.on_primary.dark.hex}};
+}
+
+/* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one (background,
+   corners, shadow; not the text or the children's icons). */
+.login-dialog-button,
+.login-dialog-not-listed-button,
+.login-dialog .login-dialog-auth-list-item,
+.unlock-dialog .login-dialog-auth-list-item,
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item {
+  transition-duration: 150ms; /* Motion.DurationShort3 */
+}
+

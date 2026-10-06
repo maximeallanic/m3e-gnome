@@ -1,0 +1,156 @@
+/* == text-fields == */
+/* Filled text field: 56 dp, 16 margins, 4 dp top corners, 1 dp bottom indicator -> 2 dp on focus (inner shadow:
+   the text does not move). GTK has no floating label: the typed text is centred. Same field for drop-down
+   lists (dropdown, combobox: "exposed dropdown menu") and the numeric field. */
+entry:not(#m3e),
+spinbutton:not(#m3e),
+dropdown:not(#m3e) > button:not(#m3e),
+combobox:not(#m3e) > box > button:not(#m3e),
+row.entry:not(#m3e) {
+  min-height: 56px; /* M3E-visual: Filled text field height ("layout values and paddings" image) */
+  padding: 0 16px 0 16px; /* M3E-visual: 16 dp margins ("layout values and paddings" image) */
+  border: none;
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: var(--surface_container_highest);
+  background-image: none;
+  color: var(--on_surface);
+  caret-color: var(--primary);
+  box-shadow: inset 0 -1px var(--on_surface_variant); /* M3E-visual: 1 dp indicator (FilledTextField.ActiveIndicatorHeight) as an inner shadow */
+  outline: none;
+  font-size: 16px; /* FilledTextField.InputFont.size */
+  animation: none;
+  opacity: 1;
+  filter: none;
+}
+entry:not(#m3e):hover,
+spinbutton:not(#m3e):hover,
+dropdown:not(#m3e) > button:not(#m3e):hover,
+combobox:not(#m3e) > box > button:not(#m3e):hover,
+row.entry:not(#m3e):hover {
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: var(--surface_container_highest);
+  background-image: image(alpha(var(--on_surface), 0.08)); /* State.HoverStateLayerOpacity */
+  color: var(--on_surface);
+  box-shadow: inset 0 -1px var(--on_surface); /* M3E-visual: 1 dp indicator (FilledTextField.HoverActiveIndicatorHeight) */
+}
+dropdown:not(#m3e) > button:not(#m3e):active,
+dropdown:not(#m3e) > button:not(#m3e):checked,
+combobox:not(#m3e) > box > button:not(#m3e):active,
+combobox:not(#m3e) > box > button:not(#m3e):checked {
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: var(--surface_container_highest);
+  background-image: none;
+  color: var(--on_surface);
+}
+entry:not(#m3e):focus-within,
+spinbutton:not(#m3e):focus-within,
+dropdown:not(#m3e) > button:not(#m3e):focus-visible,
+dropdown:not(#m3e) > button:not(#m3e):checked,
+combobox:not(#m3e) > box > button:not(#m3e):focus-visible,
+combobox:not(#m3e) > box > button:not(#m3e):checked,
+row.entry:not(#m3e):focus-within {
+  box-shadow: inset 0 -2px var(--primary); /* M3E-visual: 2 dp indicator (FilledTextField.FocusActiveIndicatorHeight) */
+  outline: none;
+}
+entry:not(#m3e).error,
+spinbutton:not(#m3e).error {
+  caret-color: var(--error);
+  box-shadow: inset 0 -1px var(--error); /* M3E-visual: 1 dp indicator (FilledTextField.ErrorActiveIndicatorColor) */
+}
+entry:not(#m3e).error:focus-within,
+spinbutton:not(#m3e).error:focus-within {
+  box-shadow: inset 0 -2px var(--error); /* M3E-visual: 2 dp indicator (FilledTextField.FocusActiveIndicatorHeight) */
+}
+entry:not(#m3e):disabled,
+spinbutton:not(#m3e):disabled,
+dropdown:not(#m3e) > button:not(#m3e):disabled,
+combobox:not(#m3e) > box > button:not(#m3e):disabled,
+row.entry:not(#m3e):disabled {
+  border-radius: 4px 4px 0 0; /* FilledTextField.ContainerShape */
+  background-color: alpha(var(--on_surface), 0.04); /* FilledTextField.DisabledContainerOpacity */
+  background-image: none;
+  color: alpha(var(--on_surface), 0.38); /* FilledTextField.DisabledInputOpacity */
+  box-shadow: inset 0 -1px alpha(var(--on_surface), 0.38); /* M3E-visual: 1 dp indicator at 38 % (FilledTextField.DisabledActiveIndicatorOpacity) */
+}
+dropdown:not(#m3e) > button:not(#m3e) label,
+dropdown:not(#m3e) > button:not(#m3e) row:not(#m3e),
+dropdown:not(#m3e) > button:not(#m3e) row:not(#m3e) label,
+dropdown:not(#m3e) > button:not(#m3e) cellview,
+combobox:not(#m3e) > box > button:not(#m3e) label,
+combobox:not(#m3e) > box > button:not(#m3e) cellview {
+  color: inherit;
+}
+/* Leading and trailing icons: 24 dp, on_surface_variant (including on focus) */
+entry:not(#m3e) > image,
+entry:not(#m3e):focus-within > image {
+  -gtk-icon-size: 24px; /* FilledTextField.LeadingIconSize */
+  color: var(--on_surface_variant);
+}
+entry:not(#m3e) > image:disabled {
+  color: alpha(var(--on_surface), 0.38); /* FilledTextField.DisabledLeadingIconOpacity */
+}
+dropdown:not(#m3e) > button:not(#m3e) arrow,
+combobox:not(#m3e) > box > button:not(#m3e) arrow {
+  -gtk-icon-size: 24px; /* FilledTextField.TrailingIconSize */
+  min-width: 24px; /* FilledTextField.TrailingIconSize */
+  min-height: 24px; /* FilledTextField.TrailingIconSize */
+  color: var(--on_surface_variant);
+}
+/* Arrow: flipped while the menu is open, not on hover (the theme rotates it on hover) */
+dropdown:not(#m3e):hover arrow,
+combobox:not(#m3e):hover arrow {
+  transform: none;
+}
+dropdown:not(#m3e) > button:not(#m3e):checked arrow,
+combobox:not(#m3e) > box > button:not(#m3e):checked arrow {
+  transform: rotate(180deg); /* M3E-visual: arrow flipped, menu open */
+}
+/* Numeric field: text on the left, +/- buttons as 40 dp Standard icon buttons centred in the 56 */
+spinbutton:not(#m3e) {
+  padding: 0 8px 0 16px; /* M3E-visual: 16 dp before the text, 8 dp after the last button ("trailing icon" layout) */
+  border-spacing: 0;
+}
+spinbutton:not(#m3e) > text,
+spinbutton:not(#m3e):not(.vertical) > text {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+spinbutton:not(#m3e) > button:not(#m3e),
+spinbutton:not(#m3e) > button:not(#m3e):hover,
+spinbutton:not(#m3e) > button:not(#m3e):active,
+spinbutton:not(#m3e):not(.vertical) > button:not(#m3e) {
+  margin: 8px 0; /* M3E-visual: (56 - 40) / 2 */
+  background-color: transparent;
+  color: var(--on_surface_variant);
+  box-shadow: none;
+}
+spinbutton:not(#m3e):disabled > button:not(#m3e),
+spinbutton:not(#m3e) > button:not(#m3e):disabled {
+  background-color: transparent;
+  color: alpha(var(--on_surface), 0.38); /* IconButton.DisabledOpacity */
+}
+/* Header bar (40 px): fields reduced to 32 dp, like the XSmall buttons */
+headerbar entry:not(#m3e),
+headerbar spinbutton:not(#m3e),
+headerbar dropdown:not(#m3e) > button:not(#m3e),
+headerbar combobox:not(#m3e) > box > button:not(#m3e) {
+  min-height: 32px; /* ButtonXSmall.ContainerHeight */
+  font-size: 14px; /* FilledTonalButton.LabelTextFont.size */
+}
+headerbar spinbutton:not(#m3e) > button:not(#m3e) {
+  margin: 0;
+}
+/* M3E search bar: surface_container_high pill, no indicator */
+entry:not(#m3e).search,
+searchentry:not(#m3e) {
+  border-radius: 9999px; /* M3E-visual: pill search bar ("search bar" component) */
+  background-color: var(--surface_container_high);
+  box-shadow: none;
+}
+entry:not(#m3e).search:focus-within,
+searchentry:not(#m3e):focus-within {
+  box-shadow: none;
+}

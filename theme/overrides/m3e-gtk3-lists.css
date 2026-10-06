@@ -1,0 +1,70 @@
+/* == lists == */
+/* Lists (GtkListBox): one-line item of 56 dp, 16 margins, on_surface label; selection in
+   secondary_container. Dense data views (listview, columnview) keep the theme. */
+list > row {
+  min-height: 56px; /* List.ItemOneLineContainerHeight */
+  padding: 0 16px 0 16px; /* List.ItemTrailingSpace List.ItemLeadingSpace */
+  color: @on_surface;
+  outline: none;
+}
+list > row.activatable:hover {
+  background-color: alpha(@on_surface, 0.08); /* State.HoverStateLayerOpacity */
+}
+list > row.activatable:active {
+  background-color: alpha(@on_surface, 0.1); /* State.PressedStateLayerOpacity */
+}
+list > row:selected {
+  border-radius: 16px; /* List.ItemSelectedContainerExpressiveShape */
+  background-color: @secondary_container;
+  color: @on_secondary_container;
+}
+list > row label {
+  color: inherit;
+}
+list > row label.subtitle,
+list > row .dim-label {
+  color: @on_surface_variant;
+  opacity: 1;
+}
+/* Boxed lists (libhandy): Expressive segmented list in the style of SettingsLib (Pixel Settings app):
+   separate cards 2 dp apart, 16 dp corners at the ends of the group (SettingsLib's 20 dp x 56 / 72, see
+   m3e-gtk4.css) and 4 dp at the joints; surface_bright on the surface_container settings page, surface_container
+   elsewhere (surface_bright = surface in light mode). Input rows remain fields. */
+list.boxed-list {
+  border: none;
+  border-radius: 16px; /* List.ContainerShape */
+  background: none;
+  box-shadow: none;
+}
+list.boxed-list > row:not(.entry) {
+  margin-bottom: 2px; /* M3E-visual: 2 dp between the items of a segmented list (SettingsLib: 2 dp) */
+  border: none;
+  border-radius: 4px; /* List.ItemContainerExpressiveShape */
+  background-color: @surface_container;
+}
+list.boxed-list > row:not(.entry):first-child {
+  border-top-left-radius: 16px; /* List.ContainerShape */
+  border-top-right-radius: 16px; /* List.ContainerShape */
+}
+list.boxed-list > row:not(.entry):last-child {
+  margin-bottom: 0;
+  border-bottom-left-radius: 16px; /* List.ContainerShape */
+  border-bottom-right-radius: 16px; /* List.ContainerShape */
+}
+list.boxed-list > row:not(.entry).activatable:hover {
+  background-color: @surface_container;
+  background-image: image(alpha(@on_surface, 0.08)); /* State.HoverStateLayerOpacity */
+}
+list.boxed-list > row:not(.entry).activatable:active {
+  background-color: @surface_container;
+  background-image: image(alpha(@on_surface, 0.1)); /* State.PressedStateLayerOpacity */
+}
+/* Settings page (HdyPreferencesPage): surface_container, like the Pixel Settings page. */
+preferencespage {
+  background-color: @surface_container;
+}
+preferencespage list.boxed-list > row:not(.entry),
+preferencespage list.boxed-list > row:not(.entry).activatable:hover,
+preferencespage list.boxed-list > row:not(.entry).activatable:active {
+  background-color: @surface_bright;
+}

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Report the family when the font file is installed in the (temporary) HOME.
+for f in "$HOME"/.local/share/fonts/GoogleSansFlex/*.ttf; do
+    [ -e "$f" ] && echo "$f: Google Sans Flex:style=Regular"
+done
+exit 0

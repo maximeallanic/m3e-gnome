@@ -1,0 +1,124 @@
+/* == cross-cutting == */
+/* Lists (GtkListBox): 56 dp one-line item, 16 margins, on_surface label; selection in
+   secondary_container. Dense data views (listview, columnview) keep the theme. */
+list:not(#m3e) > row:not(#m3e) {
+  min-height: 56px; /* List.ItemOneLineContainerHeight */
+  padding: 0 16px 0 16px; /* List.ItemTrailingSpace List.ItemLeadingSpace */
+  color: var(--on_surface);
+  outline: none;
+}
+list:not(#m3e) > row:not(#m3e).activatable:hover {
+  background-color: alpha(var(--on_surface), 0.08); /* State.HoverStateLayerOpacity */
+}
+list:not(#m3e) > row:not(#m3e).activatable:active {
+  background-color: alpha(var(--on_surface), 0.1); /* State.PressedStateLayerOpacity */
+}
+list:not(#m3e) > row:not(#m3e):selected {
+  border-radius: 16px; /* List.ItemSelectedContainerExpressiveShape */
+  background-color: var(--secondary_container);
+  color: var(--on_secondary_container);
+}
+list:not(#m3e) > row:not(#m3e) label {
+  color: inherit;
+}
+list:not(#m3e) > row:not(#m3e) label.subtitle,
+list:not(#m3e) > row:not(#m3e) .dim-label {
+  color: var(--on_surface_variant);
+  opacity: 1;
+}
+/* Boxed lists (libadwaita): Expressive segmented list in the SettingsLib style (Pixel Settings app):
+   separate cards 2 dp apart, 16 dp corners at the ends of the group and 4 dp at the joins. Card colour depends on
+   the page: surface_bright on the surface_container settings page (like the Pixel); elsewhere (surface window)
+   surface_container, because surface_bright = surface in light mode (tone 98) and the card would disappear. SettingsLib uses
+   20 dp on 72 dp rows; our rows are 56 px (List.ItemOneLineContainerHeight), hence 20 x 56 / 72 = 16
+   (the "Android proportions, desktop density" rule of the project docs), which is also List.ContainerShape.
+   Entry rows (AdwEntryRow) stay fields. */
+list.boxed-list:not(#m3e) {
+  border: none;
+  border-radius: 16px; /* List.ContainerShape */
+  background: none;
+  box-shadow: none;
+}
+list.boxed-list:not(#m3e) > row:not(#m3e):not(.entry) {
+  margin-bottom: 2px; /* M3E-visual: 2 dp between the items of a segmented list (SettingsLib: 2 dp) */
+  border: none;
+  border-radius: 4px; /* List.ItemContainerExpressiveShape */
+  background-color: var(--surface_container);
+}
+list.boxed-list:not(#m3e) > row:not(#m3e):not(.entry):first-child {
+  border-top-left-radius: 16px; /* List.ContainerShape */
+  border-top-right-radius: 16px; /* List.ContainerShape */
+}
+list.boxed-list:not(#m3e) > row:not(#m3e):not(.entry):last-child {
+  margin-bottom: 0;
+  border-bottom-left-radius: 16px; /* List.ContainerShape */
+  border-bottom-right-radius: 16px; /* List.ContainerShape */
+}
+/* State layer placed on the card (the card colour stays as background colour: the layer colour alone, as
+   background colour, made the card translucent over the page). */
+list.boxed-list:not(#m3e) > row:not(#m3e):not(.entry).activatable:hover {
+  background-color: var(--surface_container);
+  background-image: image(alpha(var(--on_surface), 0.08)); /* State.HoverStateLayerOpacity */
+}
+list.boxed-list:not(#m3e) > row:not(#m3e):not(.entry).activatable:active {
+  background-color: var(--surface_container);
+  background-image: image(alpha(var(--on_surface), 0.1)); /* State.PressedStateLayerOpacity */
+}
+/* Settings page (AdwPreferencesPage: Settings, preferences dialogs): surface_container and surface_bright
+   cards, like the Pixel Settings app; Material-Gnome painted the central column (clamp) with
+   background, hence a stripe. The header bar above keeps the window colour (GTK has no :has()
+   to tint it according to the page it sits over). */
+preferencespage:not(#m3e) {
+  background-color: var(--surface_container);
+}
+preferencespage:not(#m3e) list.boxed-list:not(#m3e) > row:not(#m3e):not(.entry),
+preferencespage:not(#m3e) list.boxed-list:not(#m3e) > row:not(#m3e):not(.entry).activatable:hover,
+preferencespage:not(#m3e) list.boxed-list:not(#m3e) > row:not(#m3e):not(.entry).activatable:active {
+  background-color: var(--surface_bright);
+}
+preferencespage:not(#m3e) > scrolledwindow > viewport > clamp {
+  background-color: transparent;
+}
+/* Column headers (columnview, Files list view): text without a container, like the headers of an M3
+   table (no button component): Label medium label in on_surface_variant, state layer on hover and press
+   only, sort order shown by the arrow. Without this rule, the "Filled tonal" button base made them
+   full pills, down to an empty pill above the star column. */
+columnview:not(#m3e) > header > button:not(#m3e),
+columnview:not(#m3e) > header > button:not(#m3e):hover,
+columnview:not(#m3e) > header > button:not(#m3e):active,
+columnview:not(#m3e) > header > button:not(#m3e):focus {
+  min-height: 0;
+  padding: 2px 6px 2px 6px; /* M3E-visual: Material-Gnome margins, dense data view */
+  border-radius: 0;
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  color: var(--on_surface_variant);
+  font-size: 12px; /* TypeScale.LabelMediumSize */
+}
+columnview:not(#m3e) > header > button:not(#m3e):hover {
+  background-image: image(alpha(var(--on_surface), 0.08)); /* State.HoverStateLayerOpacity */
+}
+columnview:not(#m3e) > header > button:not(#m3e):active {
+  background-image: image(alpha(var(--on_surface), 0.1)); /* State.PressedStateLayerOpacity */
+}
+/* Calculator: the display rests on the surface of its card. The theme gave its two text areas
+   (input and info line, class .view) a surface_container_low background with sharp corners inside the card, and the
+   clear button stayed on a square of a different tint. */
+mathdisplay:not(#m3e) textview:not(#m3e),
+mathdisplay:not(#m3e) textview:not(#m3e) > text {
+  background-color: transparent;
+}
+
+/* Hover, focus, press of a view item (Files icons, activatable rows): only the background carries the state (state
+   layer), the text keeps its colour. The theme turned the name primary. The selection keeps its colour. */
+.nautilus-window:not(#m3e) .nautilus-grid-view child.activatable:not(:selected):hover,
+.nautilus-window:not(#m3e) .nautilus-grid-view child.activatable:not(:selected):focus,
+.nautilus-window:not(#m3e) .nautilus-grid-view child.activatable:not(:selected):active,
+.nautilus-window:not(#m3e) .nautilus-grid-view child.activatable.has-open-popup:not(:selected),
+row.activatable:not(#m3e):not(:selected):hover,
+row.activatable:not(#m3e):not(:selected):focus,
+row.activatable:not(#m3e):not(:selected):active,
+row.activatable.has-open-popup:not(#m3e):not(:selected) {
+  color: inherit;
+}

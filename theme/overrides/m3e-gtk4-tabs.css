@@ -1,0 +1,182 @@
+/* == tabs-navigation == */
+/* Primary tabs: 48 dp, active label primary and a 3 dp indicator under the content, inactive ones
+   on_surface_variant, 1 dp divider at the bottom (outline_variant). Same style for GtkStackSwitcher and
+   AdwViewSwitcher (view switchers). The indicator is a solid gradient as wide as the content. */
+notebook:not(#m3e),
+notebook:not(#m3e).frame {
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  background-color: var(--surface);
+}
+stackswitcher:not(#m3e),
+viewswitcher:not(#m3e) {
+  padding: 0;
+  border: none;
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  background: none;
+  box-shadow: inset 0 -1px var(--outline_variant); /* M3E-visual: 1 dp divider under the tabs */
+}
+notebook:not(#m3e) > header {
+  margin: 0;
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  padding: 0;
+  border: none;
+  background-color: var(--surface);
+  box-shadow: inset 0 -1px var(--outline_variant); /* M3E-visual: 1 dp divider ("6 elements of primary tabs" image) */
+}
+notebook:not(#m3e) > header > tabs > tab,
+stackswitcher:not(#m3e) > button:not(#m3e),
+viewswitcher:not(#m3e) > button:not(#m3e) {
+  min-height: 48px; /* PrimaryNavigationTab.ContainerHeight */
+  padding: 0 16px 0 16px; /* M3E-visual: 16 dp margins ("measurements for four and two tabs" image) */
+  margin: 0;
+  border: none;
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  outline: none;
+  background-color: transparent;
+  background-image: none;
+  color: var(--on_surface_variant);
+  box-shadow: none;
+  animation: none;
+}
+notebook:not(#m3e) > header > tabs > tab:hover,
+stackswitcher:not(#m3e) > button:not(#m3e):hover,
+viewswitcher:not(#m3e) > button:not(#m3e):hover {
+  background-color: alpha(var(--on_surface), 0.08); /* State.HoverStateLayerOpacity */
+  color: var(--on_surface);
+}
+notebook:not(#m3e) > header > tabs > tab:active,
+stackswitcher:not(#m3e) > button:not(#m3e):active,
+viewswitcher:not(#m3e) > button:not(#m3e):active {
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  background-color: alpha(var(--on_surface), 0.1); /* State.PressedStateLayerOpacity */
+  color: var(--on_surface);
+}
+notebook:not(#m3e) > header > tabs > tab:checked,
+notebook:not(#m3e) > header > tabs > tab:selected,
+stackswitcher:not(#m3e) > button:not(#m3e):checked,
+viewswitcher:not(#m3e) > button:not(#m3e):checked {
+  border-radius: 0; /* PrimaryNavigationTab.ContainerShape */
+  background-color: transparent;
+  background-image: linear-gradient(var(--primary), var(--primary));
+  background-size: calc(100% - 32px) 3px; /* M3E-visual: 3 dp indicator (PrimaryNavigationTab.ActiveIndicatorHeight) under the content (16 margins) */
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  color: var(--primary);
+}
+notebook:not(#m3e) > header > tabs > tab:checked:hover,
+stackswitcher:not(#m3e) > button:not(#m3e):checked:hover,
+viewswitcher:not(#m3e) > button:not(#m3e):checked:hover {
+  background-color: alpha(var(--primary), 0.08); /* State.HoverStateLayerOpacity */
+}
+notebook:not(#m3e) > header > tabs > tab label,
+stackswitcher:not(#m3e) > button:not(#m3e) label,
+stackswitcher:not(#m3e) > button:not(#m3e) image,
+viewswitcher:not(#m3e) > button:not(#m3e) label,
+viewswitcher:not(#m3e) > button:not(#m3e) image {
+  color: inherit;
+}
+notebook:not(#m3e) > header > tabs > tab:disabled,
+stackswitcher:not(#m3e) > button:not(#m3e):disabled {
+  background-color: transparent;
+  color: alpha(var(--on_surface), 0.38); /* FilledTextField.DisabledInputOpacity */
+}
+/* Inside a header bar (40 px): 32 dp */
+headerbar stackswitcher:not(#m3e) > button:not(#m3e),
+headerbar viewswitcher:not(#m3e) > button:not(#m3e) {
+  min-height: 32px; /* ButtonXSmall.ContainerHeight */
+}
+
+/* A tab's icon = the colour of its label (hover, active, disabled): the theme coloured the label and left
+   the icon at its own icon colour. */
+notebook:not(#m3e) > header > tabs > tab image,
+tabbar:not(#m3e) tab image,
+toggle-group:not(#m3e) > toggle image {
+  color: inherit;
+}
+
+/* Tab bar (AdwTabBar: Ptyxis, Files, Console...) in the style of browser tabs (a design choice, M3E
+   has no such component): tabs sit at the bottom of the bar, the active tab is a tab shape in the content colour
+   (surface) with rounded top corners, joined to the content by two concave fillets; the others are flat,
+   label on_surface_variant, on_surface tab shape at 8 / 10 % on hover / press. The bar carries the colour of
+   the title bar (Ptyxis: surface_container, "material" palette). Tab shape and fillets are drawn as the tab's
+   background (gradients): 8 px fillet on each side, included in its inner padding. */
+tabbar:not(#m3e) .box,
+toolbarview > .top-bar tabbar:not(#m3e) .box {
+  min-height: 0;
+  margin: 0;
+  padding: 0 8px; /* M3E-visual: margin between the tabs and the bar edges, like the title bar (headerbar 0 10 px minus the fillet) */
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+tabbar:not(#m3e) tabbox,
+toolbarview > .top-bar tabbar:not(#m3e) tabbox {
+  min-height: 0;
+  padding: 6px 0 0 0; /* M3E-visual: tabs flush with the bottom of the bar (the active tab joins the content), 6 dp above */
+}
+tabbar:not(#m3e) tabbox > tabboxchild,
+tabbar:not(#m3e) scrolledwindow tabbox > tabboxchild {
+  margin: 0; /* M3E-visual: the theme set -2 px (negative minimum width reported by GTK); the fillets are inside the tab */
+  border-radius: 10px 10px 0 0; /* M3E-visual: focus ring at the corners of the tab shape */
+}
+tabbar:not(#m3e) tab,
+tabbar:not(#m3e) tabbox > tabboxchild > tab {
+  min-height: 34px; /* M3E-visual: 34 dp tab shape (40 dp bar minus 6 above) */
+  margin: 0;
+  padding: 0 14px; /* M3E-visual: 8 dp fillet + 6 dp before the icon and after the close button */
+  border: none;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+  /* M3E-visual: all tab shapes have the same stack of 6 images (2 top corners, top strip, body, 2 bottom fillets), with fixed sizes and
+     positions, only the colours change: GTK only transitions a background image if both stacks
+     have the same number of layers; otherwise switching tabs was instantaneous. Tab shape with 10 dp top corners,
+     inset by the 8 dp fillet. */
+  background-image: radial-gradient(circle 10px at 100% 100%, alpha(var(--on_surface), 0) 9.5px, alpha(alpha(var(--on_surface), 0), 0) 10px), radial-gradient(circle 10px at 0 100%, alpha(var(--on_surface), 0) 9.5px, alpha(alpha(var(--on_surface), 0), 0) 10px), image(alpha(var(--on_surface), 0)), image(alpha(var(--on_surface), 0)), radial-gradient(circle 8px at 0 0, alpha(var(--surface), 0) 7.5px, alpha(var(--surface), 0) 8px), radial-gradient(circle 8px at 100% 0, alpha(var(--surface), 0) 7.5px, alpha(var(--surface), 0) 8px); /* M3E-visual: tab shape stack, 10 dp top corners (radial gradients, 9.5 px = anti-aliasing edge), 8 dp fillets */
+  background-size: 10px 10px, 10px 10px, calc(100% - 36px) 10px, calc(100% - 16px) calc(100% - 10px), 8px 8px, 8px 8px; /* M3E-visual: sizes of the same 6 layers: 10 dp corners, 8 dp fillets, 36 = 2 x (10 dp corner - 2 dp inset), 16 = 2 x 8 dp fillet */
+  background-position: 8px 0, calc(100% - 8px) 0, center top, center bottom, left bottom, right bottom; /* M3E-visual: positions of the same 6 layers: corners inset by the 8 dp fillet */
+  background-repeat: no-repeat;
+  color: var(--on_surface_variant);
+  animation: none;
+}
+tabbar:not(#m3e) tab:hover {
+  background-image: radial-gradient(circle 10px at 100% 100%, alpha(var(--on_surface), 0.08) 9.5px, alpha(alpha(var(--on_surface), 0.08), 0) 10px), radial-gradient(circle 10px at 0 100%, alpha(var(--on_surface), 0.08) 9.5px, alpha(alpha(var(--on_surface), 0.08), 0) 10px), image(alpha(var(--on_surface), 0.08)), image(alpha(var(--on_surface), 0.08)), radial-gradient(circle 8px at 0 0, alpha(var(--surface), 0) 7.5px, alpha(var(--surface), 0) 8px), radial-gradient(circle 8px at 100% 0, alpha(var(--surface), 0) 7.5px, alpha(var(--surface), 0) 8px); /* M3E-visual: the same tab shape stack, gradient radii are not tokens; opacity token pinned: State.HoverStateLayerOpacity@0.08 */
+  color: var(--on_surface);
+}
+tabbar:not(#m3e) tab:active {
+  background-image: radial-gradient(circle 10px at 100% 100%, alpha(var(--on_surface), 0.1) 9.5px, alpha(alpha(var(--on_surface), 0.1), 0) 10px), radial-gradient(circle 10px at 0 100%, alpha(var(--on_surface), 0.1) 9.5px, alpha(alpha(var(--on_surface), 0.1), 0) 10px), image(alpha(var(--on_surface), 0.1)), image(alpha(var(--on_surface), 0.1)), radial-gradient(circle 8px at 0 0, alpha(var(--surface), 0) 7.5px, alpha(var(--surface), 0) 8px), radial-gradient(circle 8px at 100% 0, alpha(var(--surface), 0) 7.5px, alpha(var(--surface), 0) 8px); /* M3E-visual: the same tab shape stack, gradient radii are not tokens; opacity token pinned: State.PressedStateLayerOpacity@0.1 */
+  color: var(--on_surface);
+}
+tabbar:not(#m3e) tab:selected,
+tabbar:not(#m3e) tab:checked,
+tabbar:not(#m3e) tab:selected:hover,
+tabbar:not(#m3e) tab:selected:active {
+  background-image: radial-gradient(circle 10px at 100% 100%, var(--surface) 9.5px, alpha(var(--surface), 0) 10px), radial-gradient(circle 10px at 0 100%, var(--surface) 9.5px, alpha(var(--surface), 0) 10px), image(var(--surface)), image(var(--surface)), radial-gradient(circle 8px at 0 0, alpha(var(--surface), 0) 7.5px, var(--surface) 8px), radial-gradient(circle 8px at 100% 0, alpha(var(--surface), 0) 7.5px, var(--surface) 8px); /* M3E-visual: surface tab shape and 8 dp concave fillets at the bottom */
+  color: var(--on_surface);
+}
+tabbar:not(#m3e) tab:disabled {
+  color: alpha(var(--on_surface), 0.38); /* FilledTextField.DisabledInputOpacity */
+}
+tabbar:not(#m3e) tabbox > separator {
+  margin: 14px 0 8px 0; /* M3E-visual: separator as tall as the label, between two inactive tab shapes */
+  min-width: 1px; /* M3E-visual: 1 dp line */
+  background-color: var(--outline_variant);
+}
+/* Files (and other libadwaita windows besides Ptyxis): the tab bar rests on the window background (surface), like the active tab shape: the active tab
+   did not stand out. Bar in surface_container_high, active tab shape in surface_container_low =
+   background of the file list, which it joins. */
+window:not(.ptyxis-window):not(#m3e) tabbar:not(#m3e) {
+  background-color: var(--surface_container_high); /* M3E-visual: bar darker than the content to set the tab shape apart */
+}
+window:not(.ptyxis-window):not(#m3e) tabbar:not(#m3e) tab:selected,
+window:not(.ptyxis-window):not(#m3e) tabbar:not(#m3e) tab:checked {
+  --surface: var(--surface_container_low);
+}
+/* Ptyxis: no shadow under the header bar when the tab bar is shown (the active tab shape joins
+   the terminal). */
+window.has-tab-bar:not(#m3e) toolbarview > revealer.top-bar,
+window.has-tab-bar:not(#m3e) toolbarview > revealer.top-bar.raised {
+  box-shadow: none;
+}
