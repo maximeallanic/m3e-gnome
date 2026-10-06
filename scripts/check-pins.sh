@@ -19,13 +19,15 @@ esac
 
 tmp="$(mktemp -d)"
 trap 'rm -rf -- "$tmp"' EXIT
-git init -q -- "$tmp/repo"
 status=0
 for n in "${names[@]}"; do
     url_var="${n}_URL"; rev_var="${n}_REV"
     url="${!url_var}"; rev="${!rev_var}"
     if [[ ! "$rev" =~ ^[0-9a-f]{40}$ ]]; then echo "FAIL  $n: '$rev' is not a full 40-hex commit"; status=1; continue; fi
-    if err=$(git -C "$tmp/repo" fetch -q --depth 1 -- "$url" "$rev" 2>&1); then echo "ok    $n @ ${rev:0:12} ($url)"
+    # One fresh repository per pin: successive shallow fetches into the same one can fail with "shallow file has
+    # changed since we read it" (git compares timestamps with a one-second granularity).
+    git init -q -- "$tmp/$n"
+    if err=$(git -C "$tmp/$n" fetch -q --depth 1 -- "$url" "$rev" 2>&1); then echo "ok    $n @ ${rev:0:12} ($url)"
     else echo "FAIL  $n: cannot fetch $rev from $url"; printf '      %s\n' "$err"; status=1; fi
 done
 exit "$status"
