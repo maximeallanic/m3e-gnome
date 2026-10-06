@@ -171,7 +171,9 @@ cmd_restore() {
         ((REMOVE_HELPER)) && remove_helper
         return 0
     fi
-    mech_detect "$([[ -f "$STATE/mech" ]] && cat "$STATE/mech" || true)"
+    local recorded_mech=''
+    if [[ -f "$STATE/mech" ]]; then recorded_mech=$(cat "$STATE/mech"); fi
+    mech_detect "$recorded_mech"
     mech_remove
     local lines=() line kind a b c d e dirs=()
     mapfile -t lines < <(tac -- "$STATE/manifest")

@@ -155,9 +155,14 @@ mkdir -p "$T_ROOT/fakeid"
 HELPER_SRC="$GDM_SRC/m3e-gdm"
 # "Really root" is emulated with fakeroot (bash's own $EUID is 0 under it; files keep their real owner, which is not root).
 if command -v fakeroot >/dev/null 2>&1; then
-    out="$(M3E_GDM_TEST=1 M3E_GDM_ROOT="$GR" fakeroot -- bash "$HELPER_SRC" status 2>&1)"; rc=$?
-    check "as root, the helper refuses to run from a directory that root does not own" test "$rc" -ne 0
-    check "…naming the ownership rule" grep -q 'owned by root' <<<"$out"
+    # A copy with a group-writable file, whatever the umask of the machine running the test (fakeroot reports every
+    # file as root-owned, so the writable bit is what the helper can refuse on).
+    cp -r "$GDM_SRC" "$T_ROOT/helper-gw"
+    chmod -R go-w "$T_ROOT/helper-gw"
+    chmod g+w "$T_ROOT/helper-gw/cmd.sh"
+    out="$(M3E_GDM_TEST=1 M3E_GDM_ROOT="$GR" fakeroot -- bash "$T_ROOT/helper-gw/m3e-gdm" status 2>&1)"; rc=$?
+    check "as root, the helper refuses to run from a directory with a group-writable file" test "$rc" -ne 0
+    check "…naming the ownership rule" grep -q 'owned by root and not group/world-writable' <<<"$out"
 else
     echo "  skipped: fakeroot not installed"
 fi
