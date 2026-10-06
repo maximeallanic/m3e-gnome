@@ -73,7 +73,7 @@ common_checks debian
 resource_checks "$(LIVE)" debian
 check "[debian] the stock file is kept as .distrib" bash -c "gresource extract '$GR/usr/share/gnome-shell/gnome-shell-theme.gresource.distrib' /org/gnome/shell/theme/gnome-shell-dark.css | grep -q 'stock dark v1'"
 check "[debian] dpkg-divert lists our diversion" bash -c "dpkg-divert --admindir '$GR/var/lib/dpkg' --instdir '$GR' --listpackage /usr/share/gnome-shell/gnome-shell-theme.gresource | grep -qx m3e-gnome"
-check "[debian] apt hook installed" grep -q 'm3e-gdm refresh' "$GR/etc/apt/apt.conf.d/99m3e-gdm"
+check "[debian] apt hook calls the helper directly, not the (staff-writable) sbin link" grep -q "/usr/local/libexec/m3e-gnome/gdm/m3e-gdm refresh" "$GR/etc/apt/apt.conf.d/99m3e-gdm"
 check "[debian] mechanism recorded" grep -qx divert "$GR/var/lib/m3e-gnome/gdm/mech"
 snap >"$T_ROOT/applied-debian.snap"
 
@@ -192,13 +192,13 @@ done
 new_system arch
 arch_stock="$(sha256sum "$(LIVE)" | cut -d' ' -f1)"
 gdm_ok apply --from "$T_ROOT/data"
-check "[arch] pacman hook targets gnome-shell and runs refresh PostTransaction" bash -c "grep -q 'Target = gnome-shell' '$GR/etc/pacman.d/hooks/m3e-gdm.hook' && grep -q 'When = PostTransaction' '$GR/etc/pacman.d/hooks/m3e-gdm.hook' && grep -q 'Exec = /usr/local/sbin/m3e-gdm refresh' '$GR/etc/pacman.d/hooks/m3e-gdm.hook'"
+check "[arch] pacman hook targets gnome-shell and runs refresh PostTransaction" bash -c "grep -q 'Target = gnome-shell' '$GR/etc/pacman.d/hooks/m3e-gdm.hook' && grep -q 'When = PostTransaction' '$GR/etc/pacman.d/hooks/m3e-gdm.hook' && grep -q 'Exec = /usr/local/libexec/m3e-gnome/gdm/m3e-gdm refresh' '$GR/etc/pacman.d/hooks/m3e-gdm.hook'"
 gdm_ok restore --remove-helper
 check "[arch] restore without an update puts the exact stock bytes back" test "$(sha256sum "$(LIVE)" | cut -d' ' -f1)" = "$arch_stock"
 new_system fedora
 gdm_ok apply --from "$T_ROOT/data"
-check "[fedora] DNF 4 action file" grep -qx 'gnome-shell:in:/usr/local/sbin/m3e-gdm refresh --quiet' "$GR/etc/dnf/plugins/post-transaction-actions.d/m3e-gdm.action"
-check "[fedora] DNF 5 actions file" grep -qx 'post_transaction:gnome-shell:in::/usr/local/sbin/m3e-gdm refresh --quiet' "$GR/etc/dnf/libdnf5-plugins/actions.d/m3e-gdm.actions"
+check "[fedora] DNF 4 action file" grep -qx 'gnome-shell:in:/usr/local/libexec/m3e-gnome/gdm/m3e-gdm refresh --quiet' "$GR/etc/dnf/plugins/post-transaction-actions.d/m3e-gdm.action"
+check "[fedora] DNF 5 actions file" grep -qx 'post_transaction:gnome-shell:in::/usr/local/libexec/m3e-gnome/gdm/m3e-gdm refresh --quiet' "$GR/etc/dnf/libdnf5-plugins/actions.d/m3e-gdm.actions"
 gdm_ok restore --remove-helper
 
 echo "== a pre-existing /etc/dconf/profile/gdm is kept and restored"

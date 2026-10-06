@@ -17,29 +17,35 @@ DRY_RUN=0
 FORCE=0
 QUIET=0
 ROOT=''
-STRICT_OWNER=1
 
 say() { ((QUIET)) || printf 'm3e-gdm: %s\n' "$*"; }
 warn() { printf 'm3e-gdm: warning: %s\n' "$*" >&2; }
 die() { printf 'm3e-gdm: error: %s\n' "$*" >&2; exit 1; }
 
+# The environment of every program root spawns: PATH and the C locale, nothing else. Library, module, schema and
+# configuration search paths of glib, gdk-pixbuf, fontconfig, python, dpkg, dconf ... all come from the caller otherwise.
+sanitize_env() {
+    local v f
+    for v in $(compgen -e); do
+        case "$v" in PATH|LC_ALL|LANGUAGE|PWD|OLDPWD|SHLVL|_|UID|EUID|PPID|BASHOPTS|SHELLOPTS) ;; *) unset -v "$v" ;; esac
+    done
+    for f in $(declare -Fx | awk '{print $3}'); do unset -f "$f"; done
+    export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+    export LC_ALL=C LANGUAGE=C
+}
+
 # Environment. As root nothing from the caller's environment is trusted and the test hooks are refused outright;
 # the ONLY way to redirect the helper is M3E_GDM_ROOT together with M3E_GDM_TEST=1, and only when not root.
 harden_env() {
-    export LC_ALL=C LANGUAGE=C
     umask 022
-    if [[ "$(id -u)" == 0 ]]; then
+    if ((EUID == 0)); then
         if [[ -n "${M3E_GDM_TEST:-}" || -n "${M3E_GDM_ROOT:-}" ]]; then
             printf 'm3e-gdm: error: M3E_GDM_TEST / M3E_GDM_ROOT are test hooks and are refused when running as root\n' >&2
             exit 1
         fi
-        export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-        unset TMPDIR BASH_ENV ENV CDPATH GLOBIGNORE LD_PRELOAD LD_LIBRARY_PATH LD_AUDIT PYTHONPATH PYTHONHOME PYTHONSTARTUP \
-            PYTHONUSERBASE PYTHONINSPECT DPKG_ADMINDIR DPKG_ROOT GSETTINGS_BACKEND DCONF_PROFILE XDG_DATA_DIRS \
-            XDG_CONFIG_DIRS XDG_CONFIG_HOME XDG_DATA_HOME XDG_CACHE_HOME HOME_OVERRIDE
-        STRICT_OWNER=1
+        sanitize_env
     else
-        STRICT_OWNER=0
+        export LC_ALL=C LANGUAGE=C
         if [[ -n "${M3E_GDM_ROOT:-}" ]]; then
             [[ "${M3E_GDM_TEST:-}" == 1 ]] || die "M3E_GDM_ROOT needs M3E_GDM_TEST=1"
             [[ "$M3E_GDM_ROOT" == /* && "$M3E_GDM_ROOT" != / && -d "$M3E_GDM_ROOT" ]] ||

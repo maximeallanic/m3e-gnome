@@ -3,7 +3,8 @@
 # runs `m3e-gdm refresh` as root. The hook files are static text; they contain no path from the user's home.
 # Requires common.sh. Status per family is in docs/gdm.md (Debian/Ubuntu verified here; the rest untested).
 
-HOOK_CMD=/usr/local/sbin/m3e-gdm
+# The helper itself, not the /usr/local/sbin link: on Debian /usr/local/sbin is group-writable (root:staff 2775).
+HOOK_CMD=/usr/local/libexec/m3e-gnome/gdm/m3e-gdm
 
 hook_apt() {
     put_text /etc/apt/apt.conf.d/99m3e-gdm 644 <<EOT

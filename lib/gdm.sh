@@ -12,8 +12,9 @@ GDM_FORCE=0
 GDM_SUDO=(sudo)
 GDM_OWN=(-o root -g root)
 GDM_DEST_ROOT=''
+GDM_RUN=()   # the helper starts with an empty environment through its shebang; the test seam needs its variables
 if [[ "${M3E_GDM_TEST:-}" == 1 && "$(id -u)" != 0 && -n "${M3E_GDM_ROOT:-}" ]]; then
-    GDM_SUDO=(); GDM_OWN=(); GDM_DEST_ROOT="${M3E_GDM_ROOT%/}"
+    GDM_SUDO=(); GDM_OWN=(); GDM_RUN=(bash); GDM_DEST_ROOT="${M3E_GDM_ROOT%/}"
 fi
 
 gdm_helper_cmd() { printf '%s' "$GDM_DEST_ROOT$GDM_LIBEXEC/m3e-gdm"; }
@@ -23,6 +24,22 @@ gdm_require_user() {
     ((${#GDM_SUDO[@]} == 0)) || have sudo || die "sudo is required for the GDM step"
 }
 
+# Every existing ancestor of the destination must be owned by root (uid $2) and not group/world-writable: whoever can
+# write one can replace the helper directory later. $3 (tests only) is where the walk stops.
+gdm_ancestors_ok() { # path want-uid [stop-dir]
+    local d="$1" want="${2:-0}" stop="${3:-/}" own mode
+    while [[ ! -d "$d" ]]; do d="$(dirname -- "$d")"; done
+    while :; do
+        own="$(stat -c '%u' -- "$d")"; mode="$(stat -c '%a' -- "$d")"
+        if [[ "$own" != "$want" || $((8#$mode & 8#022)) != 0 ]]; then
+            msg_warn "$d must be owned by root and not group/world-writable (is uid $own, mode $mode): refusing to install the root helper below it"
+            return 1
+        fi
+        [[ "$d" == "$stop" || "$d" == / ]] && return 0
+        d="$(dirname -- "$d")"
+    done
+}
+
 # The helper files go into a root-owned directory, copied from this checkout by `install` (root only reads them).
 gdm_install_helper() {
     local f dest="$GDM_DEST_ROOT$GDM_LIBEXEC" mode p created=() list
@@ -30,6 +47,7 @@ gdm_install_helper() {
     for p in /usr/local /usr/local/libexec /usr/local/libexec/m3e-gnome /usr/local/sbin; do
         [[ -d "$GDM_DEST_ROOT$p" ]] || created+=("$p")
     done
+    if ((${#GDM_SUDO[@]})); then gdm_ancestors_ok "$dest" 0 || die "unsafe directory above $GDM_LIBEXEC"; fi
     run "${GDM_SUDO[@]}" install -d -m 0755 "${GDM_OWN[@]}" -- "$dest"
     for f in "${GDM_FILES[@]}"; do
         mode=0644; [[ "$f" == m3e-gdm ]] && mode=0755
@@ -69,13 +87,13 @@ step_gdm() {
     make_tmp; data="$REPLY/data"
     gdm_prepare "$data"
     msg_info "plan (computed by the helper in dry-run mode, as your user, nothing is changed yet):"
-    local plan=("$REPO_ROOT/gdm/m3e-gdm" apply --from "$data" --dry-run)
+    local plan=("${GDM_RUN[@]}" "$REPO_ROOT/gdm/m3e-gdm" apply --from "$data" --dry-run)
     ((GDM_FORCE)) && plan+=(--force)
     "${plan[@]}" || die "the helper refused the plan (see above)"
     if ((DRY_RUN)); then msg_info "dry run: no sudo command was run"; return 0; fi
     confirm "Apply this plan with sudo?" || die "aborted (use --yes to skip this question)"
     gdm_install_helper
-    local apply=("${GDM_SUDO[@]}" "$(gdm_helper_cmd)" apply --from "$data")
+    local apply=("${GDM_SUDO[@]}" "${GDM_RUN[@]}" "$(gdm_helper_cmd)" apply --from "$data")
     ((GDM_FORCE)) && apply+=(--force)
     "${apply[@]}" || die "the GDM step failed; nothing is half-applied that 'sudo m3e-gdm restore' cannot undo"
     msg_info "Login screen themed. It changes at the next boot or after 'sudo systemctl restart gdm' (that ends your session: save your work)."
@@ -92,8 +110,8 @@ gdm_uninstall() {
     local cmd
     cmd="$(gdm_helper_cmd)"
     [[ -x "$cmd" ]] || die "$cmd is missing: reinstall the helper with ./install.sh --gdm-only, or reinstall gnome-shell to get the stock resource back (docs/gdm.md)"
-    "$cmd" restore --dry-run || die "the helper could not plan the restore"
+    "${GDM_RUN[@]}" "$cmd" restore --dry-run || die "the helper could not plan the restore"
     if ((DRY_RUN)); then return 0; fi
     confirm "Revert the GDM theming with sudo?" || die "aborted (use --yes to skip this question)"
-    "${GDM_SUDO[@]}" "$cmd" restore --remove-helper
+    "${GDM_SUDO[@]}" "${GDM_RUN[@]}" "$cmd" restore --remove-helper
 }

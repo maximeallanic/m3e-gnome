@@ -6,6 +6,7 @@
 GDM_SRC="$REPO/gdm"
 
 gdm_setup() {
+    umask 022   # fixtures must look like a real root: no group-writable directories
     T_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/m3e-test.XXXXXX")"
     export T_ROOT NO_COLOR=1 TMPDIR="$T_ROOT/tmp"
     mkdir -p "$TMPDIR" "$T_ROOT/bin"
@@ -35,7 +36,8 @@ gdm_make_stock() { # out-file tag
 
 # gdm_make_root DIR family(debian|ubuntu|arch|fedora)
 gdm_make_root() {
-    local r="$1" family="$2"
+    local r="$1" family="$2" um
+    um="$(umask)"; umask 022   # a real root has no group-writable directories
     mkdir -p "$r"/usr/share/gnome-shell "$r"/etc "$r"/usr/lib/systemd/system "$r"/usr/share/dconf/profile "$r"/usr/local \
         "$r"/var/lib/dpkg/updates "$r"/var/lib/dpkg/alternatives "$r"/etc/alternatives "$r"/etc/dconf/db
     : >"$r/usr/lib/systemd/system/gdm.service"
@@ -57,6 +59,7 @@ gdm_make_root() {
         fedora) printf 'ID=fedora\n' >"$r/etc/os-release"; mkdir -p "$r/etc/dnf/plugins/post-transaction-actions.d" "$r/etc/dnf/libdnf5-plugins/actions.d"
             gdm_make_stock "$r/usr/share/gnome-shell/gnome-shell-theme.gresource" v1 ;;
     esac
+    umask "$um"
 }
 
 # A PNG of the given size written with the standard library (rows of one colour).
@@ -109,7 +112,7 @@ gdm_install_helper_into() { # root
 
 # Run the installed helper against the fake root.
 GR=''
-gdm_run() { M3E_GDM_TEST=1 M3E_GDM_ROOT="$GR" "$GR/usr/local/libexec/m3e-gnome/gdm/m3e-gdm" "$@"; }
+gdm_run() { M3E_GDM_TEST=1 M3E_GDM_ROOT="$GR" bash "$GR/usr/local/libexec/m3e-gnome/gdm/m3e-gdm" "$@"; }
 
 # gdm_ok ARGS... : run the helper, assert exit status 0 AND a message (an assertion on silence would be vacuous). The
 # output is left in $GDM_OUT for further checks.

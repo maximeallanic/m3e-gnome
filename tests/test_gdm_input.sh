@@ -115,19 +115,19 @@ gdm_ok restore --remove-helper
 
 echo "== test hooks and trust of the helper directory"
 mkdir -p "$T_ROOT/fakeid"
-# shellcheck disable=SC2016
-printf '#!/bin/sh\n[ "$1" = "-u" ] && { echo 0; exit 0; }\nexec /usr/bin/id "$@"\n' >"$T_ROOT/fakeid/id"; chmod +x "$T_ROOT/fakeid/id"
 HELPER_SRC="$GDM_SRC/m3e-gdm"
-out="$(PATH="$T_ROOT/fakeid:$PATH" M3E_GDM_TEST=1 M3E_GDM_ROOT="$GR" bash "$HELPER_SRC" status 2>&1)"; rc=$?
-check "as root, M3E_GDM_TEST/M3E_GDM_ROOT are refused" test "$rc" -ne 0
-check "…with an explanation" grep -q 'refused when running as root\|must be owned by root' <<<"$out"
+# "Really root" is emulated with fakeroot (bash's own $EUID is 0 under it; files keep their real owner, which is not root).
+if command -v fakeroot >/dev/null 2>&1; then
+    out="$(M3E_GDM_TEST=1 M3E_GDM_ROOT="$GR" fakeroot -- bash "$HELPER_SRC" status 2>&1)"; rc=$?
+    check "as root, the helper refuses to run from a directory that root does not own" test "$rc" -ne 0
+    check "…naming the ownership rule" grep -q 'owned by root' <<<"$out"
+else
+    echo "  skipped: fakeroot not installed"
+fi
 out="$(M3E_GDM_ROOT="$GR" bash "$HELPER_SRC" status 2>&1)"; rc=$?
 check "M3E_GDM_ROOT without M3E_GDM_TEST=1 is refused" test "$rc" -ne 0
 out="$(M3E_GDM_TEST=1 M3E_GDM_ROOT=/ bash "$HELPER_SRC" status 2>&1)"; rc=$?
 check "M3E_GDM_ROOT=/ is refused" test "$rc" -ne 0
-out="$(PATH="$T_ROOT/fakeid:$PATH" bash "$HELPER_SRC" status 2>&1)"; rc=$?
-check "as root, a helper directory not owned by root is refused" test "$rc" -ne 0
-check "…naming the ownership rule" grep -q 'owned by root' <<<"$out"
 gdm_install_helper_into "$GR"
 chmod 666 "$GR/usr/local/libexec/m3e-gnome/gdm/cmd.sh"
 out="$(gdm_run status 2>&1)"; rc=$?
@@ -137,6 +137,43 @@ ln -s /etc/passwd "$GR/usr/local/libexec/m3e-gnome/gdm/extra.sh"
 out="$(gdm_run status 2>&1)"; rc=$?
 check "a symbolic link inside the helper directory is refused" test "$rc" -ne 0
 rm -f "$GR/usr/local/libexec/m3e-gnome/gdm/extra.sh"
+
+echo "== environment hardening and ancestors"
+# A directory above the helper that others can write lets them swap the whole helper directory.
+chmod 775 "$GR/usr/local/libexec"
+out="$(gdm_run status 2>&1)"; rc=$?
+check "a group-writable ancestor of the helper directory is refused" test "$rc" -ne 0
+check "…naming the ancestor" grep -q 'ancestor' <<<"$out"
+chmod 755 "$GR/usr/local/libexec"
+check "back to normal, the helper runs again" gdm_run status
+
+# The installer applies the same rule to the destination before it runs `sudo install` there.
+anc="$T_ROOT/anc"; mkdir -p "$anc/a/b"; chmod 755 "$anc" "$anc/a" "$anc/a/b"
+ancestors_ok() { ( source "$REPO/lib/common.sh"; source "$REPO/lib/gdm.sh"; gdm_ancestors_ok "$1" "$(id -u)" "$anc" ); }
+check "installer: root-owned (here: own) non-writable ancestors are accepted" ancestors_ok "$anc/a/b/c/d"
+chmod 775 "$anc/a"
+check_not "installer: a group-writable ancestor of the destination is refused" ancestors_ok "$anc/a/b/c/d"
+chmod 755 "$anc/a"
+
+# Reverse test: with a lying `id` and the test hooks set, a process that REALLY is root (fakeroot) must not enter test
+# mode. The old code asked `id -u`; the decision must come from bash's own $EUID.
+if command -v fakeroot >/dev/null 2>&1; then
+    # shellcheck disable=SC2016
+    printf '#!/bin/sh\n[ "$1" = "-u" ] && { echo 1000; exit 0; }\nexec /usr/bin/id "$@"\n' >"$T_ROOT/fakeid/id"; chmod +x "$T_ROOT/fakeid/id"
+    out="$(PATH="$T_ROOT/fakeid:$PATH" M3E_GDM_TEST=1 M3E_GDM_ROOT="$GR" fakeroot -- bash "$GR/usr/local/libexec/m3e-gnome/gdm/m3e-gdm" status 2>&1)"; rc=$?
+    check "as real root (fakeroot) with a lying id and test hooks set, the helper refuses" test "$rc" -ne 0
+    check "…it did not report a state (test mode was not entered)" bash -c "! grep -q 'installed:' <<<'$out'"
+else
+    echo "  skipped: fakeroot not installed"
+fi
+
+# The environment purge keeps PATH and nothing else of what a caller can set (library, module and config search paths
+# of the tools root spawns: glib, gdk-pixbuf, fontconfig, python, dpkg, dconf ...).
+purged="$(env -i PATH=/usr/bin:/bin GIO_EXTRA_MODULES=/tmp/x GIO_MODULE_DIR=/tmp/x GDK_PIXBUF_MODULE_FILE=/tmp/x FONTCONFIG_FILE=/tmp/x \
+    GTK_PATH=/tmp/x GSETTINGS_SCHEMA_DIR=/tmp/x G_MESSAGES_DEBUG=all LD_PRELOAD=/tmp/x PYTHONPATH=/tmp/x DPKG_ADMINDIR=/tmp/x \
+    DCONF_PROFILE=/tmp/x HOME=/tmp/x TMPDIR=/tmp/x BASH_ENV=/tmp/x bash -c "source '$GDM_SRC/common.sh'; sanitize_env; env" 2>/dev/null)"
+check "sanitize_env drops every variable except PATH and the C locale" bash -c "! grep -qE '^(GIO_|GDK_|FONTCONFIG|GTK_|GSETTINGS|G_|LD_|PYTHON|DPKG|DCONF|HOME|TMPDIR|BASH_ENV)' <<<'$purged'"
+check "…and sets a fixed PATH and the C locale" bash -c "grep -qx 'PATH=/usr/sbin:/usr/bin:/sbin:/bin' <<<'$purged' && grep -qx 'LC_ALL=C' <<<'$purged'"
 
 echo
 if ((FAILS)); then echo "gdm input: $FAILS failure(s)"; exit 1; fi

@@ -3,7 +3,7 @@
 
 require_root() {
     ((DRY_RUN)) && return 0
-    [[ "$(id -u)" == 0 || -n "$ROOT" ]] || die "this command changes the system and must run as root (use sudo)"
+    ((EUID == 0)) || [[ -n "$ROOT" ]] || die "this command changes the system and must run as root (use sudo)"
 }
 
 preflight() {

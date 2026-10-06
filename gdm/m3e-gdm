@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S -i PATH=/usr/sbin:/usr/bin:/sbin:/bin /bin/bash
+# shellcheck shell=bash
 # m3e-gdm: root helper that themes the GDM login screen with the M3E-Shell stylesheet.
 #
 #   m3e-gdm apply --from DIR [--dry-run] [--force] [--mechanism alternatives|divert|inplace]
@@ -7,30 +8,60 @@
 #   m3e-gdm status                          print the recorded state (read-only)
 #   m3e-gdm check DIR                       validate a data directory (read-only)
 #
+# (Run through its shebang the environment starts empty: `bash m3e-gdm` keeps yours, which tests rely on.)
+#
 # SECURITY MODEL. This program runs as root. It is installed root-owned (/usr/local/libexec/m3e-gnome/gdm) and refuses to
 # run if that directory or anything in it is writable by others. It never sources, executes, imports or follows anything
 # from a user's home or from the DIR it is given: DIR is untrusted DATA, read by ingest.py (no symlinks, size limits,
 # format checks), copied into a root-owned staging directory, and only the staged copy is used.
 # Test hooks (M3E_GDM_ROOT, M3E_GDM_TEST) are refused when running as root. See docs/gdm.md.
+# Nothing of the caller's environment is trusted. The shebang above starts bash with an empty environment (BASH_ENV,
+# SHELLOPTS, PS4, ... never take effect); these statements are the second line of defence for `bash m3e-gdm` and apt hooks.
+# Whether we are root is bash's own $EUID, never the output of a program found through PATH.
+if ((EUID == 0)); then
+    PATH=/usr/sbin:/usr/bin:/sbin:/bin
+    unset BASH_ENV ENV CDPATH GLOBIGNORE PS4
+    case ":${SHELLOPTS:-}:" in *:xtrace:*|*:allexport:*|*:verbose:*|*:functrace:*) echo "m3e-gdm: error: unsafe SHELLOPTS" >&2; exit 1 ;; esac
+fi
 set -euo pipefail
 
 SELF=$(readlink -f -- "${BASH_SOURCE[0]}")
 HERE=$(dirname -- "$SELF")
 
-# The code directory must be trusted before anything in it is sourced.
+# The code directory, and every directory above it, must be trusted before anything in it is sourced.
+trust_fail() { echo "m3e-gdm: error: $*" >&2; exit 1; }
 trust_check() {
-    local f own mode euid
-    euid=$(id -u)
+    local f own mode stop='' d
     for f in "$HERE" "$HERE"/*; do
-        [[ ! -L "$f" ]] || { echo "m3e-gdm: error: symbolic link in the helper directory: $f" >&2; exit 1; }
+        [[ ! -L "$f" ]] || trust_fail "symbolic link in the helper directory: $f"
         own=$(stat -c '%u' -- "$f"); mode=$(stat -c '%a' -- "$f")
-        if [[ "$euid" == 0 ]]; then
+        if ((EUID == 0)); then
             [[ "$own" == 0 && $((8#$mode & 8#022)) == 0 ]] ||
-                { echo "m3e-gdm: error: $f must be owned by root and not group/world-writable (is $own, mode $mode)" >&2; exit 1; }
+                trust_fail "$f must be owned by root and not group/world-writable (is $own, mode $mode)"
         else
-            [[ $((8#$mode & 8#002)) == 0 ]] || { echo "m3e-gdm: error: $f is world-writable" >&2; exit 1; }
+            [[ $((8#$mode & 8#002)) == 0 ]] || trust_fail "$f is world-writable"
         fi
     done
+    # Ancestors: whoever can write one of them can replace the whole helper directory. As root: up to /. In the test
+    # mode (not root): up to the fake root, which is the test's own directory.
+    if ((EUID != 0)); then
+        stop=${M3E_GDM_ROOT:-}
+        [[ -n "$stop" && "$HERE" == "$stop"/* ]] || return 0   # a checkout run as a user: nothing to check above it
+    fi
+    d=$(dirname -- "$HERE")
+    while [[ "$d" != / && "$d" != "$stop" && "$d" != . ]]; do
+        own=$(stat -c '%u' -- "$d"); mode=$(stat -c '%a' -- "$d")
+        if ((EUID == 0)); then
+            [[ "$own" == 0 && $((8#$mode & 8#022)) == 0 ]] || trust_fail "ancestor $d of the helper directory must be owned by root and not group/world-writable (is $own, mode $mode)"
+        else
+            [[ "$own" == "$EUID" && $((8#$mode & 8#022)) == 0 ]] || trust_fail "ancestor $d of the helper directory is writable by others or not yours (mode $mode)"
+        fi
+        d=$(dirname -- "$d")
+    done
+    if ((EUID == 0)); then
+        own=$(stat -c '%u' -- /); mode=$(stat -c '%a' -- /)
+        [[ "$own" == 0 && $((8#$mode & 8#022)) == 0 ]] || trust_fail "ancestor / is not root-owned or is writable by others"
+    fi
 }
 trust_check
 # shellcheck source=gdm/common.sh
@@ -42,7 +73,7 @@ for f in build mech hooks dconf assets cmd; do
 done
 trap cleanup_work EXIT
 
-usage() { sed -n '2,/^# SECURITY/p' "$SELF" | sed '$d; s/^# \{0,1\}//'; }
+usage() { sed -n '3,/^# (Run through/p' "$SELF" | sed '$d; s/^# \{0,1\}//'; }
 
 main() {
     local cmd=${1:-} from='' mech=''
