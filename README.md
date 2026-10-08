@@ -222,7 +222,7 @@ A user service (`material-sync.service`) watches the wallpaper, the colour schem
 `dconf watch`. After a change it picks the source image (GNOME wallpaper: `picture-uri-dark` in dark mode,
 `picture-uri` in light mode), computes the palette, renders every template with matugen, reloads the Shell and GTK
 themes, and sets the nearest GNOME accent and Papirus folder colour. GTK 4 applications and Chrome pick up new colours
-when they are restarted. Customisation: [docs/customization.md](docs/customization.md).
+when they are restarted, and follow a light/dark switch live. Customisation: [docs/customization.md](docs/customization.md).
 
 ## Update
 

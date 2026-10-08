@@ -56,7 +56,8 @@ gdm_render_css() { # out-file seed-args...
         printf '\n' >>"$out"
     done
     ! grep -qF '{{' "$out" || die "unrendered placeholders in the greeter stylesheet"
-    # The helper checks the stylesheet token by token and has no use for comments: strip them here (tokenizer, not regex).
+    # The helper checks the stylesheet token by token and has no use for comments: strip them here (tokenizer, not regex),
+    # with the declarations whose relative url() names a session-theme asset that the greeter resource does not hold.
     python3 -I -B "$REPO_ROOT/gdm/ingest.py" strip-css "$out" "$out.stripped" || die "the rendered stylesheet is not valid CSS"
     mv -- "$out.stripped" "$out"
 }

@@ -14,6 +14,7 @@ files `@import` their parts by relative url.
 | `no-bold-gtk3.css`, `no-bold-gtk4.css` | The theme has a strict no-bold rule; GTK 4 also pins the variable-font `wght` axis. |
 | `chrome-dark-gtk4.template` | matugen template: Chrome toolbar and active tab in dark colours even in a light theme (renders `chrome-dark-gtk4.css`, imported by `window-buttons-gtk4.css`). |
 | `ptyxis-material.palette` | matugen template of the Ptyxis terminal palette (`[Light]` and `[Dark]` rendered together). |
+| `event-dot.svg.template`, `event-dot-dimmed.svg.template`, `event-dot-today.svg.template` | matugen templates of the Shell calendar's "day with events" dots (on_surface, on_surface at 38 % outside the month, on_primary on today), rendered into `~/.themes/M3E-Shell/gnome-shell/assets/`. |
 | `gnome-accent.template`, `papirus-folders.template` | Empty templates whose only job is to trigger a matugen `post_hook` with the closest preset colour. |
 
 ## Optional: Ptyxis active tab in the terminal's colour

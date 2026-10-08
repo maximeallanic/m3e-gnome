@@ -401,7 +401,7 @@ def play_preferences(win):
     res["back"] = css_path(backs[0]) if backs else None
     if backs:
         _ok, bounds = backs[0].compute_bounds(backs[0])   # border box (get_width/height = content only)
-        check("back button, circle (w, h)", [32, 32], [round(bounds.get_width()), round(bounds.get_height())])
+        check("back button, circle (w, h)", [30, 30], [round(bounds.get_width()), round(bounds.get_height())])
         capture(backs[0], "back-button")
     capture(win, "final")
     record_addresses(win)

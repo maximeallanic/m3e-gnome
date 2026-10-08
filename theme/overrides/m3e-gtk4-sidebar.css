@@ -4,7 +4,7 @@ stacksidebar:not(#m3e) list > row:not(#m3e),
 list.navigation-sidebar:not(#m3e) > row:not(#m3e) {
   min-height: 40px; /* M3E-visual: NavigationDrawer.ActiveIndicatorHeight (56) reduced to 40 dp, desktop density */
   margin: 0 12px 0 12px; /* M3E-visual: 12 dp margins ("standard navigation drawer ... padding and margins" image) */
-  padding: 0 0 0 16px; /* M3E-visual: 16 dp before the label, nothing on the right: the eject button in Files (the only row with content on the right) touches the right edge of the pill, all aligned */
+  padding: 0 16px 0 16px; /* M3E-visual: 16 dp on each side of the content ("standard navigation drawer ... padding and margins" image); with no right inset, "Home" touched the right edge of the pill */
   border-radius: 9999px; /* NavigationDrawer.ActiveIndicatorShape */
   background-color: transparent;
   background-image: none;
@@ -72,8 +72,10 @@ button:not(#m3e).star {
   -gtk-icon-size: 0;
 }
 /* Files: the content of a places row is inside a GtkRevealer ("sidebar-revealer") that adds its own
-   16 dp inset on each side; on the right it is removed so the eject button sits against the edge of the pill. */
+   16 dp inset on each side, on top of the row's: the icon sat 32 px from the left. Removed on both sides, so the
+   row alone carries the 16 dp. */
 revealer.sidebar-revealer:not(#m3e) {
+  padding-left: 0;
   padding-right: 0;
 }
 /* Separators between groups (Settings, Files): outline_variant divider aligned with the row content.

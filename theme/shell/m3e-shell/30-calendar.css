@@ -37,8 +37,8 @@
   font-size: 32px; /* DatePickerModal.HeaderHeadlineFont.size */
   color: {{colors.on_surface_variant.default.hex}};
 }
-/* Month: plain text (the stock sheet makes it a pill). Its color is set !important by the stock sheet
-   (white in dark, #222226 in light): known limitation. */
+/* Month: plain text (the stock sheet makes it a pill). Its color is set !important by the stock sheet: taken over by
+   the extension stylesheet (m3e-extensions-template.css, "Shell origin" block). */
 .calendar .calendar-month-header .calendar-month-label,
 .calendar .calendar-month-header .calendar-month-label:hover,
 .calendar .calendar-month-header .calendar-month-label:focus {
@@ -146,13 +146,19 @@
   box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.1); /* M3E-visual: on_primary state layer at 10% (State.PressedStateLayerOpacity) as a full inner shadow, since St only has a background */
   color: {{colors.on_primary.default.hex}} !important; /* important-exception: the stock sheet sets "color: -st-accent-fg-color !important" (white) on the current day, whose label is a ClutterText with no style node; an !important in the theme sheet wins over the stock one (origin-stylesheet precedence) */
 }
-/* "Day with events" dot on the current day: the stock sheet forces (!important) the white dot
-   (calendar-today.svg), barely visible on the light primary of dark mode. Dark dot from the gresource
-   (calendar-today-light.svg, #242424) in dark mode, white dot in light mode (on the dark primary): chosen by
-   the mode rendered by matugen. SVG colors come from GNOME, close to on_primary (#ffffff in light) but not
-   equal to it (limitation). */
+/* "Day with events" dot: the stock sheet sets a fixed white SVG (calendar-today.svg), invisible on the light surface
+   of light mode, not dimmed on days outside the month, and forces it (!important) on the current day, unreadable on
+   the light primary of dark mode. The dots are rendered by matugen in the colours of the day label (event-dot*
+   entries of theme/matugen/config.toml, the theme's assets directory): on_surface, on_surface at 38% outside the
+   month, on_primary on the current day. */
+.calendar .calendar-day.calendar-day-with-events {
+  background-image: url("assets/event-dot.svg");
+}
+.calendar .calendar-day.calendar-other-month.calendar-day-with-events {
+  background-image: url("assets/event-dot-dimmed.svg");
+}
 .calendar .calendar-day.calendar-today.calendar-day-with-events {
-  background-image: url("resource:///org/gnome/shell/theme/calendar-today{{ mode | replace: "light", "" | replace: "dark", "-light" }}.svg") !important; /* important-exception: the stock sheet forces the white dot on the current day with !important, unreadable on the light primary of dark mode */
+  background-image: url("assets/event-dot-today.svg") !important; /* important-exception: the stock sheet forces the white dot on the current day with !important, unreadable on the light primary of dark mode */
 }
 
 /* State transitions (hover, press, focus, selection): St cross-fades the old rendering into the new one

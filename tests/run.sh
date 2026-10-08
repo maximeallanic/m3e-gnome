@@ -13,7 +13,7 @@ REPO="$(dirname "$HERE")"
 status=0
 
 shell_files() { # every shell script of the installer
-    ( cd "$REPO" && printf '%s\n' install.sh uninstall.sh verify.sh lib/*.sh gdm/*.sh gdm/m3e-gdm scripts/*.sh packaging/wrapper.sh \
+    ( cd "$REPO" && printf '%s\n' install.sh uninstall.sh verify.sh lib/*.sh gdm/*.sh gdm/m3e-gdm scripts/*.sh tools/*.sh packaging/wrapper.sh \
         packaging/m3e-gnome.bash tests/*.sh tests/shims/fc-cache tests/shims/fc-list tests/shims/gnome-shell \
         tests/shims/gtk-update-icon-cache )
 }

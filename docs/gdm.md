@@ -66,7 +66,10 @@ In plain words:
      allow-list. Now: UTF-8 without NUL or control characters; no backslash outside comments; no unterminated string,
      comment or `url()`; balanced brackets; **no at-rule at all** (`@import` in any spelling is one); no `image-set()`,
      `src()` or other image functions; every `url()` is `resource:///org/gnome/shell/theme/<name>.svg|png` or the staged
-     background and is followed by `;`, `,`, `!` or a closing bracket. The user step strips comments with the same tokenizer;
+     background and is followed by `;`, `,`, `!` or a closing bracket. The user step strips comments with the same tokenizer,
+     and drops the declarations whose `url()` is relative: those name files next to the session stylesheet
+     (`~/.themes/M3E-Shell/gnome-shell/assets/`, the palette-rendered calendar event dots) that the stock resource does
+     not hold, so the greeter keeps the stock rule there (no calendar events on the login screen anyway);
    - `greeter.conf` accepts four keys and values without quotes, brackets, `$`, `;` or control characters.
    What passes is **copied** (not moved) into the root-owned `/var/lib/m3e-gnome/gdm/data`; only that copy is used from
    then on, so editing your directory later changes nothing (a test checks it), and the package hooks need no user

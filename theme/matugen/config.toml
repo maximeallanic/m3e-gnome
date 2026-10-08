@@ -8,6 +8,7 @@
 #   ~/.config/m3e-gnome/shell/NN-*.css   Shell stylesheet parts (templates, copied from theme/shell/m3e-shell/)
 #   ~/.config/m3e-gnome/overrides/       other templates (theme/overrides/)
 #   ~/.cache/m3e-gnome/shell/NN-*.css    rendered parts, concatenated into the theme stylesheet
+#   ~/.themes/M3E-Shell/gnome-shell/     the theme stylesheet and its assets/ (rendered calendar event dots)
 
 [config]
 version_check = false
@@ -23,6 +24,25 @@ input_path  = "~/.themes/Material-Gnome/gtk-4.0/colors-template.css"
 output_path = "~/.themes/Material-Gnome/gtk-4.0/colors.css"
 
 # --- Shell theme (M3E-Shell) ---------------------------------------------------------------------------------
+# Calendar "day with events" dots (url("assets/event-dot*.svg") in 30-calendar.css) in palette colours: the stock sheet
+# sets a fixed white SVG, invisible in light mode and not dimmed on days outside the month. Written into the theme's
+# assets directory before the Shell parts (index 9), so that the stylesheet written by the last part's post_hook
+# never points at dots of the previous palette.
+[templates.event-dot]
+input_path  = "~/.config/m3e-gnome/overrides/event-dot.svg.template"
+output_path = "~/.themes/M3E-Shell/gnome-shell/assets/event-dot.svg"
+index = 9
+
+[templates.event-dot-dimmed]
+input_path  = "~/.config/m3e-gnome/overrides/event-dot-dimmed.svg.template"
+output_path = "~/.themes/M3E-Shell/gnome-shell/assets/event-dot-dimmed.svg"
+index = 9
+
+[templates.event-dot-today]
+input_path  = "~/.config/m3e-gnome/overrides/event-dot-today.svg.template"
+output_path = "~/.themes/M3E-Shell/gnome-shell/assets/event-dot-today.svg"
+index = 9
+
 # The Shell stylesheet is split by concern into parts. Each part is rendered to its own file (index = cascade order,
 # matugen renders in index order) and the post_hook of the LAST part concatenates them, in order, into the theme
 # stylesheet. Concatenation instead of @import: St gives @import-ed sheets a lower priority than the main sheet, which

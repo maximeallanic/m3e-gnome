@@ -52,16 +52,18 @@
   box-shadow: inset 0 0 0 100px rgba({{colors.on_primary.default.red}}, {{colors.on_primary.default.green}}, {{colors.on_primary.default.blue}}, 0.08); /* M3E-visual: on_primary state layer at 8 % (State.HoverStateLayerOpacity) as a full inner shadow, since St has only one background */
   color: {{colors.on_primary.default.hex}};
 }
-/* Status icons: XSmall size, spacing comes from the button's inner padding. */
+/* Status icons: spacing comes from the button's inner padding. Size = the clock's cap height / the status icons' ink
+   share (0.716 × 16 / 0.72 ≈ 16 px, the top-bar ink grid, see docs/design-notes.md): the bar scales its icons down
+   instead of the icon files, shared with Quick Settings, carrying a bar-only size. */
 #panel .panel-button .system-status-icon {
-  icon-size: 20px; /* XSmallIconButton.IconSize */
+  icon-size: 16px; /* M3E-visual: top-bar ink grid (tools/material-symbols/ink_grid.py, BAR_ICON): icon ink = cap height of the 16 px clock */
   padding: 0;
   margin: 0;
 }
-/* Status bar like the Pixel's: icon ink at 72 % of its frame, each icon at its ink width (barre-etat extension),
-   and a constant gap equal to half the ink height (Pixel: 19 to 24 px for 41 px). */
+/* Status bar like the Pixel's: icon ink at the height of the clock's capitals, each icon at its ink width (barre-etat
+   extension), and a constant gap equal to half the ink height (Pixel: 19 to 24 px for 41 px). */
 #panel .panel-button .panel-status-indicators-box {
-  spacing: 7px; /* M3E-visual: 20 px × 0.72 / 2 */
+  spacing: 6px; /* M3E-visual: 16 px × 0.716 (Google Sans Flex cap height) / 2 */
 }
 #panel .power-status.panel-status-indicators-box {
   spacing: 0; /* M3E-visual: battery alone in its box (stock icon and label hidden) */
@@ -70,7 +72,7 @@
    41); low battery = error. Charged part when not charging = content colour, digits cut out of it. The charging
    green, fixed on Android, lives in the extension's own stylesheet. */
 #panel .status-bar-battery {
-  -status-bar-height: 16px; /* M3E-visual: 14.4 px × 45 / 41 */
+  -status-bar-height: 12.6px; /* M3E-visual: icon ink (clock capitals, 0.716 × 16 = 11.46 px) × 45 / 41 */
   -status-bar-low: {{colors.error.default.hex}};
 }
 
@@ -104,7 +106,7 @@
 #panel .panel-button.clock-display .clock,
 #panel:overview .panel-button.clock-display .clock {
   font-size: 16px; /* TypeScale.TitleMediumSize */
-  padding: 0 16px; /* ButtonXSmall.LeadingSpace */
+  padding: 2px 16px 0 16px; /* M3E-visual: sides ButtonXSmall.LeadingSpace (16); 2 px on top to set the digits on the icons' centre (they sat 1.1 px higher: 0.4 px from Google Sans Flex metrics plus position rounding), the pill stays centred */
   border-radius: 999px; /* ButtonXSmall.ContainerShapeRound */
   background-color: transparent;
   box-shadow: none;

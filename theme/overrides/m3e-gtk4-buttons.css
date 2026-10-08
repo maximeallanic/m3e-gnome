@@ -104,17 +104,77 @@ button:not(#m3e).flat:hover {
   box-shadow: none;
 }
 
-/* Icon buttons: an icon-only button = Filled tonal icon button, a flat one = Standard icon button */
+/* Icon buttons: an icon-only button = Filled tonal icon button, a flat one = Standard icon button. 16 px icon, the
+   size of the neighbouring list icons (24 px before, twice the ink of the text: gear and QR code buttons of the
+   Wi-Fi rows in Settings), in a 32 px circle (XSmallIconButton.ContainerHeight). */
 button:not(#m3e).image-button,
 button:not(#m3e).circular {
-  min-width: 24px; /* SmallIconButton.IconSize */
-  min-height: 24px; /* SmallIconButton.IconSize */
-  padding: 8px; /* SmallIconButton.DefaultLeadingSpace */
-  -gtk-icon-size: 24px; /* SmallIconButton.IconSize */
+  min-width: 16px; /* M3E-visual: 16 px icon, the size of list icons */
+  min-height: 16px; /* M3E-visual: see min-width */
+  padding: 8px; /* M3E-visual: (32 - 16) / 2, 32 px circle (XSmallIconButton.ContainerHeight) */
+  -gtk-icon-size: 16px; /* M3E-visual: see min-width */
+}
+/* Container and halo drawn as a "circle closest-side" radial gradient: a centred circle whose diameter is the
+   shortest side, whatever the box. Rows that stretch their buttons (cc-wifi-connection-row.ui: QR code, gear, trash
+   without valign) produced a 40 x 52 oval with a rounded box background. No shape morph on press here: a gradient
+   has no corners (header bar buttons, with a fixed 30 px box, keep it). */
+button:not(#m3e).image-button,
+button:not(#m3e).circular,
+button:not(#m3e).image-button:hover,
+button:not(#m3e).circular:hover,
+button:not(#m3e).image-button:active,
+button:not(#m3e).circular:active,
+button:not(#m3e).image-button:focus,
+button:not(#m3e).circular:focus,
+button:not(#m3e).image-button:checked,
+button:not(#m3e).circular:checked,
+button:not(#m3e).image-button:disabled,
+button:not(#m3e).circular:disabled {
+  background-color: transparent;
+  box-shadow: none;
+  background-size: 100% 100%; /* M3E-visual: Material-Gnome sets 1000 % (left over from its ripple): the circle came out 10 times too big, clipped into a pill by the box radius */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+button:not(#m3e).image-button,
+button:not(#m3e).circular,
+button:not(#m3e).image-button:focus,
+button:not(#m3e).circular:focus {
+  background-image: radial-gradient(circle closest-side, var(--secondary_container) 96%, transparent 100%); /* M3E-visual: round container of the Filled tonal icon button, edge smoothed over 4 % of the radius */
+}
+button:not(#m3e).image-button:hover,
+button:not(#m3e).circular:hover {
+  background-image: radial-gradient(circle closest-side, alpha(currentColor, 0.08) 96%, transparent 100%), radial-gradient(circle closest-side, var(--secondary_container) 96%, transparent 100%); /* State.HoverStateLayerOpacity */
 }
 button:not(#m3e).image-button:active,
-button:not(#m3e).circular:active {
-  border-radius: 8px; /* SmallIconButton.PressedContainerShape */
+button:not(#m3e).circular:active,
+button:not(#m3e).image-button.keyboard-activating,
+button:not(#m3e).circular.keyboard-activating {
+  background-image: radial-gradient(circle closest-side, alpha(currentColor, 0.1) 96%, transparent 100%), radial-gradient(circle closest-side, var(--secondary_container) 96%, transparent 100%); /* State.PressedStateLayerOpacity */
+}
+button:not(#m3e).image-button:checked,
+button:not(#m3e).circular:checked,
+button:not(#m3e).image-button:checked:hover,
+button:not(#m3e).circular:checked:hover {
+  background-image: radial-gradient(circle closest-side, var(--secondary) 96%, transparent 100%); /* M3E-visual: selected container in secondary, like toggled buttons */
+}
+button:not(#m3e).image-button.flat,
+button:not(#m3e).circular.flat,
+button:not(#m3e).image-button.flat:focus,
+button:not(#m3e).circular.flat:focus,
+button:not(#m3e).image-button:disabled,
+button:not(#m3e).circular:disabled {
+  background-image: none;
+}
+button:not(#m3e).image-button.flat:hover,
+button:not(#m3e).circular.flat:hover {
+  background-image: radial-gradient(circle closest-side, alpha(currentColor, 0.08) 96%, transparent 100%); /* State.HoverStateLayerOpacity */
+}
+button:not(#m3e).image-button.flat:active,
+button:not(#m3e).circular.flat:active,
+button:not(#m3e).image-button.flat.keyboard-activating,
+button:not(#m3e).circular.flat.keyboard-activating {
+  background-image: radial-gradient(circle closest-side, alpha(currentColor, 0.1) 96%, transparent 100%); /* State.PressedStateLayerOpacity */
 }
 button:not(#m3e).image-button.flat,
 button:not(#m3e).circular.flat,
@@ -123,6 +183,14 @@ button:not(#m3e).circular.flat:hover,
 button:not(#m3e).image-button.flat:active,
 button:not(#m3e).circular.flat:active {
   color: var(--on_surface_variant);
+}
+/* Flat toggle when checked: round secondary container, as a toggled button. */
+button:not(#m3e).image-button.flat:checked,
+button:not(#m3e).circular.flat:checked,
+button:not(#m3e).image-button.flat:checked:hover,
+button:not(#m3e).circular.flat:checked:hover {
+  background-image: radial-gradient(circle closest-side, var(--secondary) 96%, transparent 100%); /* M3E-visual: selected container in secondary, like toggled buttons */
+  color: var(--on_secondary);
 }
 
 /* Pill = Medium size */
@@ -152,11 +220,55 @@ headerbar button:not(#m3e) {
   min-height: 32px; /* ButtonXSmall.ContainerHeight */
   padding: 0 16px 0 16px; /* ButtonXSmall.TrailingSpace ButtonXSmall.LeadingSpace */
 }
+/* Header bar icon buttons = window buttons (window-buttons-gtk4.css): same 10 px ink (cap height of body text) in
+   the same 30 px circle, same halo on hover (docs/design-notes.md, Components). The icon files keep their frame (the
+   reference square covers 712 units out of 740): only the displayed size is reduced here. */
 headerbar button:not(#m3e).image-button {
-  min-width: 20px; /* XSmallIconButton.IconSize */
-  min-height: 20px; /* XSmallIconButton.IconSize */
-  padding: 6px; /* XSmallIconButton.DefaultLeadingSpace */
-  -gtk-icon-size: 20px; /* XSmallIconButton.IconSize */
+  min-width: 10px; /* M3E-visual: 10 / (712 / 740) = 10.4 px, rounded: 9.6 px of ink (header icon size of the ink grid) */
+  min-height: 10px; /* M3E-visual: see min-width */
+  padding: 10px; /* M3E-visual: (30 - 10) / 2, 30 px circle of the window buttons */
+  margin-top: 2px; /* M3E-visual: (34 - 30) / 2: the bar's box stretches buttons to 34 px (measured) */
+  margin-bottom: 2px; /* M3E-visual: see margin-top */
+  border-radius: 15px; /* M3E-visual: 30 px circle of the window buttons */
+  -gtk-icon-size: 10px; /* M3E-visual: see min-width */
+}
+/* Halo of header bar icon buttons: fixed 30 px box, so a rounded box background (shape morph kept on press) instead
+   of the radial gradient of content icon buttons. */
+headerbar button:not(#m3e).image-button,
+headerbar button:not(#m3e).image-button:focus {
+  background-image: none;
+}
+headerbar button:not(#m3e).image-button:hover {
+  background-image: image(alpha(currentColor, 0.08)); /* State.HoverStateLayerOpacity */
+}
+headerbar button:not(#m3e).image-button:active,
+headerbar button:not(#m3e).image-button.keyboard-activating {
+  background-image: image(alpha(currentColor, 0.1)); /* State.PressedStateLayerOpacity */
+}
+headerbar button:not(#m3e).image-button:checked {
+  background-image: none;
+}
+/* AdwSplitButton in the header bar (Files view menu): neither the main button nor the arrow has the .image-button
+   class. The icon was 16 px (16.5 px of ink against 9.7 for the search icon) and the halos were 42 x 34 and 48 x 34
+   pills (measured): both parts take the 30 px circle of the icon buttons. */
+headerbar splitbutton:not(#m3e) > button:not(#m3e),
+headerbar splitbutton:not(#m3e) > menubutton > button:not(#m3e) {
+  min-width: 10px; /* M3E-visual: see headerbar .image-button */
+  min-height: 10px; /* M3E-visual: see headerbar .image-button */
+  padding: 10px; /* M3E-visual: (30 - 10) / 2, 30 px circle of the window buttons */
+  margin-top: 2px; /* M3E-visual: (34 - 30) / 2, see headerbar .image-button */
+  margin-bottom: 2px; /* M3E-visual: see margin-top */
+  border-radius: 15px; /* M3E-visual: 30 px circle of the window buttons */
+  -gtk-icon-size: 10px; /* M3E-visual: ink of the header bar icon buttons, see .image-button */
+}
+headerbar splitbutton:not(#m3e) > menubutton > button:not(#m3e) > arrow {
+  min-width: 10px; /* M3E-visual: arrow at the ink of the header bar icons */
+  min-height: 10px; /* M3E-visual: see min-width */
+  -gtk-icon-size: 10px; /* M3E-visual: see min-width */
+}
+/* Icon + label button in the header bar (AdwButtonContent): icon at the ink of the other header icons (16 px before). */
+headerbar button:not(#m3e).image-text-button {
+  -gtk-icon-size: 10px; /* M3E-visual: ink of the header bar icon buttons, see .image-button */
 }
 headerbar button:not(#m3e):active {
   border-radius: 8px; /* ButtonXSmall.PressedContainerShape */
@@ -167,13 +279,13 @@ headerbar button:not(#m3e):checked:not(.suggested-action):not(.destructive-actio
   color: var(--on_secondary);
 }
 /* Back button (AdwBackButton, class .back): surface_container_high circle like the back button of the Pixel Settings
-   app, at the bar's XSmall size. The bar's box gives buttons a height of 34 px: 1 px margins
-   for a 32 px circle. */
+   app, at the size of the window buttons. The bar's box gives buttons a height of 34 px: 2 px margins
+   for a 30 px circle. */
 headerbar button:not(#m3e).back:not(.suggested-action):not(.destructive-action),
 headerbar button:not(#m3e).back:hover:not(.suggested-action):not(.destructive-action),
 headerbar button:not(#m3e).back:active:not(.suggested-action):not(.destructive-action) {
-  margin-top: 1px; /* M3E-visual: (34 - 32) / 2: 32 dp circle (XSmallIconButton.ContainerHeight) */
-  margin-bottom: 1px; /* M3E-visual: see margin-top */
+  margin-top: 2px; /* M3E-visual: (34 - 30) / 2: 30 px circle of the window buttons */
+  margin-bottom: 2px; /* M3E-visual: see margin-top */
   background-color: var(--surface_container_high);
   color: var(--on_surface);
 }
