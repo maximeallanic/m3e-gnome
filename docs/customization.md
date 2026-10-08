@@ -69,7 +69,11 @@ gsettings set org.gnome.desktop.interface color-scheme prefer-light  # light
 ```
 
 `./install.sh --dark` (default) or `--light` sets it at install time, and `--keep-color-scheme` leaves it as it is.
-Switching modes triggers a new sync (the service watches the colour scheme, and the source image differs per mode). The theme is designed to be mostly
+Switching modes triggers a new sync (the service watches the colour scheme, and the source image differs per mode).
+GTK 4 applications already running, Chrome included, follow the switch live: the GTK 4 `colors.css` holds both palettes
+(dark inside `@media (prefers-color-scheme: dark)`, evaluated live by GTK 4.20 and later, which GNOME 50 ships). GTK 3
+has no media queries: GTK 3 applications keep the mode they were started in until they are restarted. A GTK 4 older
+than 4.20 does not understand the query and would always get the light palette. The theme is designed to be mostly
 used in dark mode; see [troubleshooting](troubleshooting.md#light-mode) for light-mode quirks.
 
 ## Accent colour and folder colour

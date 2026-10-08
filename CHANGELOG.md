@@ -5,6 +5,51 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Shell top bar on a common ink grid: status icons at 16 px (their ink as tall as the clock's capitals), 6 px between
+  them, battery 12.6 px high, and 2 px above the clock digits so they sit on the icons' centre line.
+- Quick Settings sliders: the leading icon is moved onto the column of the tile icons (8 px margin), on the first
+  child only, so the volume slider's trailing chevron no longer shortens its track by 8 px.
+- GTK 4 header bar icon buttons match the window buttons: 10 px ink in a 30 px circle with 2 px vertical margins, also
+  for both halves of a split button (Files view menu) and for the icon of icon + label buttons; the back button is a
+  30 px circle.
+- GTK 4 icon buttons in content: 16 px icon (the size of list icons, 24 px before) in a 32 px circle.
+- Material-Symbols on a common ink grid (`tools/material-symbols/ink_grid.py`), set on the window buttons: ink as tall
+  as the capitals of the neighbouring text, stroke 15 % of it. Thin outlines everywhere (filled before) except the
+  battery and a few `!` symbols; the Material Symbols weight is computed (application icons 600, status icons 300 to
+  700 per symbol). Sizes stay in CSS per context, never in the icon files. `MS_FILL` now defaults to 0 and
+  `MS_INK_HEIGHT` is gone (the status ink share is tied to the top bar's `icon-size`).
+- The chevrons (`go-next`, `go-previous`, `pan-start`, `pan-end`) follow the status grid (ink 0.72 of the frame, like
+  Android's tile chevron) instead of their original frame, which left 4.5 px of ink in header bars.
+- New `tools/material-symbols/check_ink_grid.py` renders the committed icons at the sizes read from the stylesheets and
+  checks them against the grid.
+
+### Fixed
+
+- Running GTK 4 applications, Chrome included, now follow the light/dark switch without a restart: the installer
+  rewrites Material-Gnome's GTK 4 colour template (`tools/gtk4-two-modes.sh`) so `colors.css` holds the light palette
+  and the dark one under `@media (prefers-color-scheme: dark)` (GTK 4.20 and later). `verify.sh` checks it.
+- GTK 4 icon buttons stretched by their row (Wi-Fi rows in Settings) were ovals: their container and halos are now
+  round radial gradients, sized to the box (Material-Gnome's 1000 % background size made the circle ten times too big,
+  clipped into a pill). A checked flat icon button gets a round `secondary` container.
+- GTK 4 navigation sidebars: 16 dp on both sides of the row content (the label touched the right edge of the pill),
+  and the extra inset of Files' place rows is removed (the icon was 32 px from the left edge).
+- Calendar "day with events" dots are now rendered by matugen in palette colours (`on_surface`, dimmed to 38 % outside
+  the month, `on_primary` on today) into `~/.themes/M3E-Shell/gnome-shell/assets/`; the stock white dot was invisible in
+  light mode and not dimmed. The installer records the three files and `verify.sh` checks them. The GDM greeter sheet
+  drops these declarations (its resource has no such files) and keeps the stock dot.
+- The `m3e-extensions` stylesheet takes over two stock `!important` declarations the theme cannot beat: the focus ring
+  of dialog fields (the filled text field shows its 2 dp primary indicator only) and the calendar month label colour
+  (`on_surface_variant`; it was nearly invisible in light mode).
+- Weak Wi-Fi was an isolated dot: partial Wi-Fi and cellular levels now show the inactive arcs and bars at 30 %, as one
+  group, like Android and Adwaita.
+- The 44 `org.gnome.Settings-<panel>-symbolic` icons (Settings sidebar, Shell search) are mapped; they fell back to
+  filled Papirus icons among the outlined ones.
+- The Actions directories of Papirus-Dark are no longer declared in `Material-Symbols` (light-grey glyphs drawn for a
+  dark background were washed out in light mode, e.g. a Reminders notification icon); those names resolve to their
+  symbolic variant. `build.py` also removes Papirus links a previous build left behind (`18x18`).
+
 ## [0.1.0] - 2026-10-06
 
 First public release (pre-release: the installer was run for real on the author's Debian machine with GNOME Shell

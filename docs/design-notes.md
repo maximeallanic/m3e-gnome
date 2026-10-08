@@ -38,10 +38,37 @@ files themselves; some highlights:
   cards get the small joint radius.
 - Sliders: split track, bar handle (4 px wide), drawn in JavaScript by `m3e-motion` because St cannot draw it.
 - Switches: icon in the thumb, thumb large in both states; the Shell thumb size is set inline by the extension.
-- Dialogs: `surface_bright`, 28 radius, pill buttons. OSD: `surface` pill. Calendar: round day cells.
+- Dialogs: `surface_bright`, 28 radius, pill buttons. OSD: `surface` pill. Calendar: round day cells; the "day with
+  events" dots are three SVGs rendered by matugen into the theme's `assets/` directory (`on_surface`, `on_surface` at
+  38 % outside the month, `on_primary` on today), since the stock dot is a fixed white SVG, invisible in light mode.
+- Top bar ink grid: the status icons' ink is as tall as the capitals of the 16 px clock (Google Sans Flex cap height
+  0.716 em): `icon-size` 16 px for symbols drawn at 72 % of their frame, 6 px between icons (half the ink height), and
+  2 px above the clock digits so that they sit on the icons' centre line. The icon files keep their frame, since Quick
+  Settings, menus and the OSD share them; the bar scales them down in CSS.
+- Icon ink grid (`tools/material-symbols/ink_grid.py`), set on the hand-drawn window buttons (10 px of ink in 16, 1.5 px
+  stroke): an icon's ink is as tall as the capitals of the text next to it and its stroke is 15 % of that height.
+  Sizes live in CSS per context (top bar `icon-size`, header bar `-gtk-icon-size`), never in the icon files. Material
+  Symbols ships weights 100 to 700; `build.py` measures the stroke of each (on `remove`) and picks the closest: one
+  weight for application icons (600, chosen on the square `check_box_outline_blank`, the counterpart of "maximize"),
+  one per status symbol (300 to 700, after scaling it to 72 % of its frame). Everything is outlined except the battery
+  (a gauge) and a few `!` symbols (media playback, star, presence). The chevrons (`go-next`, `pan-start`...) follow
+  the status grid like the chevron of an Android tile; at their original frame they had 4.5 px of ink in header bars.
+  Partial Wi-Fi and cellular levels are drawn over the complete symbol at 30 % (weak Wi-Fi was an isolated dot).
+  `tools/material-symbols/check_ink_grid.py` renders the committed icons at the sizes read from the stylesheets and
+  compares them with the grid.
 - Title bars: one geometry everywhere, set to match Chrome, whose bar height and button spacing are fixed in its code:
   40 px bar, 30 px round buttons, 16 px glyphs, 6 px gap. Window buttons are hand-drawn icons. Inactive windows show
   their title-bar content at 50 %.
+- Header bar icon buttons follow the window buttons: 10 px ink (the cap height of body text) in the same 30 px circle
+  with the same hover halo, also for both halves of a split button (Files view menu) and the icon of icon + label
+  buttons; the back button is a 30 px `surface_container_high` circle. The bar's box stretches buttons to 34 px, so
+  they get 2 px vertical margins.
+- Icon buttons in content: 16 px icon (the size of list icons) in a 32 px circle. Container and halo are radial
+  gradients (`circle closest-side`), so the shape stays round when a row stretches the button (Wi-Fi rows in Settings
+  stretched them into 40 x 52 ovals); a gradient has no corners, so these buttons have no shape morph on press, while
+  header bar buttons (fixed box) keep it. A checked flat icon button gets a round `secondary` container.
+- Navigation sidebars: 16 dp on both sides of the row content. Files wraps its places in a revealer that adds its own
+  16 dp inset; it is removed, so the icon is not 32 px from the pill's edge.
 
 ## Motion: springs
 
@@ -115,7 +142,11 @@ kept.
 - A single stylesheet built by concatenation: `@import` in St has lower priority, which broke menu colours.
 - St orders by stylesheet first and specificity second; a theme rule beats the stock rule, but the stock `!important`
   survives and only a theme `!important` beats it (allowed only for unreadable text, one declaration, with a reason).
-  Extension stylesheets (`St.Theme.load_stylesheet`) beat the theme even against `!important`.
+  Extension stylesheets (`St.Theme.load_stylesheet`) beat the theme even against `!important`. Stock `!important`
+  declarations the theme sheet cannot override are therefore taken over by the `m3e-extensions` stylesheet ("Shell
+  origin" block of `m3e-extensions-template.css`): the focus ring of dialog fields (the M3 filled text field marks focus
+  with its bottom indicator only) and the colour of the calendar month (white, nearly invisible in light mode). Without
+  `m3e-extensions` both stay stock.
 - St ignores unknown properties silently; one shadow only; one background; no `calc()`; no percentage lengths; no
   `spacing` on widgets with a Clutter layout manager; negative margins read as unsigned (they crash the Shell on an
   icon); `border-radius` is not interpolated. The status-bar extension therefore uses its own layout manager.

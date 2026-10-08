@@ -45,13 +45,15 @@ tail ~/.cache/material-sync/material-sync.log
 
 ## Applications keep the old colours
 
-GTK 4 applications and Chrome read the stylesheets when they start. Restart them. Nautilus keeps running as a service:
+GTK 4 applications and Chrome read the stylesheets when they start. Restart them after a palette change (new
+wallpaper or settings). A light/dark switch alone needs no restart with GTK 4.20 or later: the GTK 4 palette carries both
+modes. Nautilus keeps running as a service:
 `nautilus -q`. Ptyxis keeps its palette in an already-open window until the palette setting changes; open a new window.
 
 ## Chrome
 
 - Set *Settings > Appearance > Theme* to **GTK**. Without it Chrome ignores the title-bar styling.
-- Chrome reads the CSS only at startup.
+- Chrome reads the CSS only at startup (a light/dark switch is followed live, see above).
 - In light mode Chrome's toolbar and active tab stay dark by design of the template (`chrome-dark-gtk4.template`).
 - Web page backgrounds, the New Tab page and selection inside pages do not come from GTK.
 
