@@ -7,6 +7,8 @@ and the project uses [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Companion extensions pinned to m3e-gnome-extensions `9f8f5f4`: search terms highlighted without bold, steady
+  charging bolt, motion tracks redrawn on every frame.
 - Shell top bar on a common ink grid: status icons at 16 px (their ink as tall as the clock's capitals), 6 px between
   them, battery 12.6 px high, and 2 px above the clock digits so they sit on the icons' centre line.
 - Quick Settings sliders: the leading icon is moved onto the column of the tile icons (8 px margin), on the first
