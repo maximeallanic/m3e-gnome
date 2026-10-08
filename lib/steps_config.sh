@@ -76,7 +76,7 @@ step_palette_render() {
     # Parents of files that the matugen config writes: created here so that they are recorded.
     mkdir_owned "$HOME/.local/share/org.gnome.Ptyxis/palettes"
     mkdir_owned "$M3E_CACHE/shell"
-    mkdir_owned "$THEMES_DIR/M3E-Shell/gnome-shell"
+    mkdir_owned "$THEMES_DIR/M3E-Shell/gnome-shell/assets"
     if ((DRY_RUN)); then
         msg_info "[dry-run] material-sync --force (palette from the wallpaper, fallback colour otherwise)"
         return 0
@@ -100,6 +100,9 @@ step_palette_render() {
 record_generated() {
     local f
     record_file "$THEMES_DIR/M3E-Shell/gnome-shell/gnome-shell.css"
+    for f in event-dot event-dot-dimmed event-dot-today; do
+        record_file "$THEMES_DIR/M3E-Shell/gnome-shell/assets/$f.svg"
+    done
     record_file "$DATA_HOME/org.gnome.Ptyxis/palettes/material.palette"
     for f in matugen-papirus-folders.txt matugen-gnome-accent.txt papirus-folders.log; do
         record_file "$CACHE_HOME/$f"

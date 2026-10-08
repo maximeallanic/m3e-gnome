@@ -132,6 +132,9 @@ check_rendered() {
         grep -q -- '--primary: #' "$THEMES_DIR/Material-Gnome/gtk-4.0/colors.css"
     v_if "GTK 3 palette rendered" "GTK 3 colors.css has no primary colour" \
         grep -q '@define-color primary #' "$THEMES_DIR/Material-Gnome/gtk-3.0/colors.css"
+    v_if "GTK 4 palette has both modes (live light/dark switch)" \
+        "GTK 4 colors.css has one mode only (re-run ./install.sh, then material-sync --force)" \
+        grep -q 'prefers-color-scheme: dark' "$THEMES_DIR/Material-Gnome/gtk-4.0/colors.css"
     for f in "$REPO_ROOT"/theme/shell/m3e-shell/*.css; do
         v_rendered "$M3E_CACHE/shell/$(basename "$f")"
         parts+=("$M3E_CACHE/shell/$(basename "$f")")
@@ -142,6 +145,9 @@ check_rendered() {
         else v_fail "M3E-Shell stylesheet is not the concatenation of the rendered parts (run material-sync --force)"; fi
         v_if "M3E-Shell has the no-bold rule" "M3E-Shell lacks the no-bold rule" grep -q 'font-weight: normal !important' "$shell_css"
     fi
+    for f in event-dot event-dot-dimmed event-dot-today; do
+        v_rendered "$THEMES_DIR/M3E-Shell/gnome-shell/assets/$f.svg"
+    done
     v_rendered "$M3E_CONFIG/m3e-extensions.css"
     v_rendered "$M3E_CONFIG/overrides/chrome-dark-gtk4.css"
     f="$DATA_HOME/org.gnome.Ptyxis/palettes/material.palette"

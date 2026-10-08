@@ -121,6 +121,13 @@ fresh; set_css '/* a "quote */ .a { color: red; } /* another " */'
 check "quotes inside comments are fine" "${INGEST[@]}" check "$T_ROOT/data"
 fresh; set_css '.a { background-image: url(file:///usr/local/share/m3e-gnome/gdm/background.png); }'
 check "the staged background url() is allowed" "${INGEST[@]}" check "$T_ROOT/data"
+fresh; set_css '.a { background-image: url("assets/event-dot.svg"); }'; rejects "relative url() (a session-theme asset)"
+# User side: the session-theme assets are not in the greeter's resource, so their declarations are dropped before the
+# helper sees the stylesheet; the rest of the rule stays.
+fresh; printf '.a { color: red; background-image: url("assets/event-dot.svg") !important; } /* c */ .b { color: blue; }\n' >"$T_ROOT/in.css"
+"${INGEST[@]}" strip-css "$T_ROOT/in.css" "$T_ROOT/data/theme.css"
+check "strip-css drops the declaration with a relative url()" bash -c "! grep -q 'event-dot' '$T_ROOT/data/theme.css' && grep -q 'color: red;' '$T_ROOT/data/theme.css'"
+check "…and the result passes the helper's checks" "${INGEST[@]}" check "$T_ROOT/data"
 
 echo "== assets and configuration"
 fresh; printf 'x' >"$T_ROOT/data/assets/icons/Googlebook/evil.sh"; rejects "asset with a script extension"

@@ -199,3 +199,22 @@
 .message-view .message {
   margin-bottom: 2px !important; /* M3E-visual: notification_divider_height 2 dp (x 56/72 = 1.6, rounded up to 2 to keep a visible gap) */
 }
+
+/* == Shell origin == */
+/* Not extensions either: two !important declarations of the stock Shell sheet that the theme stylesheet cannot beat
+   (same origin + important rank argument as above). Without m3e-extensions both stay as the stock sheet draws them. */
+/* Focus ring of dialog fields (Run, polkit, network): the stock sheet sets "StEntry:focus { box-shadow: inset 0 0 0
+   2px ... !important }" (limitation noted in the theme's Dialogs block). The M3 filled text field marks focus with its
+   2 dp primary bottom indicator only; the ring made a field both outlined and underlined. */
+.modal-dialog StEntry:focus,
+.modal-dialog StEntry:focus:hover {
+  box-shadow: none !important;
+}
+/* Calendar month: the stock sheet sets its colour with !important (white in dark mode, limitation noted in the theme's
+   Calendar block); in light mode the month came out nearly invisible on the light surface. Month label of the M3 date
+   picker: Label large, on_surface_variant. */
+.calendar .calendar-month-header .calendar-month-label,
+.calendar .calendar-month-header .calendar-month-label:hover,
+.calendar .calendar-month-header .calendar-month-label:focus {
+  color: {{colors.on_surface_variant.default.hex}} !important;
+}

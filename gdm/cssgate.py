@@ -160,3 +160,33 @@ def strip_comments(text):
             pos = end
     out.append(text[pos:])
     return "".join(out)
+
+
+def drop_relative_urls(text):
+    """The stylesheet without the declarations whose url() is relative (everything else byte for byte); used by the
+    user-side installer. A relative url() names a file next to the session stylesheet (~/.themes/M3E-Shell/gnome-shell/
+    assets/, e.g. the palette-rendered calendar dots); the greeter's stylesheet lives in the stock gresource, which holds
+    no such file, so the declaration is removed and the stock rule it overrode applies again."""
+    tokens = list(tokenize(text))
+    cuts = []
+    for idx, (kind, value, _start, _end) in enumerate(tokens):
+        if kind != "url" or ":" in value or value.startswith("/"):
+            continue
+        b = idx
+        while b > 0 and not (tokens[b - 1][0] == "other" and tokens[b - 1][1] == ";") and tokens[b - 1][1] != "{":
+            b -= 1
+        e = idx
+        while e < len(tokens) and not (tokens[e][0] == "other" and tokens[e][1] == ";") and tokens[e][1] != "}":
+            e += 1
+        if b == 0 or e == len(tokens):
+            _bad("relative url() outside a declaration block")
+        end = tokens[e][3] if tokens[e][1] == ";" else tokens[e][2]
+        cuts.append((tokens[b][2], end))
+    out, pos = [], 0
+    for start, end in cuts:
+        if start < pos:
+            continue
+        out.append(text[pos:start])
+        pos = end
+    out.append(text[pos:])
+    return "".join(out)

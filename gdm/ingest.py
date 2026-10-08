@@ -288,9 +288,10 @@ def main(argv):
             validate(tree)
             write_tree(tree, argv[3])
         elif len(argv) == 4 and argv[1] == "strip-css":
-            # User side: drop the comments of a rendered stylesheet so that the helper's checks see plain code.
+            # User side: drop the comments of a rendered stylesheet so that the helper's checks see plain code, and the
+            # declarations that point at session-theme files the greeter does not have (relative url()).
             with open(argv[2], encoding="utf-8") as f:
-                text = cssgate.strip_comments(f.read())
+                text = cssgate.drop_relative_urls(cssgate.strip_comments(f.read()))
             with open(argv[3], "w", encoding="utf-8") as f:
                 f.write(text)
         elif len(argv) == 3 and argv[1] == "hash":

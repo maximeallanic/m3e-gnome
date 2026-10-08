@@ -125,8 +125,9 @@
    margins, 4 dp top corners, surface_container_highest, Body large on_surface text, 1 dp on_surface_variant bottom
    indicator (on_surface on hover, 2 dp primary on focus). The indicator is the bottom border (border-bottom-width;
    St ignores the border-bottom shorthand, and draws 2 px for a 1 px inner shadow): it stays drawn on focus, under
-   the stock !important ring (known limitation); total height kept at 56 dp (St min-height = content box, border
-   added on top). Hover layer mixed into the background. */
+   the stock !important ring, which only the extension stylesheet can remove (m3e-extensions-template.css, "Shell
+   origin" block); total height kept at 56 dp (St min-height = content box, border added on top). Hover layer mixed
+   into the background. */
 .modal-dialog StEntry,
 .modal-dialog StEntry:hover,
 .modal-dialog StEntry:focus,

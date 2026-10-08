@@ -22,6 +22,16 @@
   background-color: rgba({{colors.primary.default.red}}, {{colors.primary.default.green}}, {{colors.primary.default.blue}}, 0.1); /* State.FocusStateLayerOpacity */
   color: {{colors.on_surface.default.hex}};
 }
+/* Slider icon (40 px flat button: 8 + 24 + 8) on the column of the tile icons: centre at 6 + 44 / 2 = 28 px from the
+   row edge (tile margin, 44 px target), against 20 px without the margin (measured 2026-10-07: 11 physical pixels
+   further left). Leading icon only (:first-child): on the volume slider's trailing chevron, the margin shortened its
+   track by 8 px compared with the other sliders (measured 2026-10-07: end at 300 px against 308). */
+.quick-slider .icon-button.flat:first-child:ltr {
+  margin-left: 8px; /* M3E-visual: (6 + 44 / 2) - 40 / 2 */
+}
+.quick-slider .icon-button.flat:first-child:rtl {
+  margin-right: 8px; /* M3E-visual: (6 + 44 / 2) - 40 / 2 */
+}
 /* A slider without a menu button (the brightness slider, or any extension's slider) has no chevron, so its track
    would run to the panel edge. Any .slider-bin that is the last visible child of its row reserves the room of that
    button: 40 px (Small icon button, see "System buttons") + 6 px (stock row spacing), so every track ends at the same x. */
