@@ -10,11 +10,19 @@ import symbols as s  # noqa: E402
 
 class NamingTest(unittest.TestCase):
     def test_cache_and_remote_names(self):
-        self.assertEqual(s.cache_name('!wifi'), 'wifi_fill1.svg')
+        self.assertEqual(s.cache_name('!wifi'), 'wifi_fill1_24px.svg')
         self.assertEqual(s.cache_name('wifi', 20), 'wifi_20px.svg')
         self.assertEqual(s.cache_name('!wifi', 20), 'wifi_fill1_20px.svg')
+        self.assertEqual(s.cache_name('wifi', 24, 600), 'wifi_wght600_24px.svg')
+        self.assertEqual(s.cache_name('!wifi', 20, 300), 'wifi_wght300fill1_20px.svg')
         self.assertEqual(s.remote_names('!wifi'), ['wifi_fill1_24px.svg', 'wifi_24px.svg'])
         self.assertEqual(s.remote_names('home', 20), ['home_20px.svg'])
+        self.assertEqual(s.remote_names('!home', 20, 600), ['home_wght600fill1_20px.svg', 'home_wght600_20px.svg'])
+
+    def test_box_keys(self):
+        self.assertEqual(s.box_key('wifi'), 'wifi')
+        self.assertEqual(s.box_key('wifi', 20), 'wifi@20')
+        self.assertEqual(s.box_key('remove', 24, 600), 'remove@24@w600')
 
 
 class FramingTest(unittest.TestCase):
@@ -41,7 +49,9 @@ class SvgTest(unittest.TestCase):
     def test_extract_paths(self):
         src = '<svg><path d="M0 0"/><path d="M1 1"/></svg>'
         self.assertEqual(s.extract_paths(src), '<path fill="#2e3436" d="M0 0"/><path fill="#2e3436" d="M1 1"/>')
-        self.assertIn('fill-opacity="0.3"', s.extract_paths(src, 0.3))
+
+    def test_underlay_is_one_faded_group(self):
+        self.assertEqual(s.underlay('<path/><path/>', 0.3), '<g opacity="0.3"><path/><path/></g>')
 
     def test_markers(self):
         self.assertIn('matrix(1 0 0 -1 0 -960)', s.transform_app_paths('<path/>', '^sort'))
@@ -67,6 +77,23 @@ class MapsTest(unittest.TestCase):
             self.assertIn(v, status_map.UNDERLAY)
             self.assertEqual(status_map.UNDERLAY[v], status_map.FAMILY[v])
             self.assertIn(status_map.UNDERLAY[v], status_map.M.values())
+
+    def test_only_the_battery_is_filled_in_the_top_bar(self):
+        filled = {v for v in status_map.M.values() if v.startswith('!')}
+        self.assertTrue(all(v.startswith('!battery_android') for v in filled), filled)
+
+    def test_chevrons_follow_the_grid(self):
+        # No exemption list any more: the chevrons are ordinary top-bar symbols, framed like the others.
+        self.assertFalse(hasattr(s, 'NAV'))
+        self.assertEqual(status_map.M['go-next-symbolic'], 'chevron_right')
+        self.assertEqual(status_map.M['pan-start-symbolic'], 'chevron_left')
+
+    def test_every_settings_panel_is_mapped(self):
+        panels = [g for g in map_apps.A if g.startswith('org.gnome.Settings-')]
+        self.assertEqual(len(panels), 44)
+        self.assertEqual(map_apps.A['org.gnome.Settings-power-symbolic'], ('apps', 'battery_android_0'))
+        self.assertEqual(map_apps.A['org.gnome.Settings-remote-desktop-symbolic'],
+                         map_apps.A['org.gnome.Settings-desktop-sharing-symbolic'])
 
     def test_scaled_icons_exist(self):
         self.assertTrue(set(map_apps.SCALE) <= set(map_apps.A))

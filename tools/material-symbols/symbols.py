@@ -5,27 +5,42 @@ Coordinates are Material's 960-unit grid with the origin at the bottom-left: vie
 import re
 
 SYMBOLIC_FILL = '#2e3436'          # GTK recolours symbolic icons: any opaque colour will do
-NAV = ('chevron_right', 'chevron_left')       # navigation signs keep their original size
 
 
-def cache_name(variant, opsz=24):
-    """Cache file name of a symbol variant; a leading "!" means the filled (fill1) variant."""
+def upstream_name(name, opsz=24, wght=400, fill=False):
+    """File name in the Material Symbols repository: <name>[_wght<g>][fill1]_<opsz>px.svg (weight 400 and outline
+    carry no suffix)."""
+    tag = (f'wght{wght}' if wght != 400 else '') + ('fill1' if fill else '')
+    return f'{name}{"_" + tag if tag else ""}_{opsz}px.svg'
+
+
+def cache_name(variant, opsz=24, wght=400):
+    """Cache file name of a symbol variant (its upstream name); a leading "!" means the filled (fill1) variant."""
+    return upstream_name(variant.lstrip('!'), opsz, wght, variant.startswith('!'))
+
+
+def remote_names(variant, opsz=24, wght=400):
+    """File names to try on the Material Symbols repository, most specific first: a symbol without a filled
+    variant falls back to its outline."""
     name = variant.lstrip('!')
-    fill = '_fill1' if variant.startswith('!') else ''
-    size = '' if opsz == 24 else f'_{opsz}px'
-    return f'{name}{fill}{size}.svg'
+    return list(dict.fromkeys([cache_name(variant, opsz, wght), upstream_name(name, opsz, wght)]))
 
 
-def remote_names(variant, opsz=24):
-    """File names to try on the Material Symbols repository, most specific first."""
-    name = variant.lstrip('!')
-    return ([f'{name}_fill1_{opsz}px.svg'] if variant.startswith('!') else []) + [f'{name}_{opsz}px.svg']
+def box_key(variant, opsz=24, wght=400):
+    """Key of a measured ink box in bbox.json."""
+    if (opsz, wght) == (24, 400):
+        return variant
+    return f'{variant}@{opsz}' if wght == 400 else f'{variant}@{opsz}@w{wght}'
 
 
-def extract_paths(svg_text, opacity=None):
-    """The <path/> elements of an SVG, recoloured for symbolic use (optionally with a fill opacity)."""
-    attrs = f'fill="{SYMBOLIC_FILL}"' + (f' fill-opacity="{opacity:g}"' if opacity is not None else '')
-    return ''.join(re.findall(r'<path[^>]*/>', svg_text)).replace('<path ', f'<path {attrs} ')
+def extract_paths(svg_text):
+    """The <path/> elements of an SVG, recoloured for symbolic use."""
+    return ''.join(re.findall(r'<path[^>]*/>', svg_text)).replace('<path ', f'<path fill="{SYMBOLIC_FILL}" ')
+
+
+def underlay(paths, opacity):
+    """Paths drawn in faded ink as one group, so overlapping parts do not add up."""
+    return f'<g opacity="{opacity:g}">{paths}</g>'
 
 
 def status_viewbox(bbox, ink_height):

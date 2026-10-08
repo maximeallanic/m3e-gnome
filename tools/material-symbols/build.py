@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Build the Material-Symbols icon theme: top-bar status icons (map.py) and symbolic application icons
 (map_apps.py). Missing symbols are downloaded from a pinned commit of google/material-design-icons; the top-bar
-ones are framed on a common ink height. The window buttons (symbolic/actions/window-*) are drawn by hand and kept.
+icons follow the common ink grid of ink_grid.py. The window buttons (symbolic/actions/window-close, -maximize,
+-minimize, -restore) are drawn by hand and kept: they are the reference of the grid.
 
 Usage: build.py [--icons-dir DIR]
   DIR defaults to $XDG_DATA_HOME/icons (~/.local/share/icons); Material-Symbols is written to DIR/Material-Symbols
   and needs Papirus-Dark in DIR (its coloured folders are linked in).
-Environment: MS_STYLE (rounded|outlined|sharp, default rounded), MS_FILL (1 = filled app icons, default),
-  MS_INK_HEIGHT (share of the frame taken by status-icon ink, default 0.72), APP_INSET (default 110),
-  XDG_CACHE_HOME (download cache).
+Environment: MS_STYLE (rounded|outlined|sharp, default rounded), MS_FILL (1 = filled app icons; default 0,
+  outlines), APP_INSET (default 110), XDG_CACHE_HOME (download cache).
 Requires: rsvg-convert, ffmpeg.
 """
 import argparse
@@ -20,26 +20,26 @@ import subprocess
 import sys
 import urllib.error
 import urllib.request
+from collections import Counter
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import map as status_map          # noqa: E402  (local module, shadows the builtin only inside this tool)
+import ink_grid as grid           # noqa: E402
 import map_apps                   # noqa: E402
 import symbols as sym             # noqa: E402
 
 REV = 'bd8cb85bd4bad964fe6918f79665bb40c3a8efef'      # google/material-design-icons, pinned
 # Material Symbols style: rounded, like Android 17 SystemUI. Try outlined or sharp with MS_STYLE.
 STYLE = os.environ.get('MS_STYLE', 'rounded')
-# Application icons filled (fill1) when that variant exists, like the tiles and status bar of a Pixel;
-# MS_FILL=0 gives outlines (map_apps.py then keeps its per-icon "!").
-FILL = os.environ.get('MS_FILL', '1') == '1'
+# Thin outlines everywhere, at the stroke of the window buttons. MS_FILL=1: filled variant (fill1) of the application
+# icons wherever it exists. The "!" of map.py and map_apps.py stay filled either way (battery, media playback, star...).
+FILL = os.environ.get('MS_FILL', '0') == '1'
 SUFFIX = '' if STYLE == 'rounded' else f'-{STYLE}'
-# Common top-bar grid, like the Android 17 status bar: all icons at the same ink height, free width.
-INK_HEIGHT = float(os.environ.get('MS_INK_HEIGHT', '0.72'))
 # Application icons: symbols at optical size 20, no per-icon cropping, so the Material grid keeps its proportions
 # from one symbol to the next, as in Android. The frame is tightened by APP_INSET (960-grid units) to approach the
-# footprint of Adwaita icons.
+# footprint of Adwaita icons; the displayed size is set in CSS where needed (GTK header bars, see ink_grid.py).
 APP_OPSZ, APP_INSET = 20, int(os.environ.get('APP_INSET', '110'))
 CACHE = Path(os.environ.get('XDG_CACHE_HOME') or Path.home() / '.cache') / 'm3e-gnome' / 'material-symbols' / f'svg{SUFFIX}'
 BBOX_FILE = HERE / f'bbox{SUFFIX}.json'      # measured ink boxes, committed (rounded = bbox.json)
@@ -47,14 +47,14 @@ CTX = dict(actions='Actions', apps='Applications', categories='Categories', devi
            mimetypes='MimeTypes', places='Places', status='Status', ui='UI')
 
 
-def fetch(variant, opsz=24):
+def fetch(variant, opsz=24, wght=400):
     """Download a symbol into the cache (atomically); False if the repository does not have it."""
-    out = CACHE / sym.cache_name(variant, opsz)
+    out = CACHE / sym.cache_name(variant, opsz, wght)
     if out.exists():
         return True
     name = variant.lstrip('!')
     base = f'https://raw.githubusercontent.com/google/material-design-icons/{REV}/symbols/web/{name}/materialsymbols{STYLE}/'
-    for remote in sym.remote_names(variant, opsz):
+    for remote in sym.remote_names(variant, opsz, wght):
         try:
             with urllib.request.urlopen(base + remote, timeout=30) as r:
                 data = r.read()
@@ -89,37 +89,66 @@ def measure_bbox(svg_file):
     return [x0 * 2, -960 + y0 * 2, (x1 - x0 + 1) * 2, (y1 - y0 + 1) * 2]
 
 
-def read_symbol(variant, opsz=24):
-    return (CACHE / sym.cache_name(variant, opsz)).read_text(encoding='utf-8')
+def read_symbol(variant, opsz=24, wght=400):
+    return (CACHE / sym.cache_name(variant, opsz, wght)).read_text(encoding='utf-8')
+
+
+class Boxes:
+    """Ink boxes [x, y, w, h] (960 grid) of the symbols, measured once and kept in bbox.json. Only the boxes used by
+    the last build are written back."""
+
+    def __init__(self, path):
+        self.path = path
+        self.known = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+        self.used = {}
+
+    def __call__(self, variant, opsz=24, wght=400):
+        key = sym.box_key(variant, opsz, wght)
+        if key not in self.known:
+            self.known[key] = measure_bbox(CACHE / sym.cache_name(variant, opsz, wght))
+        self.used[key] = self.known[key]
+        return self.known[key]
+
+    def stroke(self, opsz, wght):
+        """Stroke thickness (grid units) at a weight: ink height of the lone horizontal bar of STROKE_PROBE."""
+        if not fetch(grid.STROKE_PROBE, opsz, wght):
+            raise RuntimeError(f'{grid.STROKE_PROBE} at weight {wght} not found upstream')
+        return self(grid.STROKE_PROBE, opsz, wght)[3]
+
+    def save(self):
+        self.path.write_text(json.dumps(dict(sorted(self.used.items()))), encoding='utf-8')
 
 
 def build_status(root, boxes):
-    """Top-bar icons (map.py) -> root/status. Returns the missing symbols."""
+    """Top-bar icons (map.py) -> root/status, all at the same ink height (STATUS_INK of the frame), free width, like
+    the Android 17 status bar. A symbol wider than the frame (Wi-Fi, 4G, battery) is shrunk just enough to fit. The
+    weight is chosen per symbol (or per family of levels) for the stroke of the grid, the symbol being scaled to the
+    common height. The top bar sets the displayed size (Shell stylesheet). Returns the missing symbols."""
     M = status_map.M
     missing = [v for v in sorted(set(M.values())) if not fetch(v)]
-    # Underlay symbols (the complete Wi-Fi / cellular glyph) are fetched too
-    under = {v: b for v, b in status_map.UNDERLAY.items() if v not in missing}
-    for b in set(under.values()):
-        if not fetch(b):
-            missing.append(b)
-    for v in sorted(set(M.values())):
-        if v not in missing and v not in boxes:
-            boxes[v] = measure_bbox(CACHE / sym.cache_name(v))
+    weights = {}
     out_dir = root / 'symbolic' / 'status'
     out_dir.mkdir(parents=True, exist_ok=True)
     for name, v in M.items():
         if v in missing:
             continue
-        paths = sym.extract_paths(read_symbol(v))
-        if v in under and under[v] not in missing:
-            paths = sym.extract_paths(read_symbol(under[v]), status_map.UNDERLAY_OPACITY) + paths
-        if v.lstrip('!') in sym.NAV:
-            viewbox, ink_width = '0 -960 960 960', None
-        else:
-            ref = '!battery_android_full' if v.startswith('!battery_android') else status_map.FAMILY.get(v, v)
-            viewbox, ink_width = sym.status_viewbox(boxes[ref], INK_HEIGHT)
+        ref = '!battery_android_full' if v.startswith('!battery_android') else status_map.FAMILY.get(v, v)
+        if ref not in weights:   # a filled symbol has no stroke: weight 400
+            weights[ref] = 400 if ref.startswith('!') or not fetch(ref) else grid.status_weight(
+                boxes(ref), lambda w: boxes.stroke(24, w))
+        wght = weights[ref]
+        under = status_map.UNDERLAY.get(v)
+        if not all(fetch(x, 24, wght) for x in (v, ref, under) if x):
+            missing.append(f'{v}@w{wght}')
+            continue
+        viewbox, ink_width = sym.status_viewbox(boxes(ref, 24, wght), grid.STATUS_INK)
+        paths = sym.extract_paths(read_symbol(v, 24, wght))
+        if under:
+            paths = sym.underlay(sym.extract_paths(read_symbol(under, 24, wght)), status_map.UNDERLAY_OPACITY) + paths
         (out_dir / f'{name}.svg').write_text(sym.status_svg(viewbox, paths, ink_width), encoding='utf-8')
-    print(f'top bar: {len(M)} GNOME icons, {len(set(M.values()))} symbols, missing: {missing}')
+    used = dict(sorted(Counter(weights.values()).items()))
+    print(f'top bar: {len(M)} GNOME icons, {len(set(M.values()))} symbols, ink {grid.STATUS_INK} of the frame, '
+          f'weights {used}, missing: {missing}')
     return missing
 
 
@@ -129,21 +158,25 @@ def app_variant(ms):
 
 
 def build_apps(root, boxes):
+    """Application icons (map_apps.py) at one weight, chosen on the square APP_SQUARE (counterpart of the "maximize"
+    window button) so the stroke is STROKE_RATIO of its height. Returns the missing symbols."""
+    def square_height(w):
+        if not fetch(grid.APP_SQUARE, APP_OPSZ, w):
+            raise RuntimeError(f'{grid.APP_SQUARE} at weight {w} not found upstream')
+        return boxes(grid.APP_SQUARE, APP_OPSZ, w)[3]
+    wght = grid.app_weight(lambda w: boxes.stroke(APP_OPSZ, w), square_height)
     A = {g: cv for g, cv in map_apps.A.items() if g not in status_map.M}
-    missing = sorted({ms for _, ms in A.values() if not fetch(app_variant(ms), APP_OPSZ)})
-    for v in sorted({app_variant(ms) for _, ms in A.values() if ms not in missing}):
-        key = f'{v}@{APP_OPSZ}'
-        if key not in boxes:
-            boxes[key] = measure_bbox(CACHE / sym.cache_name(v, APP_OPSZ))
+    missing = sorted({ms for _, ms in A.values() if not fetch(app_variant(ms), APP_OPSZ, wght)})
     for g, (ctx, ms) in A.items():
         if ms in missing:
             continue
         v = app_variant(ms)
-        paths = sym.transform_app_paths(sym.extract_paths(read_symbol(v, APP_OPSZ)), ms)
-        viewbox = sym.app_viewbox(boxes[f'{v}@{APP_OPSZ}'], APP_INSET, map_apps.SCALE.get(g, 1))
+        paths = sym.transform_app_paths(sym.extract_paths(read_symbol(v, APP_OPSZ, wght)), ms)
+        viewbox = sym.app_viewbox(boxes(v, APP_OPSZ, wght), APP_INSET, map_apps.SCALE.get(g, 1))
         (root / 'symbolic' / ctx).mkdir(parents=True, exist_ok=True)
         (root / 'symbolic' / ctx / f'{g}.svg').write_text(sym.status_svg(viewbox, paths), encoding='utf-8')
-    print(f'applications: {len(A)} GNOME icons, {len({ms for _, ms in A.values()})} symbols, missing: {missing}')
+    print(f'applications: {len(A)} GNOME icons, {len({ms for _, ms in A.values()})} symbols, weight {wght}, '
+          f'missing: {missing}')
     return missing
 
 
@@ -156,7 +189,10 @@ def link_papirus(icons_dir, theme_dir, symbolic_dir):
     Papirus-Dark are linked (its "symbolic" directories are not declared, they stay ignored).
     Neither Papirus-Dark nor Papirus is inherited: their coloured folders are already linked here, and inheriting
     them made GTK index ~170,000 icons at each app start (~1 s). The symbolic fallback comes from Papirus-Symbolic
-    (tools/papirus-symbolic.py), which links only the symbolic directories of Papirus."""
+    (tools/papirus-symbolic.py), which links only the symbolic directories of Papirus.
+    The Actions context is left out: it is the only one where Papirus-Dark differs from Papirus (light-grey glyphs
+    drawn for a dark background, washed out in light mode). Those names resolve to their symbolic variant
+    (Material-Symbols, then Papirus-Symbolic), recoloured for the current mode."""
     pap = icons_dir / 'Papirus-Dark'
     index = pap / 'index.theme'
     if not index.is_file():
@@ -164,12 +200,14 @@ def link_papirus(icons_dir, theme_dir, symbolic_dir):
     idx = index.read_text(encoding='utf-8')
     sections = {m.group(1): m.group(2).strip()
                 for m in re.finditer(r'^\[([^\]]+)\]\n(.*?)(?=^\[|\Z)', idx, re.S | re.M)}
-    pdirs = [d for d in re.search(r'^Directories=(.*)$', idx, re.M).group(1).split(',') if d and 'symbolic' not in d]
-    for top in sorted({d.split('/')[0] for d in pdirs}):
-        link = theme_dir / top
-        if link.is_symlink():
+    pdirs = [d for d in re.search(r'^Directories=(.*)$', idx, re.M).group(1).split(',')
+             if d and 'symbolic' not in d and 'Context=Actions' not in sections.get(d, '')]
+    # Links of a previous build that are no longer declared (18x18 holds only actions) go too.
+    for link in theme_dir.iterdir():
+        if link.is_symlink() and os.readlink(link).startswith('../Papirus-Dark/'):
             link.unlink()
-        link.symlink_to(f'../Papirus-Dark/{top}')
+    for top in sorted({d.split('/')[0] for d in pdirs}):
+        (theme_dir / top).symlink_to(f'../Papirus-Dark/{top}')
     ours = sorted(d.name for d in symbolic_dir.iterdir() if d.is_dir())
     out = ['[Icon Theme]', 'Name=Material-Symbols',
            f'Comment=Material Symbols {STYLE}{" filled" if FILL else ""} symbolic icons (top bar, windows, applications) '
@@ -196,10 +234,10 @@ def main():
     for f in glob.glob(str(root / '*' / '*.svg')):
         if not os.path.basename(f).startswith('window-'):
             os.remove(f)
-    boxes = json.loads(BBOX_FILE.read_text()) if BBOX_FILE.exists() else {}
+    boxes = Boxes(BBOX_FILE)
     build_status(theme, boxes)
     build_apps(theme, boxes)
-    BBOX_FILE.write_text(json.dumps(boxes), encoding='utf-8')
+    boxes.save()
     link_papirus(icons_dir, theme, root)
     subprocess.run([sys.executable, str(HERE.parent / 'papirus-symbolic.py'), str(icons_dir)], check=True)
 
